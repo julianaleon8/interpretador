@@ -18,9 +18,9 @@ reserved = {
 		'print' : 'TkPrint', 'true' : 'TkTrue', 'false' : 'TkFalse'
 		}
 	      
-precedence= (
-	('left','TkLienzo','TkDiv'),
-	('left','TkLienzo','TkMenor'))
+#precedence= (
+#	('left','TkLienzo','TkDiv'),
+#	('left','TkLienzo','TkMenor'))
 
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
@@ -45,11 +45,11 @@ def t_TkIdent(t):
         t.type = reserved.get(t.value,'TkIdent')
 	print t
 
-#def t_TkLienzo(t):
-t_TkLienzo = r'<([/]|[\\]|[\-]|[_]|empty)>' # fuck, arreglar esto
-	
-#	t.type = tokens.get(t.value,'TkLienzo')
-#	print t
+
+def t_TkLienzo(t):
+	r'<([/]|[\\]|[\-]|[_]|empty)>'
+	t.type = reserved.get(t.value,'TkLienzo')
+	print t
 
 def t_error(t):
 	print ("Error: Caracter inesperado %s en la fila %d columna " % (t.value[0],t.lineno))
@@ -82,8 +82,8 @@ t_TkTras = r'\''
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
-lexer=lex.lex(debug=1)
 
+lexer=lex.lex(debug=1)
 # abrir archivo
 f = open("prueba.txt","r")
 # leer archivo
