@@ -1,7 +1,8 @@
+#!/usr/bin/python
 # interpretador lexico 
-import ply.lex as lex
 
 import lex
+import sys
 
 # lista de tokens 
 tokens = (
@@ -24,12 +25,12 @@ precedence= (
 
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
-t_ignore = '\n \t^{[-a-zA-Z0-9]*}$ '
+t_ignore = ' \t^{[-a-zA-Z0-9]*}$ '
 
 # para saber el numeros de lineas
 def t_newline(t):
 	r'\n'
-	t.lineno += len(t.value)
+	t.lexer.lineno += 1
 
 # definicion de expresiones
 def t_TkNum(t):
@@ -38,12 +39,12 @@ def t_TkNum(t):
 		t.value = int(t.value)
 	except ValueError:
 		print 'Error de decimal'
-	print t
+	print (t.type(t.value))
 
 def t_TkIdent(t):
 	r'(([a-zA-Z]([a-zA-Z0-9]*))|(of type))'
         t.type = reserved.get(t.value,'TkIdent')
-	print t
+	print t.type
 
 #def t_TkLienzo(t):
 t_TkLienzo = r'<([/]|[\\]|[\-]|[_]|empty)>' # fuck, arreglar esto
@@ -82,10 +83,10 @@ t_TkTras = r'\''
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
-lexer=lex.lex(debug=1)
+lexer=lex.lex(debug=0)
 
 # abrir archivo
-f = open("prueba.txt","r")
+f = open(sys.argv[1],"r")
 # leer archivo
 lexer.input(f.read())
 while True:
@@ -93,5 +94,4 @@ while True:
     if not tok: break      # No more input
     
    # if tok ==  
-
-    print tok
+    print tok.type
