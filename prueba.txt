@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 using x, y of type integer; c of type canvas begin
 x := 10 ;
 y := 15 ;
@@ -21,7 +21,6 @@ end
 done ;
 print c
 print true
-=======
 using x, y of type interger; c of type canvas begin
    x := 10 ;
    y := 15 ;
@@ -40,5 +39,4 @@ using x, y of type interger; c of type canvas begin
      end
    done ;
    print c
->>>>>>> 70eda21f30709571decd13b80754fde074727bb7
 end
