@@ -84,7 +84,7 @@ t_TkAsignacion = r':='
 
 # contruir el analizador lexico
 
-lexer=lex.lex(debug=1)
+lexer=lex.lex(debug=0)  # es cero o uno???
 # abrir archivo
 f = open(sys.argv[1],"r")
 # leer archivo
