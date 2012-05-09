@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using x, y of type integer; c of type canvas begin
 x := 10 ;
 y := 15 ;
@@ -20,4 +21,24 @@ end
 done ;
 print c
 print true
+=======
+using x, y of type interger; c of type canvas begin
+   x := 10 ;
+   y := 15 ;
+   c := <empty> ;
+   from 1 to x repeat
+     using d of type canvas begin
+	d := <empty> ;
+	with j from 1 to y repeat
+	   if j % 2 = 0 then
+		d := d : </>
+	   else
+		d := d : <\>
+	   done
+	done ;
+	c := c | d
+     end
+   done ;
+   print c
+>>>>>>> 70eda21f30709571decd13b80754fde074727bb7
 end

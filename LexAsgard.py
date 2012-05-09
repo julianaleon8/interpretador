@@ -1,7 +1,8 @@
+#!/usr/bin/python
 # interpretador lexico 
-import ply.lex as lex
 
 import lex
+import sys
 
 # lista de tokens 
 tokens = (
@@ -24,12 +25,12 @@ reserved = {
 
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
-t_ignore = '\n \t^{[-a-zA-Z0-9]*}$ '
+t_ignore = ' \t^{[-a-zA-Z0-9]*}$ '
 
 # para saber el numeros de lineas
 def t_newline(t):
 	r'\n'
-	t.lineno += len(t.value)
+	t.lexer.lineno += 1
 
 # definicion de expresiones
 def t_TkNum(t):
@@ -82,10 +83,14 @@ t_TkTras = r'\''
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
+<<<<<<< HEAD
+=======
+lexer=lex.lex(debug=0)
+>>>>>>> 70eda21f30709571decd13b80754fde074727bb7
 
 lexer=lex.lex(debug=1)
 # abrir archivo
-f = open("prueba.txt","r")
+f = open(sys.argv[1],"r")
 # leer archivo
 lexer.input(f.read())
 while True:
@@ -93,5 +98,4 @@ while True:
     if not tok: break      # No more input
     
    # if tok ==  
-
     print tok
