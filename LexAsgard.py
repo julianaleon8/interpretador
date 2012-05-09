@@ -39,12 +39,12 @@ def t_TkNum(t):
 		t.value = int(t.value)
 	except ValueError:
 		print 'Error de decimal'
-	print (t.type(t.value))
+	print t
 
 def t_TkIdent(t):
 	r'(([a-zA-Z]([a-zA-Z0-9]*))|(of type))'
         t.type = reserved.get(t.value,'TkIdent')
-	print t.type
+	print t
 
 #def t_TkLienzo(t):
 t_TkLienzo = r'<([/]|[\\]|[\-]|[_]|empty)>' # fuck, arreglar esto
@@ -94,4 +94,4 @@ while True:
     if not tok: break      # No more input
     
    # if tok ==  
-    print tok.type
+    print tok
