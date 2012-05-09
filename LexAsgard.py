@@ -83,10 +83,6 @@ t_TkTras = r'\''
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
-<<<<<<< HEAD
-=======
-lexer=lex.lex(debug=0)
->>>>>>> 70eda21f30709571decd13b80754fde074727bb7
 
 lexer=lex.lex(debug=1)
 # abrir archivo
