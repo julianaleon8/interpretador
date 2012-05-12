@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 
+=======
+{-<<<<<<< HEAD-}
+>>>>>>> 66765b86afdf35ff73c62e21412103d7414d6b86
 using x, y of type integer; c of type canvas begin
 x := 10 ;
 y := 15 ;
@@ -22,6 +26,10 @@ end
 done ;
 print c
 print true
+<<<<<<< HEAD
+=======
+{-=======-}
+>>>>>>> 66765b86afdf35ff73c62e21412103d7414d6b86
 using x, y of type interger; c of type canvas begin
    x := 10 ;
    y := 15 ;
@@ -40,5 +48,12 @@ using x, y of type interger; c of type canvas begin
      end
    done ;
    print c
+<<<<<<< HEAD
+=======
+{- esto es un comentario
+   con espacios y un enter-}
+{-otro comentari
+o-}
+>>>>>>> 66765b86afdf35ff73c62e21412103d7414d6b86
 end
 dlkjfkjd

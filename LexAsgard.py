@@ -25,6 +25,7 @@ precedence= (
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
 
+
 a	= r'of'
 b	= r'\type'
 ab	= r''
@@ -37,6 +38,9 @@ def t_newline(t):
 	r'\n'
 	t.lexer.lineno += 1
 	lista.append('\n')
+
+
+t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{]*-}'
 
 # definicion de expresiones
 def t_TkNum(t):
@@ -78,7 +82,10 @@ def find_column(input,token):
     column = ((((token.lexpos - i) + (k*8)) - k) - t) +1      ##formula que calcula las columnas ok
     return column
 
-t_ignore = ' \t{-[.*]*-}'
+
+
+t_ignore = ' \t'
+
 
 def t_error(t):
 	print ("Error: Caracter inesperado %s en la fila %d columna %s " % (t.value[0],t.lineno,find_column(archi,t)))
