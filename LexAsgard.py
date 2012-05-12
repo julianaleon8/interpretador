@@ -75,12 +75,12 @@ def find_column(input,token):
     column = ((((token.lexpos - i) + (k*8)) - k) - t) +1      ##formula que calcula las columnas ok
     return column
 
-t_ignore = ' \t'
+t_ignore = ' \t{}'
 
 def t_error(t):
 	print ("Error: Caracter inesperado %s en la fila %d columna %s " % (t.value[0],t.lineno,find_column(archi,t)))
 	lexer.skip(1)
-	#count = count + 1
+	count[0] = 1
 
 # valores de los tokens simples
 
@@ -117,14 +117,14 @@ f = open(sys.argv[1],"r")
 archi = f.read()
 lexer.input(archi)
 f.close()
-count = 0
+count = [0]
 lista = ['']
 while True:
     tok = lexer.token()
     if not tok: 
-	break      # No more input
+	break      
     else: 
 	lista.append(tok.type+" ")
-if (count == 0):
+if (count[0] == 0):
 	for i in range (0,len(lista)):
 		sys.stdout.write(lista[i])
