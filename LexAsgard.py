@@ -1,9 +1,12 @@
 #!/usr/bin/python
 # interpretador lexico 
 
+from ply.lex import TOKEN
+
 import lex
 import sys
 # lista de tokens 
+
 tokens = (
 		'TkComa','TkPuntoYComa','TkParAbre','TkParCierra','TkLienzo','TkIdent','TkNum','TkSuma','TkResta','TkMult',
 		'TkDiv','TkMod','TkConjuncion','TkDisyuncion','TkNegacion','TkMenor','TkMenorIgual','TkMayor','TkMayorIgual',
@@ -26,9 +29,7 @@ precedence= (
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
 
 
-a	= r'of'
-b	= r'\type'
-ab	= r''
+
 def t_comment(t):
 	r'^[{][}]$'
 	return None
@@ -41,8 +42,17 @@ def t_newline(t):
 
 
 t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{]*-}'
-
 # definicion de expresiones
+a	= r'of'
+b	= r'\wtype'
+ab1	= r'of[ ]*[\t]*type'
+
+@TOKEN(ab1)
+def t_ID(t):
+	t_ID.__doc__ = ab1
+	t.type = reserved.get(t.value,'TkOfType')
+	lista.append(t.type+" ")
+
 def t_TkNum(t):
 	r'([0-9]+)'
 	try:
@@ -138,3 +148,5 @@ while True:
 if (count[0] == 0):
 	for i in range (0,len(lista)):
 		sys.stdout.write(lista[i])
+
+
