@@ -29,19 +29,18 @@ precedence= (
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
 
 
-
-def t_comment(t):
-	r'^[{][}]$'
-	return None
-
 # para saber el numeros de lineas
 def t_newline(t):
 	r'\n'
 	t.lexer.lineno += 1
-	lista.append('\n')
 
 
-t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{]*-}'
+def t_COMMENT(t):
+	r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-}'
+	if (t.value == '\s'):
+		t.lexer.lineno += 1
+	pass	
+
 # definicion de expresiones
 a	= r'of'
 b	= r'\wtype'
@@ -89,7 +88,7 @@ def find_column(input,token):
         t = 0
     else:
         t = 1
-    column = ((((token.lexpos - i) + (k*8)) - k) - t) +1      ##formula que calcula las columnas ok
+    column = ((((token.lexpos - i) + (k*8)) - k) - t) +1     ##formula que calcula las columnas ok
     return column
 
 

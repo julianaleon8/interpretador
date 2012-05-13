@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-
-=======
 {-<<<<<<< HEAD-}
->>>>>>> 66765b86afdf35ff73c62e21412103d7414d6b86
 using x, y of type integer; c of type canvas begin
 x := 10 ;
 y := 15 ;
@@ -16,7 +12,6 @@ d := <empty> ;
 with j from 1 to y repeat
 if j % 2 = 0 then
 d := d : </>
-fkd
 else
 d := d : <\>
 done
@@ -26,12 +21,14 @@ end
 done ;
 print c
 print true
-<<<<<<< HEAD
-=======
-{-=======-}
->>>>>>> 66765b86afdf35ff73c62e21412103d7414d6b86
+{-====!===-}
 using x, y of type interger; c of type canvas begin
-   x := 10 ;
+   x := 10 ;{-ghsjkg
+fdhsajkhfdsa
+hfdjskafdsa
+hjkfdsa	gfjs
+-}!{-gdsag
+-}!
    y := 15 ;
    c := <empty> ;
    from 1 to x repeat
@@ -47,13 +44,12 @@ using x, y of type interger; c of type canvas begin
 	c := c | d
      end
    done ;
-   print c
-<<<<<<< HEAD
-=======
-{- esto es un comentario
-   con espacios y un enter-}
-{-otro comentari
-o-}
->>>>>>> 66765b86afdf35ff73c62e21412103d7414d6b86
-end
-dlkjfkjd
+   print{-gjsklg
+	gfdjkshgfs
+	gskj
+	fdsa
+
+
+						-} c
+end!
+of type
