@@ -22,7 +22,7 @@ reserved = {
 		}
 
 # defincion para reconocer el token TkOfType
-ab1	= r'of([ \t\n]|{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-})+type'
+ab1	= r'of([ \t\n]|{-[ \t\n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*-})+type'
 
 @TOKEN(ab1)
 def t_ID(t):
@@ -38,7 +38,8 @@ def t_newline(t):
 
 # definicion para ignorar comentarios
 def t_COMMENT(t):
-	r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-}'
+	
+	r'{-[ \n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*|[ \n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*-}'
 	if (t.value == '\s'):
 		t.lexer.lineno += 1
 	pass	
@@ -66,7 +67,8 @@ def t_TkLienzo(t):
 	lista.append('{0}("{1}") '.format(t.type,t.value[1: len(t.value) - 1]) )
 
 # definicion para saber en que columna se encuentra un caracter
-#este codigo lo encontramos en http://mmandrille.googlecode.com/svn-history/r4/compiladores/Version_Final/Pascal_Lex.py, y lo cambiamos un poco
+# referencia a  http://mmandrille.googlecode.com/svn-history/r4/compiladores/Version_Final/Pascal_Lex.py, 
+# se realizaron los ajustes necesarios a nuestra implementacion
 def column(input,token):
     i = token.lexpos
     j = 0
@@ -130,9 +132,10 @@ f = open(sys.argv[1],"r")
 archi = f.read()
 lexer.input(archi)
 f.close()
-#lista que contiene un solo valor, el cual es el identificador para saber si se encontro un caracter invalido o no
+#lista que contiene un solo valor, el cual es el identificador 
+#para saber si se encontro un caracter invalido o no
 count = [0]
-#lista que contiene todos los tokens validos y que luego seran impresos
+#lista que contiene todos los tokens validos 
 lista = ['']
 while True:
     tok = lexer.token()
