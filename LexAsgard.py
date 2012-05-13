@@ -28,7 +28,8 @@ reserved = {
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
 
-ab1	= r'of^[ ][ \t\n]*type'
+#ab1	= r'of^[ ][ \t\n]*type'
+ab1	= r'of([ \t\n]|{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-})+type'
 
 @TOKEN(ab1)
 def t_ID(t):
