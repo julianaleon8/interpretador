@@ -38,7 +38,7 @@ def t_newline(t):
 
 # definicion para ignorar comentarios
 def t_COMMENT(t):
-	
+
 	r'{-[ \n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*|[ \n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*-}'
 	if (t.value == '\s'):
 		t.lexer.lineno += 1
@@ -127,11 +127,13 @@ t_TkAsignacion = r':='
 lexer=lex.lex(debug=0)
 
 # abrir archivo
-f = open(sys.argv[1],"r")
+#f = open(sys.argv[1],"r")
+
 # leer archivo
-archi = f.read()
+archi = sys.stdin.read()
 lexer.input(archi)
-f.close()
+
+#f.close()
 #lista que contiene un solo valor, el cual es el identificador 
 #para saber si se encontro un caracter invalido o no
 count = [0]
@@ -147,5 +149,4 @@ if (count[0] == 0):
 # ciclo para imprimir los tokens
 	for i in range (0,len(lista)):
 		sys.stdout.write(lista[i])
-
 
