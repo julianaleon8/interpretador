@@ -28,7 +28,7 @@ reserved = {
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
 
-ab1	= r'of[ \t\n]*]type'
+ab1	= r'of^[ ][ \t\n]*type'
 
 @TOKEN(ab1)
 def t_ID(t):
@@ -36,19 +36,18 @@ def t_ID(t):
 	t.type = reserved.get(t.value,'TkOfType')
 	lista.append(t.type+" ")
 
-
-def t_comment(t):
-	r'^[{][}]$'
-	return None
-
 # para saber el numeros de lineas
 def t_newline(t):
 	r'\n'
 	t.lexer.lineno += 1
-	lista.append('\n')
 
 
-t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{!-]*-}'
+#t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{!-]*-}'
+def t_COMMENT(t):
+	r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-}'
+	if (t.value == '\s'):
+		t.lexer.lineno += 1
+	pass	
 # definicion de expresiones
 
 def t_TkNum(t):
@@ -88,7 +87,7 @@ def find_column(input,token):
         t = 0
     else:
         t = 1
-    column = ((((token.lexpos - i) + (k*8)) - k) - t) +1      ##formula que calcula las columnas ok
+    column = ((((token.lexpos - i) + (k*8)) - k) - t) +1     ##formula que calcula las columnas ok
     return column
 
 
