@@ -21,13 +21,20 @@ reserved = {
 		'print' : 'TkPrint', 'true' : 'TkTrue', 'false' : 'TkFalse'
 		}
 
-precedence= (
-	('left','TkLienzo','TkDiv'),
-	('left','TkLienzo','TkMenor'))
+#precedence= (
+#	('left','TkLienzo','TkDiv'),
+#	('left','TkLienzo','TkMenor'))
 
 # valores a ignorar
 # los valores de ^ y $ fuera de los corchetes significa que es el inicio de linea y el final de linea respectivamente
 
+ab1	= r'of[ \t\n]*]type'
+
+@TOKEN(ab1)
+def t_ID(t):
+	t_ID.__doc__ = ab1
+	t.type = reserved.get(t.value,'TkOfType')
+	lista.append(t.type+" ")
 
 
 def t_comment(t):
@@ -41,17 +48,8 @@ def t_newline(t):
 	lista.append('\n')
 
 
-t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{]*-}'
+t_ignore_COMMENT = r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{!-]*-}'
 # definicion de expresiones
-a	= r'of'
-b	= r'\wtype'
-ab1	= r'of[ ]*[\t]*type'
-
-@TOKEN(ab1)
-def t_ID(t):
-	t_ID.__doc__ = ab1
-	t.type = reserved.get(t.value,'TkOfType')
-	lista.append(t.type+" ")
 
 def t_TkNum(t):
 	r'([0-9]+)'
@@ -62,7 +60,8 @@ def t_TkNum(t):
 	lista.append('{0}({1}) '.format(t.type,t.value))
 
 def t_TkIdent(t):
-	r'(([a-zA-Z]([a-zA-Z0-9]*))|(of type))'
+	#r'([a-zA-Z]([a-zA-Z0-9]*))'
+	r'[a-zA-Z0-9]+'
         t.type = reserved.get(t.value,'TkIdent')
         if (t.type == reserved.get(t.value,'reserved')):
 	  lista.append(t.type+" ")
