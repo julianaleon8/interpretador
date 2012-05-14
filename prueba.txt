@@ -21,14 +21,11 @@ end
 done ;
 print c
 print true
-{-====!===-}
-using x, y of type interger; c of type canvas begin
-   x := 10 ;{-ghsjkg
-fdhsajkhfdsa
-hfdjskafdsa
-hjkfdsa	gfjs
--}{-gdsag
+{-====!
+hala
 -}
+using x, y of type interger; c of type canvas begin
+   x := 10 ;
    y := 15 ;
    c := <empty> ;
    from 1 to x repeat
@@ -44,13 +41,7 @@ hjkfdsa	gfjs
 	c := c | d
      end
    done ;
-   print{-gjsklg
-	gfdjkshgfs
-	gskj
-	fdsa
-
-
-						-} c
+   print c
 end
 oftype
 of type
@@ -59,12 +50,10 @@ of
 type		    of		 
 type
 of {-df{- -}jhf -} type
-of 		{-		dkfjfkjl  -} type
-=======
-of	type
+of 		{-		dkfj
+fkjl  -} type
+of  type
 of
 type
-of    	
-
-
-	  type
+{-gfds
+-}!

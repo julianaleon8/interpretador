@@ -22,12 +22,15 @@ reserved = {
 		}
 
 # defincion para reconocer el token TkOfType
-ab1	= r'of([ \t\n]|{-[ \t\n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*-})+type'
+ab1	= r'of([\s]+|{-[ \t\n0-9a-zA-Z<>/:=\\?\+\*#%()\[\],;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{!"]*-})+type'
 
 @TOKEN(ab1)
 def t_ID(t):
 	t_ID.__doc__ = ab1
 	t.type = reserved.get(t.value,'TkOfType')
+	for i in range(0,len(t.value)):
+		if (t.value[i] == '\n'):
+			t.lexer.lineno += 1
 	lista.append(t.type+" ")
 
 # definicion obtener el numero de lineas leidas
@@ -38,10 +41,10 @@ def t_newline(t):
 
 # definicion para ignorar comentarios
 def t_COMMENT(t):
-
-	r'{-[ \n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*|[ \n0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!"]*-}'
-	if (t.value == '\s'):
-		t.lexer.lineno += 1
+	r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{!"]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t\n,;\.}{!"]*-}'
+	for i in range(0,len(t.value)):
+		if (t.value[i] == '\n'):
+			t.lexer.lineno += 1
 	pass	
 # definicion de expresiones
 
