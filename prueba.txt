@@ -1,4 +1,5 @@
-{-<<<<<<< HEAD-}
+
+of type
 using x, y of type integer; c of type canvas begin
 x := 10 ;
 y := 15 ;
@@ -52,19 +53,4 @@ hjkfdsa	gfjs
 
 						-} c
 end
-oftype
 of type
-of		type
-of 	
-type		    of		 
-type
-of {-df{- -}jhf -} type
-of 		{-		dkfjfkjl  -} type
-=======
-of	type
-of
-type
-of    	
-
-
-	  type

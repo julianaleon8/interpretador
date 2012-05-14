@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # interpretador lexico 
+# Gustavo Ortega 09-10590
+# Juliana Leon 
 
 from ply.lex import TOKEN
 
