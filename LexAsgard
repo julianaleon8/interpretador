@@ -136,7 +136,7 @@ lexer=lex.lex(debug=0)
 # abrir archivo
 #f = open(sys.argv[1],"r")
 
-# leer archivo
+# leer archivogi
 archi = sys.stdin.read()
 lexer.input(archi)
 
@@ -162,33 +162,73 @@ if (count[0] == 0):
 #Arbol sintactico#
 #----------------#
  		
-def arit(p):
+def p_expr:
+	''' expr: expr; instr 
+		  | instr '''
+
+def p_instr:
+	'''instr: IDENT := booleana
+		 | if booleana then instr else instr done
+		 | if booleana then instr done
+		 | while booleana repeat instr done
+		 | with IDENT from NUM to NUM repeat instr done
+		 | from NUM to NUM repeat instr done'''
+
+	if (len(p)== 4):
+	    if (p[2] == ':='):
+		p[0] = Asig (p[1] , p[3])
+	if(len(p) == 8):
+	    if (p[7] == 'done'):	
+    	    	p[0] = Ifelse (p[1],p[2],p[3],p[4],p[5],p[6],p[7])
+	    if (p[0]=='from'):
+		p[0] = From()	
+	if (len(p) == 6):
+	    if(p[2] == 'while'):	    
+		p[0] = While()
+	    if(p[2] == 'if'):
+		p[0] = If()
+	if (len(p) == 10 ):
+	    p[0] = With()
+
+def p_arit(p):
 	''' arit : arit operator term
-		 | MINUS arit'''
+		 | MINUS arit
+		 | NUM
+		 | IDENT'''
 	
     if(len(p) == 4):
 	if(p[2] == '+'):
-		p[0] = p[1] + p[3]
+		p[0] = p[1] '+' p[3]
 	if(p[2] == '-'):
-		p[0] = p[1] - p[3]
+		p[0] = p[1] '-' p[3]
 	if(p[2] == '*'):
-		p[0] = p[1] * p[3]
+		p[0] = p[1] '*' p[3]
 	if(p[2] == '/'):
-		p[0] = p[1] / p[3]
+		p[0] = p[1] '/' p[3]
 	if(p[2] == '%'): 
-		p[0] = p[1] % p[3]
+		p[0] = p[1] '%' p[3]
    elif(len(p) == 3):
 	p[0] = - p[2]
 
-def boolean(p):
-	''' boolean : boolean operator boolean
-		    | boolean operator'''
+
+
+def p_booleana(p):
+	''' booleana : booleana operator booleana
+		    | booleana operator'''
     if(len(p) == 4):
-	if(p[2] == '/\'):
-		p[0] = p[1] and p[3]
+	if(p[2] == '/\\'):
+		p[0] = p[1] 'Tk_Conjuncion' p[3]
 	if(p[2] == '\/'):
-		p[0] = p[1] or p[3]
+		p[0] = p[1] 'Tk_Disjuncion' p[3]
+	if(p[2] == '')
+		p[] = p[] '' p[]
    if(len(p) == 3):
 	p[0] == not p[1]
 
+def p_ident(p):
+	''' ident : '''
+#### Reglas ###
+
+t_menor_igual = r'<='
+t_mayor_igual = r'>='
 
