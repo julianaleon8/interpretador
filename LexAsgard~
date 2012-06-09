@@ -127,7 +127,7 @@ t_TkDesIgual = r'/='
 t_TkHorConcat = r':'
 t_TkVerConcat = r'\|'
 t_TkRot = r'\$'
-t_TkTras = r'\'
+t_TkTras = r'\\'
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
@@ -167,147 +167,207 @@ if (count[0] == 0):
 #    impresion   #
 #----------------#
 
-class Impre:
-	def__init__(self,expr):
-		self.expr = expr
-	def__str__(self):
-		temp = 'SECUENCIACION'
-		for expr in self.expr:
-			temp = temp + str(expr) + ';'
-		temp = temp[:-1]
-		return aux
+#class Impre:
+#	def__init__(self,expr):
+#		self.expr = expr
+#	def__str__(self):
+#		temp = 'SECUENCIACION'
+#		for expr in self.expr:
+#			temp = temp + str(expr) + ';'
+#		temp = temp[:-1]
+#		return aux
 
-class Impre_uni:
-	def__init__(self,expr):
-		self.expr = expr
-	def__str__(self):
-		return str(self.expr)
+#class Impre_uni:
+#	def__init__(self,expr):
+#		self.expr = expr
+#	def__str__(self):
+#		return str(self.expr)
 		
-class Impre_err:
-	def__init__(self,expr):
-		self.expr = expr
-	def__str__(self):
-		temp = 'SECUENCIACION'
-		for expr in self.expr:
-			temp = temp + str(expr) + ';'
-		temp = temp[:-1]
-		return "Error: " + aux
+#class Impre_err:
+#	def__init__(self,expr):
+#		self.expr = expr
+#	def__str__(self):
+#		temp = 'SECUENCIACION'
+#		for expr in self.expr:
+#			temp = temp + str(expr) + ';'
+#		temp = temp[:-1]
+#		return "Error: " + aux
 		
-class expresion : pass
+#class expresion : pass
+#		
+#class OpBin(expresion):
+#	def__init__(self,op1,op2):
+#		self.op1 = op1
+#		self.po2 = op2
+#
+#class Suma(OpBin):
+#	def__str__(self):
+#		return "Suma(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")" 
+#		
+#class Resta(OpBin):
+#	def__str__(self):
+#		return "Resta(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#		
+#class Mult(OpBin):
+#	def__str__(self):
+#		return "Multiplicacion(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class OpBin(expresion):
-	def__init__(self,op1,op2):
-		self.op1 = op1
-		self.po2 = op2
-
-class Suma(OpBin):
-	def__str__(self):
-		return "Suma(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")" 
+#class Div(OpBin):
+#	def__str__(self):
+#		return "Division(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Resta(OpBin):
-	def__str__(self):
-		return "Resta(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Modulo(OpBin):
+#	def__str__(self):
+#		return "Modulo(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Mult(OpBin):
-	def__str__(self):
-		return "Multiplicacion(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class And(OpBin):
+#	def__str__(self):
+#		return "And(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Div(OpBin):
-	def__str__(self):
-		return "Division(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Or(OpBin):
+#	def__str__(self):
+#		return "Or(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Modulo(OpBin):
-	def__str__(self):
-		return "Modulo(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Menor(OpBin):
+#	def__str__(self):
+#		return "Menor que(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class And(OpBin):
-	def__str__(self):
-		return "And(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class MenorIg(OpBin):
+#	def__str__(self):
+#		return "Menor igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Or(OpBin):
-	def__str__(self):
-		return "Or(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Mayor(OpBin):
+#	def__str__(self):
+#		return "Mayor que(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Menor(OpBin):
-	def__str__(self):
-		return "Menor que(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class MayorIg(OpBin):
+#	def__str__(self):
+#		return "Mayor igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class MenorIg(OpBin):
-	def__str__(self):
-		return "Menor igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Igual(OpBin):
+#	def__str__(self):
+#		return "Igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Mayor(OpBin):
-	def__str__(self):
-		return "Mayor que(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Desigual(OpBin):
+#	def__str__(self):
+#		return "Desigual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class MayorIg(OpBin):
-	def__str__(self):
-		return "Mayor igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class ConcatVer(OpBin):
+#	def__str__(self):
+#		return "Concadenacion Vertical(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Igual(OpBin):
-	def__str__(self):
-		return "Igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class ConcatHor(OpBin):
+#	def__str__(self):
+#		return "Concadenacion Horizontal(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
 		
-class Desigual(OpBin):
-	def__str__(self):
-		return "Desigual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class OpUn(expresion):
+#	def__init__(self,op1):
+#		self.op1 = op1
 		
-class ConcatVer(OpBin):
-	def__str__(self):
-		return "Concadenacion Vertical(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Menos(OpUn):
+#	def__str__(self):
+#		return "Negativo(" + str(self.op1) + ")"
 		
-class ConcatHor(OpBin):
-	def__str__(self):
-		return "Concadenacion Horizontal(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+#class Nega(OpUn):
+#	def__str__(self):
+#		return "Negacion(" + str(self.op1) + ")"
 		
-class OpUn(expresion):
-	def__init__(self,op1):
-		self.op1 = op1
+#class Rota(OpUn):
+#	def__str__(self):
+#		return "Rotacion(" + str(self.op1) + ")"
 		
-class Menos(OpUn):
-	def__str__(self):
-		return "Negativo(" + str(self.op1) + ")"
+#class Trans(OpUn):
+#	def__str__(self):
+#		return "Traspocision(" + str(self.op1) + ")"
 		
-class Nega(OpUn):
-	def__str__(self):
-		return "Negacion(" + str(self.op1) + ")"
+#class IfElse(expresion):
+#	def__init__(self,boolean,ex1,ex2):
+#		self.boolean = boolean
+#		self.ex1 = ex1
+#		self.ex2 = ex2
 		
-class Rota(OpUn):
-	def__str__(self):
-		return "Rotacion(" + str(self.op1) + ")"
+#	def__str__(self):
+#		return "If-Else(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + "Instruccion" + str(self.ex2) + ")"
 		
-class Trans(OpUn):
-	def__str__(self):
-		return "Traspocision(" + str(self.op1) + ")"
+#class IfS(expresion):
+#	def__init__(self,boolean,ex1):
+#		def.boolean = boolean
+#		self.ex1 = ex1
+#	def__str__(self):
+#		return "If(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
+		
+#class While(expresion):
+#	def__init__(self,boolean,ex1):
+#		self.boolean = boolean
+#		self.ex1 = ex1
+#	def__str__(self):
+#		return "While(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
+		
+#class form(expresion):
+#	def__init__(sefl,num1,num2,ex1):
+#		self.num1 = num1
+#		self.num2 = num2
+#		self.ex1= ex1
+#		def__str__(self):
+#			return "From(" + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
 			
+#class FromWith(expresion):
+#	def__init__(self,iden,num1,num2,ex1):
+#		self.iden = iden
+#		self.num1 = num1
+#		self.num2 = num2
+#		self.ex1= ex1
+#	def__str__(self):
+#		return "From-With(" + "Contador" + str(self.iden) + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
+		
+#class Asig(expresion):
+#	def__init__(self,iden,ex1):
+#		self.iden = iden
+#		self.ex1 = ex1
+#	def__str__(self):
+#		return "Asignacion(" + "Variable" + str(self.iden) + "Expresion" + str(self.ex1) + ")"
+		
+#class Read(expresion):
+#	def__init__(self.iden):
+#		self.iden = iden
+#	def__str__(self):
+#		return "Read(" + "Variable" + str(self.iden) + ")"
+		
+#class Print(expresion):
+#	def__init__(self.iden):
+#		self.iden = iden
+#	def__str__(self):
+#		return "Print(" + "Lienzo" + str(self.iden) + ")"
+		
+		
  		
-def arit(p):
-	''' arit : arit operator term
-		 | MINUS arit'''
+#def arit(p):
+#	''' arit : arit operator term
+#		 | MINUS arit'''
 	
-    if(len(p) == 4):
-	if(p[2] == '+'):
-		p[0] = p[1] + p[3]
-	if(p[2] == '-'):
-		p[0] = p[1] - p[3]
-	if(p[2] == '*'):
-		p[0] = p[1] * p[3]
-	if(p[2] == '/'):
-		p[0] = p[1] / p[3]
-	if(p[2] == '%'): 
-		p[0] = p[1] % p[3]
-   elif(len(p) == 3):
-	p[0] = - p[2]
+ #   if(len(p) == 4):
+#	if(p[2] == '+'):
+#		p[0] = p[1] + p[3]
+#	if(p[2] == '-'):
+#		p[0] = p[1] - p[3]
+#	if(p[2] == '*'):
+#		p[0] = p[1] * p[3]
+#	if(p[2] == '/'):
+#		p[0] = p[1] / p[3]
+#	if(p[2] == '%'): 
+#		p[0] = p[1] % p[3]
+#   elif(len(p) == 3):
+#	p[0] = - p[2]
 
-def boolean(p):
-	''' boolean : boolean operator boolean
-		    | boolean operator'''
-    if(len(p) == 4):
-	if(p[2] == '/\'):
-		p[0] = p[1] and p[3]
-	if(p[2] == '\/'):
-		p[0] = p[1] or p[3]
-   if(len(p) == 3):
-	p[0] == not p[1]
+#def boolean(p):
+#	''' boolean : boolean operator boolean
+#		    | boolean operator'''
+#    if(len(p) == 4):
+#	if(p[2] == '/\'):
+#		p[0] = p[1] and p[3]
+#	if(p[2] == '\/'):
+#		p[0] = p[1] or p[3]
+#   if(len(p) == 3):
+#	p[0] == not p[1]
 
 
