@@ -61,7 +61,8 @@ def t_TkNum(t):
 		t.value = int(t.value)
 	except ValueError:
 		print 'Error de decimal'
-	lista.append('{0}({1}) '.format(t.type,t.value))
+	#lista.append('{0} '.format(t.type))
+	return t
 
 def t_TkIdent(t):
 
@@ -70,11 +71,12 @@ def t_TkIdent(t):
         if (t.type == reserved.get(t.value,'reserved')):
 	  lista.append(t.type+" ")
 	else:
-	  lista.append('{0}("{1}") '.format(t.type,t.value))
+	  #lista.append('{0} '.format(t.type))
+	  return t
 
 def t_TkLienzo(t):
 	r'<([/]|[\\]|[\-]|[_]|[ ]|empty)>' 
-	lista.append('{0}("{1}") '.format(t.type,t.value[1: len(t.value) - 1]) )
+	lista.append('{0} '.format(t.value[1: len(t.value) - 1]) )
 
 # definicion para saber en que columna se encuentra un caracter
 # referencia a  http://mmandrille.googlecode.com/svn-history/r4/compiladores/Version_Final/Pascal_Lex.py, 
@@ -375,11 +377,13 @@ def p_instr(p):
 		 	   | TkIf booleana TkThen instr TkDone
 		 	   | TkWhile booleana TkRepeat instr TkDone
 		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
-		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone '''
+		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
+		 	   | TkPrint TkLienzo
+		 	   | TkRead TkIdent'''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
-		p[0] = Asig (p[1] , p[3])
+		p[0] = Asig (p[1].value , p[3])
 	if(len(p) == 8):
 	    if(p[1] == 'if'):	
     	    	p[0] = IfElse(p[2],p[4],p[6])
@@ -395,9 +399,10 @@ def p_instr(p):
 
 def p_arit(p):
 	''' arit : arit operatorA arit
-		 | TkResta arit
-		 | TkNum
-		 | TkIdent '''
+		 		| TkResta arit
+		 		| TkParAbre arit TkParCierra
+		 		| TkNum
+		 		| TkIdent '''
 	
 	if(len(p) == 4):
 		if(p[2] == '+'):
@@ -410,6 +415,9 @@ def p_arit(p):
 			p[0] = p[1] / p[3]
 		if(p[2] == '%'): 
 			p[0] = p[1] % p[3]
+		if p[1] == '(':
+			if p[3] == ')':
+				p[0] = '(' + p[2] + ')'
 	elif(len(p) == 3):
 		p[0] = - p[2]
 
@@ -417,9 +425,11 @@ def p_arit(p):
 
 def p_booleana(p):
 	''' booleana : booleana operatorB expbin
-		    			 | TkTrue
-		    			 | TkFalse
-						 | empty '''
+		    			 | TkParAbre booleana TkParCierra
+		    			 | booleana TkNegacion
+						 | empty
+						 | TkTrue
+		    			 | TkFalse '''
 	if(len(p) == 4):
 		if(p[2] == '/\\'):
 			p[0] = And(p[1],p[3])
@@ -433,6 +443,9 @@ def p_booleana(p):
 			p[0] = Mayor(p[1],p[3])
 		if(p[2] == '>='):
 			p[0] = MayorIg(p[1],p[1])
+		if p[1] == '(':
+			if p[3] == ')':
+				p[0] = '(' + p[2] + ')'
 	elif(len(p) == 3):
 		p[0] == 'not' + p[1]
 	else:
@@ -440,6 +453,9 @@ def p_booleana(p):
 
 def p_lienzo(p):
 	''' lienzo : lienzo operatorL lienzo 
+		   	  | TkParAbre lienzo TkParCierra
+		   	  | TkRot lienzo 
+		   	  | lienzo TkTras 
 		   	  | TkLienzo '''
 		   	  
 	if len(p) == 4:
@@ -447,6 +463,9 @@ def p_lienzo(p):
 			p[0] = ConcatHor(p[1],p[3])
 		if p[2] == '|':
 			p[0] = ConcatVer(p[1],p[3])
+		if p[1] == '(':
+			if p[3] == ')':
+				p[0] = '(' + p[2] + ')'
 	else:
 		p[0] = p[1]
 			
@@ -482,16 +501,25 @@ def p_operatorL(p):
 	p[0] = p[1] 			
 		
 def p_error(p):
-	print "Error de sintaxis"		
+	print "Error de sintaxis %r" % p.value
 			
 parser = yacc.yacc()
+s = ''
+i = 0
+while len(lista) != i:
+	if lista[i] == r'TkNum([0-9]+)':
+		s = s + lista[i][6]
+		print s 
+	s = s + lista[i]
+	i = i + 1
+print s 
 
-while True:
-   try:
-       s = sys.stdin.read()
-   except EOFError:
-       break
-   if not s: continue
-   result = parser.parse(s)
-   print result		
+#while True:
+#   try:
+#       s = sys.stdin.read()
+#   except EOFError:
+#       break
+#   if not s: continue
+result = parser.parse(s)
+print result		
 			
