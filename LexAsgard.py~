@@ -1,0 +1,147 @@
+#!/usr/bin/python
+# interpretador lexico 
+
+from ply.lex import TOKEN
+
+import lex
+import sys
+# lista de tokens 
+
+tokens = (
+		'TkComa','TkPuntoYComa','TkParAbre','TkParCierra','TkLienzo','TkIdent','TkNum','TkSuma','TkResta','TkMult',
+		'TkDiv','TkMod','TkConjuncion','TkDisyuncion','TkNegacion','TkMenor','TkMenorIgual','TkMayor','TkMayorIgual',
+		'TkIgual','TkDesIgual','TkHorConcat','TkVerConcat','TkRot','TkTras','TkAsignacion',
+		)
+
+# lista de tokens reservados
+reserved = {
+		'using' : 'TkUsing', 'of type' : 'TkOfType', 'integer' : 'TkInteger', 'boolean' : 'TkBoolean', 'canvas' : 'TkCanvas',
+		'begin' : 'TkBegin', 'from' : 'TkFrom', 'while' : 'TkWhile', 'to' : 'TkTo', 'repeat' : 'TkRepeat', 'with' : 'TkWith',
+		'if' : 'TkIf', 'else' : 'TkElse', 'done' : 'TkDone', 'end' : 'TkEnd', 'then' : 'TkThen', 'read' : 'TkRead',
+		'print' : 'TkPrint', 'true' : 'TkTrue', 'false' : 'TkFalse'
+		}
+
+# defincion para reconocer el token TkOfType
+ab1	= r'of([ \t\n]|{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-})+type'
+
+@TOKEN(ab1)
+def t_ID(t):
+	t_ID.__doc__ = ab1
+	t.type = reserved.get(t.value,'TkOfType')
+	lista.append(t.type+" ")
+
+# definicion obtener el numero de lineas leidas
+def t_newline(t):
+	r'\n'
+	t.lexer.lineno += 1
+
+
+# definicion para ignorar comentarios
+def t_COMMENT(t):
+	r'{-[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*|[ 0-9a-zA-Z<>/:=\\?\+\*#%()\[\]\t,;\.}{!]*-}'
+	if (t.value == '\s'):
+		t.lexer.lineno += 1
+	pass	
+# definicion de expresiones
+
+def t_TkNum(t):
+	r'([0-9]+)'
+	try:
+		t.value = int(t.value)
+	except ValueError:
+		print 'Error de decimal'
+	lista.append('{0}({1}) '.format(t.type,t.value))
+
+def t_TkIdent(t):
+
+	r'[a-zA-Z0-9]+'
+        t.type = reserved.get(t.value,'TkIdent')
+        if (t.type == reserved.get(t.value,'reserved')):
+	  lista.append(t.type+" ")
+	else:
+	  lista.append('{0}("{1}") '.format(t.type,t.value))
+
+def t_TkLienzo(t):
+	r'<([/]|[\\]|[\-]|[_]|[ ]|empty)>' 
+	lista.append('{0}("{1}") '.format(t.type,t.value[1: len(t.value) - 1]) )
+
+# definicion para saber en que columna se encuentra un caracter
+#este codigo lo encontramos en http://mmandrille.googlecode.com/svn-history/r4/compiladores/Version_Final/Pascal_Lex.py, y lo cambiamos un poco
+def column(input,token):
+    i = token.lexpos
+    j = 0
+    k = 0  
+    while i > 0:
+        if input[i] == '\n':
+		break
+        if input[i] == '\t': 
+            	k +=1        #si el caracter es un tab tengo un contador para la cantidad de tabs
+        i -=1                #resta la cantidad de caracteres (no se considera tab como 8 caracteres, sino como uno solo) desde la columna 					relativa (la que maneja python) del token hasta el principio de la linea del token
+    if (token.lineno == 1):
+        k +=1
+        j = 0
+    else:
+        j = 1
+    column = ((((token.lexpos - i) + (k*8)) - k) - j) +1     #formula que calcula las columnas
+    return column
+
+
+
+t_ignore = ' \t'
+
+
+def t_error(t):
+	print ("Error: Caracter inesperado %s en la fila %d columna %s " % (t.value[0],t.lineno,column(archi,t)))
+	lexer.skip(1)
+	count[0] = 1
+
+# valores de los tokens simples
+
+t_TkComa = r','
+t_TkPuntoYComa = r';'
+t_TkParAbre = r'\('
+t_TkParCierra = r'\)'
+t_TkSuma = r'\+'
+t_TkResta = r'-'
+t_TkMult = r'\*'
+t_TkDiv = r'/'
+t_TkMod = r'%'
+t_TkConjuncion = r'/\\'
+t_TkDisyuncion = r'\\/'
+t_TkNegacion = r'\^'
+t_TkMenor = r'<'
+t_TkMenorIgual = r'<='
+t_TkMayor = r'>'
+t_TkMayorIgual = r'>='
+t_TkIgual = r'='
+t_TkDesIgual = r'/='
+t_TkHorConcat = r':'
+t_TkVerConcat = r'\|'
+t_TkRot = r'\$'
+t_TkTras = r'\''
+t_TkAsignacion = r':='
+
+# contruir el analizador lexico
+lexer=lex.lex(debug=0)
+
+# abrir archivo
+f = open(sys.argv[1],"r")
+# leer archivo
+archi = f.read()
+lexer.input(archi)
+f.close()
+#lista que contiene un solo valor, el cual es el identificador para saber si se encontro un caracter invalido o no
+count = [0]
+lista = ['']
+while True:
+    tok = lexer.token()
+    if not tok: 
+	break      
+    else: 
+	lista.append(tok.type+" ")
+if (count[0] == 0): 
+# ciclo para imprimir los tokens
+	for i in range (0,len(lista)):
+		sys.stdout.write(lista[i])
+
+

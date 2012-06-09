@@ -279,67 +279,7 @@ class Rota(OpUn):
 class Trans(OpUn):
 	def__str__(self):
 		return "Traspocision(" + str(self.op1) + ")"
-		
-class IfElse(expresion):
-	def__init__(self,boolean,ex1,ex2):
-		self.boolean = boolean
-		self.ex1 = ex1
-		self.ex2 = ex2
-		
-	def__str__(self):
-		return "If-Else(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + "Instruccion" + str(self.ex2) + ")"
-		
-class IfS(expresion):
-	def__init__(self,boolean,ex1):
-		def.boolean = boolean
-		self.ex1 = ex1
-	def__str__(self):
-		return "If(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
-		
-class While(expresion):
-	def__init__(self,boolean,ex1):
-		self.boolean = boolean
-		self.ex1 = ex1
-	def__str__(self):
-		return "While(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
-		
-class form(expresion):
-	def__init__(sefl,num1,num2,ex1):
-		self.num1 = num1
-		self.num2 = num2
-		self.ex1= ex1
-		def__str__(self):
-			return "From(" + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
 			
-class FromWith(expresion):
-	def__init__(self,iden,num1,num2,ex1):
-		self.iden = iden
-		self.num1 = num1
-		self.num2 = num2
-		self.ex1= ex1
-	def__str__(self):
-		return "From-With(" + "Contador" + str(self.iden) + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
-		
-class Asig(expresion):
-	def__init__(self,iden,ex1):
-		self.iden = iden
-		self.ex1 = ex1
-	def__str__(self):
-		return "Asignacion(" + "Variable" + str(self.iden) + "Expresion" + str(self.ex1) + ")"
-		
-class Read(expresion):
-	def__init__(self.iden):
-		self.iden = iden
-	def__str__(self):
-		return "Read(" + "Variable" + str(self.iden) + ")"
-		
-class Print(expresion):
-	def__init__(self.iden):
-		self.iden = iden
-	def__str__(self):
-		return "Print(" + "Lienzo" + str(self.iden) + ")"
-		
-		
  		
 def arit(p):
 	''' arit : arit operator term
