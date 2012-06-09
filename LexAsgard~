@@ -136,7 +136,7 @@ lexer=lex.lex(debug=0)
 # abrir archivo
 #f = open(sys.argv[1],"r")
 
-# leer archivogi
+# leer archivo
 archi = sys.stdin.read()
 lexer.input(archi)
 
@@ -279,135 +279,35 @@ class Rota(OpUn):
 class Trans(OpUn):
 	def__str__(self):
 		return "Traspocision(" + str(self.op1) + ")"
-		
-class IfElse(expresion):
-	def__init__(self,boolean,ex1,ex2):
-		self.boolean = boolean
-		self.ex1 = ex1
-		self.ex2 = ex2
-		
-	def__str__(self):
-		return "If-Else(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + "Instruccion" + str(self.ex2) + ")"
-		
-class IfS(expresion):
-	def__init__(self,boolean,ex1):
-		def.boolean = boolean
-		self.ex1 = ex1
-	def__str__(self):
-		return "If(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
-		
-class While(expresion):
-	def__init__(self,boolean,ex1):
-		self.boolean = boolean
-		self.ex1 = ex1
-	def__str__(self):
-		return "While(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
-		
-class form(expresion):
-	def__init__(sefl,num1,num2,ex1):
-		self.num1 = num1
-		self.num2 = num2
-		self.ex1= ex1
-		def__str__(self):
-			return "From(" + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
 			
-class FromWith(expresion):
-	def__init__(self,iden,num1,num2,ex1):
-		self.iden = iden
-		self.num1 = num1
-		self.num2 = num2
-		self.ex1= ex1
-	def__str__(self):
-		return "From-With(" + "Contador" + str(self.iden) + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
-		
-class Asig(expresion):
-	def__init__(self,iden,ex1):
-		self.iden = iden
-		self.ex1 = ex1
-	def__str__(self):
-		return "Asignacion(" + "Variable" + str(self.iden) + "Expresion" + str(self.ex1) + ")"
-		
-class Read(expresion):
-	def__init__(self.iden):
-		self.iden = iden
-	def__str__(self):
-		return "Read(" + "Variable" + str(self.iden) + ")"
-		
-class Print(expresion):
-	def__init__(self.iden):
-		self.iden = iden
-	def__str__(self):
-		return "Print(" + "Lienzo" + str(self.iden) + ")"
-		
-		
  		
-def p_expr:
-	''' expr: expr; instr 
-		  | instr '''
-
-def p_instr:
-	'''instr: IDENT := booleana
-		 | if booleana then instr else instr done
-		 | if booleana then instr done
-		 | while booleana repeat instr done
-		 | with IDENT from NUM to NUM repeat instr done
-		 | from NUM to NUM repeat instr done'''
-
-	if (len(p)== 4):
-	    if (p[2] == ':='):
-		p[0] = Asig (p[1] , p[3])
-	if(len(p) == 8):
-	    if (p[7] == 'done'):	
-    	    	p[0] = Ifelse (p[1],p[2],p[3],p[4],p[5],p[6],p[7])
-	    if (p[0]=='from'):
-		p[0] = From()	
-	if (len(p) == 6):
-	    if(p[2] == 'while'):	    
-		p[0] = While()
-	    if(p[2] == 'if'):
-		p[0] = If()
-	if (len(p) == 10 ):
-	    p[0] = With()
-
-def p_arit(p):
+def arit(p):
 	''' arit : arit operator term
-		 | MINUS arit
-		 | NUM
-		 | IDENT'''
+		 | MINUS arit'''
 	
     if(len(p) == 4):
 	if(p[2] == '+'):
-		p[0] = p[1] '+' p[3]
+		p[0] = p[1] + p[3]
 	if(p[2] == '-'):
-		p[0] = p[1] '-' p[3]
+		p[0] = p[1] - p[3]
 	if(p[2] == '*'):
-		p[0] = p[1] '*' p[3]
+		p[0] = p[1] * p[3]
 	if(p[2] == '/'):
-		p[0] = p[1] '/' p[3]
+		p[0] = p[1] / p[3]
 	if(p[2] == '%'): 
-		p[0] = p[1] '%' p[3]
+		p[0] = p[1] % p[3]
    elif(len(p) == 3):
 	p[0] = - p[2]
 
-
-
-def p_booleana(p):
-	''' booleana : booleana operator booleana
-		    | booleana operator'''
+def boolean(p):
+	''' boolean : boolean operator boolean
+		    | boolean operator'''
     if(len(p) == 4):
-	if(p[2] == '/\\'):
-		p[0] = p[1] 'Tk_Conjuncion' p[3]
+	if(p[2] == '/\'):
+		p[0] = p[1] and p[3]
 	if(p[2] == '\/'):
-		p[0] = p[1] 'Tk_Disjuncion' p[3]
-	if(p[2] == '')
-		p[] = p[] '' p[]
+		p[0] = p[1] or p[3]
    if(len(p) == 3):
 	p[0] == not p[1]
 
-def p_ident(p):
-	''' ident : '''
-#### Reglas ###
-
-t_menor_igual = r'<='
-t_mayor_igual = r'>='
 
