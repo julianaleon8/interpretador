@@ -37,7 +37,8 @@ def t_ID(t):
 	for i in range(0,len(t.value)):
 		if (t.value[i] == '\n'):
 			t.lexer.lineno += 1
-	lista.append(t.type+" ")
+	#lista.append(t.type+" ")
+	return t
 
 # definicion obtener el numero de lineas leidas
 def t_newline(t):
@@ -56,27 +57,27 @@ def t_COMMENT(t):
 # definicion de expresiones
 
 def t_TkNum(t):
-	r'([0-9]+)'
+	r'[0-9]+'
 	try:
 		t.value = int(t.value)
 	except ValueError:
 		print 'Error de decimal'
-	#lista.append('{0} '.format(t.type))
+	#lista.append('{0}({1}) '.format(t.type,t.value))
 	return t
 
 def t_TkIdent(t):
-
 	r'[a-zA-Z0-9]+'
         t.type = reserved.get(t.value,'TkIdent')
         if (t.type == reserved.get(t.value,'reserved')):
 	  lista.append(t.type+" ")
 	else:
-	  #lista.append('{0} '.format(t.type))
+	  #lista.append('{0}("{1}") '.format(t.type,t.value))
 	  return t
 
 def t_TkLienzo(t):
 	r'<([/]|[\\]|[\-]|[_]|[ ]|empty)>' 
-	lista.append('{0} '.format(t.value[1: len(t.value) - 1]) )
+	#lista.append('{0} '.format(t.value[1: len(t.value) - 1]) )
+	return t
 
 # definicion para saber en que columna se encuentra un caracter
 # referencia a  http://mmandrille.googlecode.com/svn-history/r4/compiladores/Version_Final/Pascal_Lex.py, 
@@ -157,20 +158,23 @@ while True:
 	break      
     else: 
 	lista.append(tok.type+" ")
-if (count[0] == 0): 
+#if (count[0] == 0): 
 # ciclo para imprimir los tokens
-	for i in range (0,len(lista)):
+	#for i in range (0,len(lista)):
 		#sys.stdout.write(lista[i])
-		print
-print "\n"
 #----------------#
 # Precedencia	 #
 #----------------#
 
 
 precedence = (
+	 ('left','TkConjuncion','TkDisyuncion'),
+	 ('left','TkHorConcat','TkVerConcat'),
+	 ('left','TkRot'),
+	 ('right','TkTras'),
     ('left', 'TkSuma', 'TkResta'),
-  	('left','TkMult','TkDiv'),
+  	 ('left','TkMult','TkDiv','TkMod'),
+  	 ('right','TkNegacion'),
 )
 
 
@@ -213,67 +217,67 @@ class expresion : pass
 class OpBin(expresion):
 	def __init__(self,op1,op2):
 		self.op1 = op1
-		self.po2 = op2
+		self.op2 = op2
 
 class Suma(OpBin):
 	def __str__(self):
-		return "Suma(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")" 
+		return "Suma(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")" 
 		
 class Resta(OpBin):
 	def __str__(self):
-		return "Resta(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Resta(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Mult(OpBin):
 	def __str__(self):
-		return "Multiplicacion(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Multiplicacion(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Div(OpBin):
 	def __str__(self):
-		return "Division(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Division(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Modulo(OpBin):
 	def __str__(self):
-		return "Modulo(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Modulo(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class And(OpBin):
 	def __str__(self):
-		return "And(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "And(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Or(OpBin):
 	def __str__(self):
-		return "Or(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Or(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Menor(OpBin):
 	def __str__(self):
-		return "Menor que(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Menor que(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class MenorIg(OpBin):
 	def __str__(self):
-		return "Menor igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Menor igual(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Mayor(OpBin):
 	def __str__(self):
-		return "Mayor que(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Mayor que(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class MayorIg(OpBin):
 	def __str__(self):
-		return "Mayor igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Mayor igual(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Igual(OpBin):
 	def __str__(self):
-		return "Igual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Igual(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class Desigual(OpBin):
 	def __str__(self):
-		return "Desigual(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Desigual(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class ConcatVer(OpBin):
 	def __str__(self):
-		return "Concadenacion Vertical(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Concadenacion Vertical(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class ConcatHor(OpBin):
 	def __str__(self):
-		return "Concadenacion Horizontal(" + "operador izquierdo" + str(self.op1) + "operador derecho" + str(self.op2) + ")"
+		return "Concadenacion Horizontal(" + "operador izquierdo= " + str(self.op1) + " ,operador derecho= " + str(self.op2) + ")"
 		
 class OpUn(expresion):
 	def __init__(self,op1):
@@ -302,21 +306,21 @@ class IfElse(expresion):
 		self.ex2 = ex2
 	
 	def __str__(self):
-		return "If-Else(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + "Instruccion" + str(self.ex2) + ")"
+		return "If-Else(" + "Condicion= "+ str(self.boolean) + " ,Instruccion= " + str(self.ex1) + " ,Instruccion= " + str(self.ex2) + ")"
 	
 class IfS(expresion):
 	def __init__(self,boolean,ex1):
 		self.boolean = boolean
 		self.ex1 = ex1
 	def __str__(self):
-		return "If(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
+		return "If(" + "Condicion= "+ str(self.boolean) + " ,Instruccion= " + str(self.ex1) + ")"
 
 class While(expresion):
 	def __init__(self,boolean,ex1):
 		self.boolean = boolean
 		self.ex1 = ex1
 	def __str__(self):
-		return "While(" + "Condicion"+ str(self.boolean) + "Instruccion" + str(self.ex1) + ")"
+		return "While(" + "Condicion= "+ str(self.boolean) + " ,Instruccion= " + str(self.ex1) + ")"
 	
 class form(expresion):
 	def __init__(sefl,num1,num2,ex1):
@@ -324,7 +328,7 @@ class form(expresion):
 		self.num2 = num2
 		self.ex1= ex1
 		def __str__(self):
-			return "From(" + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ' '
+			return "From(" + "Limite Inferior= " + str(self.num1) + " ,Limite Superior =" + str(self.num2) + " ,Intruccion" + str(self.ex1) + ')'
 			
 class FromWith(expresion):
 	def __init__(self,iden,num1,num2,ex1):
@@ -333,36 +337,39 @@ class FromWith(expresion):
 		self.num2 = num2
 		self.ex1= ex1
 	def __str__(self):
-		return "From-With(" + "Contador" + str(self.iden) + "Limite Inferior" + str(self.num1) + "Limite Superior" + str(self.num2) + "Intruccion" + str(self.ex1) + ")"
+		return "From-With(" + "Contador= " + str(self.iden) + " ,Limite Inferior =" + str(self.num1) + " ,Limite Superior= " + str(self.num2) + " ,Intruccion= " + str(self.ex1) + ")"
 		
 class Asig(expresion):
 	def __init__(self,iden,ex1):
 		self.iden = iden
 		self.ex1 = ex1
 	def __str__(self):
-		return "Asignacion(" + "Variable" + str(self.iden) + "Expresion" + str(self.ex1) + ")"
+		return "Asignacion(" + "Variable= " + str(self.iden) + ", Expresion= " + str(self.ex1) + ")"
 		
 class Read(expresion):
 	def __init__(self,iden):
 		self.iden = iden
 	def __str__(self):
-		return "Read(" + "Variable" + str(self.iden) + ")"
+		return "Read(" + "Variable= " + str(self.iden) + ")"
 	
 class Print(expresion):
 	def __init__(self,iden):
 		self.iden = iden
 	def __str__(self):
-		return "Print(" + "Lienzo" + str(self.iden) + ")"
+		return "Print(" + "Lienzo= " + str(self.iden) + ")"
+		
+
 ####################	
 # ARBOL SINTACTICO #
 ####################
 
+star = 'expr'
 
 def p_expr(p):
 	''' expr : expr TkPuntoYComa instr 
 				| instr '''
 	if len(p) == 4:
-		p[0] = p[1]+ ";" + p[3]
+		p[0] = p[1] + p[3]
 	else:
 		p[0] = p[1]
 				
@@ -379,23 +386,29 @@ def p_instr(p):
 		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
 		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
 		 	   | TkPrint TkLienzo
-		 	   | TkRead TkIdent'''
+		 	   | TkRead TkIdent '''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
-		p[0] = Asig (p[1].value , p[3])
-	if(len(p) == 8):
+		p[0] = Asig (p[1] , p[3])
+	elif(len(p) == 8):
 	    if(p[1] == 'if'):	
     	    	p[0] = IfElse(p[2],p[4],p[6])
-	    if(p[1]=='from'):
-		p[0] = FromWith(p[2],p[4],p[6])	
-	if(len(p) == 6):
-	    if(p[2] == 'while'):	    
-		p[0] = While( p[2] , p[4])
+	    if(p[1] =='from'):
+	    	p[0] = FromWith(p[2],p[4],p[6])	
+	elif(len(p) == 6):
+	    if(p[2] == 'while'):
+	    	p[0] = While( p[2] , p[4])
 	    if(p[2] == 'if'):
-		p[0] = IfS( p[2],p[4])
-	if (len(p) == 10 ):
-	    p[0] = With(p[2],p[4],p[6],p[8])
+	    	p[0] = IfS( p[2],p[4])
+	elif(len(p) == 10 ):
+		p[0] = With(p[2],p[4],p[6],p[8])
+	elif(len(p) == 2):
+		if(p[1] == 'read'):
+			p[0] = Read(p[1])
+		else:
+			p[0] = Print(p[1])
+	
 
 def p_arit(p):
 	''' arit : arit operatorA arit
@@ -406,34 +419,42 @@ def p_arit(p):
 	
 	if(len(p) == 4):
 		if(p[2] == '+'):
-			p[0] = p[1] + p[3]
+			p[0] = Suma(p[1],p[3])
 		if(p[2] == '-'):
-			p[0] = p[1] - p[3]
+			p[0] = Resta(p[1],p[3])
 		if(p[2] == '*'):
-			p[0] = p[1] * p[3]
+			p[0] = Mult(p[1],p[3])
 		if(p[2] == '/'):
-			p[0] = p[1] / p[3]
+			p[0] = Div(p[1],p[3])
 		if(p[2] == '%'): 
-			p[0] = p[1] % p[3]
+			p[0] = Modulo(p[1],p[3])
 		if p[1] == '(':
 			if p[3] == ')':
-				p[0] = '(' + p[2] + ')'
+				p[0] = p[2] 
 	elif(len(p) == 3):
 		p[0] = - p[2]
+	else:
+		p[0] = p[1]
 
+def p_expbin(p):
+	''' expbin : arit
+	  		  	  | booleana
+			  	  | lienzo '''
+	p[0] = p[1]
 
 
 def p_booleana(p):
-	''' booleana : booleana operatorB expbin
-		    			 | TkParAbre booleana TkParCierra
-		    			 | booleana TkNegacion
-						 | empty
-						 | TkTrue
-		    			 | TkFalse '''
+	''' booleana : booleana operatorB booleana
+					 | booleana operatorB arit
+					 | booleana operatorB lienzo
+		    		 | TkParAbre booleana TkParCierra
+		    		 | booleana TkNegacion
+					 | TkTrue
+		    		 | TkFalse '''
 	if(len(p) == 4):
 		if(p[2] == '/\\'):
 			p[0] = And(p[1],p[3])
-		if(p[2] == '\/'):
+		if(p[2] == '\\/'):
 			p[0] = Or(p[1],p[3])
 		if(p[2] == '<'):
 			p[0] = Menor(p[1], p[3])
@@ -445,9 +466,9 @@ def p_booleana(p):
 			p[0] = MayorIg(p[1],p[1])
 		if p[1] == '(':
 			if p[3] == ')':
-				p[0] = '(' + p[2] + ')'
+				p[0] = p[2]
 	elif(len(p) == 3):
-		p[0] == 'not' + p[1]
+		p[0] = p[1]
 	else:
 		p[0] = p[1]
 
@@ -465,17 +486,9 @@ def p_lienzo(p):
 			p[0] = ConcatVer(p[1],p[3])
 		if p[1] == '(':
 			if p[3] == ')':
-				p[0] = '(' + p[2] + ')'
+				p[0] =  p[2]
 	else:
 		p[0] = p[1]
-			
-
-
-def p_expbin(p):
-	''' expbin : arit
-	  		  	  | booleana
-			  	  | lienzo '''
-	p[0] = p[1]
 
 def p_operatorA(p):
 	''' operatorA : TkSuma
@@ -502,18 +515,20 @@ def p_operatorL(p):
 	p[0] = p[1] 			
 		
 def p_error(p):
-	print "Error de sintaxis %r" % p.value
+	print "Error de sintaxis " #+ p.type +" " + "%d" % p.value
 			
 parser = yacc.yacc()
-s = ''
-i = 0
-while len(lista) != i:
-	if lista[i] == r'TkNum([0-9]+)':
-		s = s + lista[i][6]
-		print s 
-	s = s + lista[i]
-	i = i + 1
-print s 
+print parser.parse("print <->")
+
+#s = ''
+#i = 0
+#while len(lista) != i:
+#	if lista[i] == r'TkNum([0-9]+)':
+#		s = s + lista[i][6]
+#		print s 
+#	s = s + lista[i]
+#	i = i + 1
+#print s 
 
 #while True:
  #  try:
@@ -521,6 +536,14 @@ print s
    #except EOFError:
     #   break
    #if not s: continue
-result = parser.parse(s)
-print result		
+#result = parser.parse(s)
+#print result	
+
+#while 1:
+#    try:
+#        s = raw_input('calc > ')   # Use raw_input on Python 2
+#    except EOFError:
+#        break
+#    result = parser.parse(s)
+#    print result	
 
