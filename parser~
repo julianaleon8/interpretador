@@ -37,7 +37,6 @@ def t_ID(t):
 	for i in range(0,len(t.value)):
 		if (t.value[i] == '\n'):
 			t.lexer.lineno += 1
-	#lista.append(t.type+" ")
 	return t
 
 # definicion obtener el numero de lineas leidas
@@ -62,7 +61,6 @@ def t_TkNum(t):
 		t.value = int(t.value)
 	except ValueError:
 		print 'Error de decimal'
-	#lista.append('{0}({1}) '.format(t.type,t.value))
 	return t
 
 def t_TkIdent(t):
@@ -71,12 +69,10 @@ def t_TkIdent(t):
         if (t.type == reserved.get(t.value,'reserved')):
 	  return t
 	else:
-	  #lista.append('{0}("{1}") '.format(t.type,t.value))
 	  return t
 
 def t_TkLienzo(t):
 	r'<([/]|[\\]|[\-]|[_]|[ ]|empty)>' 
-	#lista.append('{0} '.format(t.value[1: len(t.value) - 1]) )
 	return t
 
 # definicion para saber en que columna se encuentra un caracter
@@ -138,30 +134,8 @@ t_TkAsignacion = r':='
 
 # contruir el analizador lexico
 lexer=lex.lex(debug=0)
-
-# abrir archivo
-#f = open(sys.argv[1],"r")
-
-# leer archivogi
 archi = sys.stdin.read()
-#lexer.input(archi)
 
-#f.close()
-#lista que contiene un solo valor, el cual es el identificador 
-#para saber si se encontro un caracter invalido o no
-#count = [0]
-#lista que contiene todos los tokens validos 
-#lista = ['']
-#while True:
-#    tok = lexer.token()
-#    if not tok: 
-#	break      
-#    else: 
-#	lista.append(tok.type+" ")
-#if (count[0] == 0): 
-# ciclo para imprimir los tokens
-	#for i in range (0,len(lista)):
-		#sys.stdout.write(lista[i])
 #----------------#
 # Precedencia	 #
 #----------------#
@@ -386,7 +360,8 @@ def p_instr(p):
 		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
 		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
 		 	   | TkPrint TkLienzo
-		 	   | TkRead TkIdent '''
+		 	   | TkRead TkIdent
+		 	   | expbin '''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
@@ -524,31 +499,3 @@ def p_error(p):
 			
 parser = yacc.yacc()
 print parser.parse(archi)
-
-#s = ''
-#i = 0
-#while len(lista) != i:
-#	if lista[i] == r'TkNum([0-9]+)':
-#		s = s + lista[i][6]
-#		print s 
-#	s = s + lista[i]
-#	i = i + 1
-#print s 
-
-#while True:
- #  try:
-  #     s = sys.stdin.read()
-   #except EOFError:
-    #   break
-   #if not s: continue
-#result = parser.parse(s)
-#print result	
-
-#while 1:
-#    try:
-#        s = raw_input('calc > ')   # Use raw_input on Python 2
-#    except EOFError:
-#        break
-#    result = parser.parse(s)
-#    print result	
-

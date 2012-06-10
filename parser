@@ -360,7 +360,8 @@ def p_instr(p):
 		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
 		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
 		 	   | TkPrint TkLienzo
-		 	   | TkRead TkIdent '''
+		 	   | TkRead TkIdent
+		 	   | expbin '''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
@@ -456,7 +457,8 @@ def p_lienzo(p):
 		   	  | TkParAbre lienzo TkParCierra
 		   	  | TkRot lienzo 
 		   	  | lienzo TkTras 
-		   	  | TkLienzo '''
+		   	  | TkLienzo
+		   	  | TkIdent '''
 		   	  
 	if len(p) == 4:
 		if p[2] == ':':
