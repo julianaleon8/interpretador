@@ -427,7 +427,7 @@ def p_booleana(p):
 	''' booleana : booleana operatorB expbin
 		    		 | TkParAbre booleana TkParCierra
 		    		 | booleana TkNegacion
-				 	 | TkTrue
+				 | TkTrue
 		    		 | TkFalse
 		    		 | TkIdent '''
 		    		 
