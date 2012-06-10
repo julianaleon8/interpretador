@@ -130,34 +130,6 @@ t_TkRot = r'\$'
 t_TkTras = r'\\'
 t_TkAsignacion = r':='
 
-# contruir el analizador lexico
-lexer=lex.lex(debug=0)
-
-# abrir archivo
-#f = open(sys.argv[1],"r")
-
-# leer archivogi
-archi = sys.stdin.read()
-lexer.input(archi)
-
-#f.close()
-#lista que contiene un solo valor, el cual es el identificador 
-#para saber si se encontro un caracter invalido o no
-count = [0]
-#lista que contiene todos los tokens validos 
-lista = ['']
-while True:
-    tok = lexer.token()
-    if not tok: 
-	break      
-    else: 
-	lista.append(tok.type+" ")
-if (count[0] == 0): 
-# ciclo para imprimir los tokens
-	for i in range (0,len(lista)):
-		print('holas')
-		sys.stdout.write(lista[i])
-
 #----------------#
 # Precedencia	 #
 #----------------#
@@ -390,6 +362,7 @@ def p_arit(p):
     	if(len(p) == 4):
 		if(p[2] == '+'):
 			p[0] = suma(p[1],p[3])
+			print p[0]
 		if(p[2] == '-'):
 			p[0] = p[1] - p[3]
 		if(p[2] == '*'):
@@ -433,4 +406,34 @@ def p_bla(p):
 	''' bla: arit
 	  	| booleana
 		| lienzo '''
+
+
+
+
+# contruir el analizador lexico
+lexer=lex.lex(debug=0)
+
+# abrir archivo
+#f = open(sys.argv[1],"r")
+
+# leer archivogi
+archi = sys.stdin.read()
+lexer.input(archi)
+
+#f.close()
+#lista que contiene un solo valor, el cual es el identificador 
+#para saber si se encontro un caracter invalido o no
+count = [0]
+#lista que contiene todos los tokens validos 
+lista = ['']
+while True:
+    tok = lexer.token()
+    if not tok: 
+	break      
+    else: 
+	lista.append(tok.type+" ")
+if (count[0] == 0): 
+# ciclo para imprimir los tokens
+	for i in range (0,len(lista)):
+		sys.stdout.write(lista[i])
 
