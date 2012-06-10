@@ -457,7 +457,8 @@ def p_lienzo(p):
 		   	  | TkParAbre lienzo TkParCierra
 		   	  | TkRot lienzo 
 		   	  | lienzo TkTras 
-		   	  | TkLienzo '''
+		   	  | TkLienzo
+		   	  | TkIdent '''
 		   	  
 	if len(p) == 4:
 		if p[2] == ':':

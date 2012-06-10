@@ -383,6 +383,7 @@ def p_instr(p):
 			p[0] = Read(p[2])
 		else:
 			p[0] = Print(p[2])
+	p[0] = p[1]
 	
 
 def p_arit(p):
