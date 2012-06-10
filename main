@@ -34,8 +34,7 @@ if (count[0] == 0):
 # ciclo para imprimir los tokens
 	for i in range (0,len(lista)):
 		sys.stdout.write(lista[i])
-print parser.parse("^r")
-# parser.parse("a+b")
+print parser.parse("<->")
 
 # ciclo para imprimir los tokens
 #for i in range (0,len(lista)):

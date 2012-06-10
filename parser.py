@@ -142,13 +142,15 @@ lista = ['']
 
 
 precedence = (
+	 ('left','TkIf','TkThen','TkElse'),
+  	 ('right','TkNegacion'),    	
 	 ('left','TkConjuncion','TkDisyuncion'),
 	 ('left','TkHorConcat','TkVerConcat'),
 	 ('left','TkRot'),
 	 ('right','TkTras'),
     	 ('left', 'TkSuma', 'TkResta'),
   	 ('left','TkMult','TkDiv','TkMod'),
-  	 ('right','TkNegacion'),
+	 #('right','menos'),
 )
 
 
@@ -164,7 +166,7 @@ class Impre:
 		for expr in self.expr:
 			temp = temp + str(expr) + ';'
 		temp = temp[:-1]
-		return aux
+		return temp
 
 class Impre_uni:
 	def __init__(self,expr):
@@ -180,7 +182,7 @@ class Impre_err:
 		for expr in self.expr:
 			temp = temp + str(expr) + ';'
 		temp = temp[:-1]
-		return "Error: " + aux
+		return "Error: " + temp
 		
 
 
@@ -337,16 +339,17 @@ class Print(expresion):
 # ARBOL SINTACTICO #
 ####################
 
-#star = 'expr'
 
 def p_expr(p):
 	''' expr : expr TkPuntoYComa instr 
 				| instr '''
 	if len(p) == 4:
 		p[0] = p[1] + p[3]
-	else:
+		#p[0]=Impre(p[1])
+		#print(p[0]);
+	elif (len(p)==2 ):
 		p[0] = p[1]
-				
+
 def p_empty(p):
 	'empty :'
 	p[0] = ''
@@ -366,6 +369,7 @@ def p_instr(p):
 		 	   | TkPrint TkLienzo
 		 	   | TkRead TkIdent 
 			   | expbin'''
+	
 	if (len(p)== 4):
 
 	    if (p[2] == ':='):
@@ -376,26 +380,27 @@ def p_instr(p):
 	    if(p[1] =='from'):
 	    	p[0] = FromWith(p[2],p[4],p[6])	
 	elif(len(p) == 6):
-	    if(p[2] == 'while'):
+	    if(p[1] == 'while'):
 	    	p[0] = While( p[2] , p[4])
 	    if(p[1] == 'if'):
 	    	p[0] = IfS( p[2],p[4])
 	elif(len(p) == 10 ):
 		p[0] = With(p[2],p[4],p[6],p[8])
-	elif(len(p) == 2):
+	elif(len(p) == 3):
 		if(p[1] == 'read'):
-			p[0] = Read(p[1])
+			p[0] = Read(p[2])
 		else:
-			p[0] = Print(p[1])
+			p[0] = Print(p[2])
+	elif(len(p)==2):
+	     p[0]=p[1]
 	
-
 def p_arit(p):
 	''' arit : arit operatorA arit
 		 		| TkResta arit
 		 		| TkParAbre arit TkParCierra
 		 		| TkNum
 		 		| TkIdent'''
-	
+
 	if(len(p) == 4):
 		if(p[2] == '+'):
 			p[0] = Suma(p[1],p[3])
@@ -432,7 +437,7 @@ def p_booleana(p):
 				 | TkTrue
 		    		 | TkFalse '''
 	if(len(p) == 4):
-		if(p[2] == 'TkConjuncion'):
+		if(p[2] == '/\\'):
 			p[0] = And(p[1],p[3])
 		if(p[2] == '\\/'):
 			p[0] = Or(p[1],p[3])
@@ -459,13 +464,13 @@ def p_lienzo(p):
 		   	  | TkRot lienzo 
 		   	  | lienzo TkTras 
 		   	  | TkLienzo '''
-		   	  
-	if len(p) == 4:
-		if p[2] == ':':
+
+	if (len(p) == 4):
+		if (p[2] == ':'):
 			p[0] = ConcatHor(p[1],p[3])
-		if p[2] == '|':
+		if (p[2] == '|'):
 			p[0] = ConcatVer(p[1],p[3])
-		if p[1] == '(':
+		if (p[1] == '('):
 			if p[3] == ')':
 				p[0] =  p[2]
 	else:
@@ -478,7 +483,7 @@ def p_operatorA(p):
 					  | TkDiv
 					  | TkMod '''
 	p[0] = p[1]
-			
+
 def p_operatorB(p):
 	''' operatorB : TkMenor
 					  | TkMenorIgual
@@ -490,7 +495,7 @@ def p_operatorB(p):
 					  | TkConjuncion
 					  | TkDisyuncion '''
 	p[0] = p[1]
-			
+
 def p_operatorL(p):
 	''' operatorL : TkHorConcat
 					  | TkVerConcat '''
@@ -498,7 +503,7 @@ def p_operatorL(p):
 
 def p_error(p):
 	print "Error de sintaxis " #+ p.type +" " + "%d" % p.value
-			
+
 
 
 #s = ''
@@ -527,4 +532,3 @@ def p_error(p):
 #        break
 #    result = parser.parse(s)
 #    print result	
-
