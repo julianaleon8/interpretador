@@ -9,6 +9,8 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
+
+
 # lista de tokens reservados
 reserved = {
 		'using' : 'TkUsing', 'of type' : 'TkOfType', 'integer' : 'TkInteger', 'boolean' : 'TkBoolean', 'canvas' : 'TkCanvas',
@@ -37,8 +39,7 @@ def t_ID(t):
 	for i in range(0,len(t.value)):
 		if (t.value[i] == '\n'):
 			t.lexer.lineno += 1
-	#lista.append(t.type+" ")
-	return t
+	lista.append(t.type+" ")
 
 # definicion obtener el numero de lineas leidas
 def t_newline(t):
@@ -57,27 +58,27 @@ def t_COMMENT(t):
 # definicion de expresiones
 
 def t_TkNum(t):
-	r'[0-9]+'
+	r'([0-9]+)'
 	try:
 		t.value = int(t.value)
 	except ValueError:
 		print 'Error de decimal'
-	#lista.append('{0}({1}) '.format(t.type,t.value))
+	#lista.append('{0} '.format(t.type))
 	return t
 
 def t_TkIdent(t):
+
 	r'[a-zA-Z0-9]+'
         t.type = reserved.get(t.value,'TkIdent')
         if (t.type == reserved.get(t.value,'reserved')):
 	  lista.append(t.type+" ")
 	else:
-	  #lista.append('{0}("{1}") '.format(t.type,t.value))
+	  #lista.append('{0} '.format(t.type))
 	  return t
 
 def t_TkLienzo(t):
 	r'<([/]|[\\]|[\-]|[_]|[ ]|empty)>' 
-	#lista.append('{0} '.format(t.value[1: len(t.value) - 1]) )
-	return t
+	lista.append('{0} '.format(t.value[1: len(t.value) - 1]) )
 
 # definicion para saber en que columna se encuentra un caracter
 # referencia a  http://mmandrille.googlecode.com/svn-history/r4/compiladores/Version_Final/Pascal_Lex.py, 
@@ -135,46 +136,21 @@ t_TkVerConcat = r'\|'
 t_TkRot = r'\$'
 t_TkTras = r'\\'
 t_TkAsignacion = r':='
-
-# contruir el analizador lexico
-lexer=lex.lex(debug=0)
-
-# abrir archivo
-#f = open(sys.argv[1],"r")
-
-# leer archivogi
-archi = sys.stdin.read()
-lexer.input(archi)
-
-#f.close()
-#lista que contiene un solo valor, el cual es el identificador 
-#para saber si se encontro un caracter invalido o no
-count = [0]
-#lista que contiene todos los tokens validos 
-lista = ['']
-while True:
-    tok = lexer.token()
-    if not tok: 
-	break      
-    else: 
-	lista.append(tok.type+" ")
-#if (count[0] == 0): 
-# ciclo para imprimir los tokens
-	#for i in range (0,len(lista)):
-		#sys.stdout.write(lista[i])
 #----------------#
 # Precedencia	 #
 #----------------#
 
 
 precedence = (
+	 ('left','TkIf','TkThen','TkElse'),
+  	 ('right','TkNegacion'),    	
 	 ('left','TkConjuncion','TkDisyuncion'),
 	 ('left','TkHorConcat','TkVerConcat'),
 	 ('left','TkRot'),
 	 ('right','TkTras'),
-    ('left', 'TkSuma', 'TkResta'),
+    	 ('left', 'TkSuma', 'TkResta'),
   	 ('left','TkMult','TkDiv','TkMod'),
-  	 ('right','TkNegacion'),
+	 #('right','menos'),
 )
 
 
@@ -190,7 +166,7 @@ class Impre:
 		for expr in self.expr:
 			temp = temp + str(expr) + ';'
 		temp = temp[:-1]
-		return aux
+		return temp
 
 class Impre_uni:
 	def __init__(self,expr):
@@ -206,7 +182,7 @@ class Impre_err:
 		for expr in self.expr:
 			temp = temp + str(expr) + ';'
 		temp = temp[:-1]
-		return "Error: " + aux
+		return "Error: " + temp
 		
 
 
@@ -363,20 +339,25 @@ class Print(expresion):
 # ARBOL SINTACTICO #
 ####################
 
-star = 'expr'
-
+#start='expr'
 def p_expr(p):
 	''' expr : expr TkPuntoYComa instr 
 				| instr '''
 	if len(p) == 4:
 		p[0] = p[1] + p[3]
-	else:
+		#p[0]=Impre(p[1])
+		#print(p[0]);
+	elif (len(p)==2 ):
 		p[0] = p[1]
-				
+
 def p_empty(p):
 	'empty :'
 	p[0] = ''
 	pass
+#def p_aux(p):
+ #   '''aux : TkIdent
+#	   | TkNum'''
+ #   p[0]= Var(p[1])
 
 def p_instr(p):
 	'''instr : TkIdent TkAsignacion expbin
@@ -386,9 +367,11 @@ def p_instr(p):
 		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
 		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
 		 	   | TkPrint TkLienzo
-		 	   | TkRead TkIdent '''
-
+		 	   | TkRead TkIdent 
+			   | expbin'''
+	
 	if (len(p)== 4):
+
 	    if (p[2] == ':='):
 		p[0] = Asig (p[1] , p[3])
 	elif(len(p) == 8):
@@ -397,26 +380,27 @@ def p_instr(p):
 	    if(p[1] =='from'):
 	    	p[0] = FromWith(p[2],p[4],p[6])	
 	elif(len(p) == 6):
-	    if(p[2] == 'while'):
+	    if(p[1] == 'while'):
 	    	p[0] = While( p[2] , p[4])
-	    if(p[2] == 'if'):
+	    if(p[1] == 'if'):
 	    	p[0] = IfS( p[2],p[4])
 	elif(len(p) == 10 ):
 		p[0] = With(p[2],p[4],p[6],p[8])
-	elif(len(p) == 2):
+	elif(len(p) == 3):
 		if(p[1] == 'read'):
-			p[0] = Read(p[1])
+			p[0] = Read(p[2])
 		else:
-			p[0] = Print(p[1])
-	
-
+			p[0] = Print(p[2])
+	elif(len(p)==2):
+	     p[0]=p[1]
+	    
 def p_arit(p):
 	''' arit : arit operatorA arit
 		 		| TkResta arit
 		 		| TkParAbre arit TkParCierra
 		 		| TkNum
-		 		| TkIdent '''
-	
+		 		| TkIdent'''
+
 	if(len(p) == 4):
 		if(p[2] == '+'):
 			p[0] = Suma(p[1],p[3])
@@ -432,24 +416,20 @@ def p_arit(p):
 			if p[3] == ')':
 				p[0] = p[2] 
 	elif(len(p) == 3):
-		p[0] = - p[2]
+		if (p[1]=='-'):		
+			p[0] = Menos(p[2])
 	else:
 		p[0] = p[1]
 
-def p_expbin(p):
-	''' expbin : arit
-	  		  	  | booleana
-			  	  | lienzo '''
-	p[0] = p[1]
 
 
 def p_booleana(p):
 	''' booleana : booleana operatorB booleana
-					 | booleana operatorB arit
-					 | booleana operatorB lienzo
+				 | booleana operatorB arit
+				 | booleana operatorB lienzo
 		    		 | TkParAbre booleana TkParCierra
 		    		 | booleana TkNegacion
-					 | TkTrue
+				 | TkTrue
 		    		 | TkFalse '''
 	if(len(p) == 4):
 		if(p[2] == '/\\'):
@@ -468,9 +448,11 @@ def p_booleana(p):
 			if p[3] == ')':
 				p[0] = p[2]
 	elif(len(p) == 3):
+		if (p[1]=='\^'):
+			p[0] = Nega(p[1])
+	elif(len(p) == 2):
 		p[0] = p[1]
-	else:
-		p[0] = p[1]
+		print true
 
 def p_lienzo(p):
 	''' lienzo : lienzo operatorL lienzo 
@@ -478,18 +460,24 @@ def p_lienzo(p):
 		   	  | TkRot lienzo 
 		   	  | lienzo TkTras 
 		   	  | TkLienzo '''
-		   	  
-	if len(p) == 4:
-		if p[2] == ':':
+
+	if (len(p) == 4):
+		if (p[2] == ':'):
 			p[0] = ConcatHor(p[1],p[3])
-		if p[2] == '|':
+		if (p[2] == '|'):
 			p[0] = ConcatVer(p[1],p[3])
-		if p[1] == '(':
+		if (p[1] == '('):
 			if p[3] == ')':
 				p[0] =  p[2]
 	else:
 		p[0] = p[1]
 
+
+def p_expbin(p):
+	''' expbin : arit
+	  	   | booleana
+		   | lienzo '''
+	p[0] = p[1]
 def p_operatorA(p):
 	''' operatorA : TkSuma
 					  | TkResta
@@ -497,28 +485,60 @@ def p_operatorA(p):
 					  | TkDiv
 					  | TkMod '''
 	p[0] = p[1]
-			
+
 def p_operatorB(p):
 	''' operatorB : TkMenor
 					  | TkMenorIgual
 					  | TkMayor
 					  | TkMayorIgual
+
 					  | TkIgual
 					  | TkDesIgual 
 					  | TkConjuncion
 					  | TkDisyuncion '''
 	p[0] = p[1]
-			
+
 def p_operatorL(p):
 	''' operatorL : TkHorConcat
 					  | TkVerConcat '''
 	p[0] = p[1] 			
-		
+
 def p_error(p):
 	print "Error de sintaxis " #+ p.type +" " + "%d" % p.value
-			
-parser = yacc.yacc()
-print parser.parse("print <->")
+
+
+
+
+#contruir el analizador lexico
+lexer=lex.lex(debug=0)
+
+#abrir archivo
+#f = open(sys.argv[1],"r")
+
+# leer archivogi
+archi = sys.stdin.read()
+lexer.input(archi)
+
+#f.close()
+#lista que contiene un solo valor, el cual es el identificador 
+#para saber si se encontro un caracter invalido o no
+count = [0]
+#lista que contiene todos los tokens validos 
+lista = ['']
+while True:
+    tok = lexer.token()
+    if not tok: 
+	break      
+    else: 
+	lista.append(tok.type+" ")
+if (count[0] == 0): 
+#ciclo para imprimir los tokens
+	for i in range (0,len(lista)):
+		sys.stdout.write(lista[i])
+parser = yacc.yacc
+
+print parser.parse(archi)
+
 
 #s = ''
 #i = 0
@@ -546,4 +566,3 @@ print parser.parse("print <->")
 #        break
 #    result = parser.parse(s)
 #    print result	
-
