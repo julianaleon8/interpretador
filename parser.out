@@ -1,0 +1,1851 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    TkComa
+    TkCanvas
+    TkUsing
+    TkBegin
+    TkOfType
+    TkEnd
+    TkBoolean
+    TkInteger
+
+Grammar
+
+Rule 0     S' -> expr
+Rule 1     expr -> expr TkPuntoYComa instr
+Rule 2     expr -> instr
+Rule 3     empty -> <empty>
+Rule 4     instr -> TkIdent TkAsignacion expbin
+Rule 5     instr -> TkIf booleana TkThen instr TkElse instr TkDone
+Rule 6     instr -> TkIf booleana TkThen instr TkDone
+Rule 7     instr -> TkWhile booleana TkRepeat instr TkDone
+Rule 8     instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+Rule 9     instr -> TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+Rule 10    instr -> TkPrint TkLienzo
+Rule 11    instr -> TkRead TkIdent
+Rule 12    arit -> arit operatorA arit
+Rule 13    arit -> TkResta arit
+Rule 14    arit -> TkParAbre arit TkParCierra
+Rule 15    arit -> TkNum
+Rule 16    arit -> TkIdent
+Rule 17    expbin -> arit
+Rule 18    expbin -> booleana
+Rule 19    expbin -> lienzo
+Rule 20    booleana -> booleana operatorB booleana
+Rule 21    booleana -> booleana operatorB arit
+Rule 22    booleana -> booleana operatorB lienzo
+Rule 23    booleana -> TkParAbre booleana TkParCierra
+Rule 24    booleana -> booleana TkNegacion
+Rule 25    booleana -> TkTrue
+Rule 26    booleana -> TkFalse
+Rule 27    booleana -> TkIdent
+Rule 28    lienzo -> lienzo operatorL lienzo
+Rule 29    lienzo -> TkParAbre lienzo TkParCierra
+Rule 30    lienzo -> TkRot lienzo
+Rule 31    lienzo -> lienzo TkTras
+Rule 32    lienzo -> TkLienzo
+Rule 33    operatorA -> TkSuma
+Rule 34    operatorA -> TkResta
+Rule 35    operatorA -> TkMult
+Rule 36    operatorA -> TkDiv
+Rule 37    operatorA -> TkMod
+Rule 38    operatorB -> TkMenor
+Rule 39    operatorB -> TkMenorIgual
+Rule 40    operatorB -> TkMayor
+Rule 41    operatorB -> TkMayorIgual
+Rule 42    operatorB -> TkIgual
+Rule 43    operatorB -> TkDesIgual
+Rule 44    operatorB -> TkConjuncion
+Rule 45    operatorB -> TkDisyuncion
+Rule 46    operatorL -> TkHorConcat
+Rule 47    operatorL -> TkVerConcat
+
+Terminals, with rules where they appear
+
+TkAsignacion         : 4
+TkBegin              : 
+TkBoolean            : 
+TkCanvas             : 
+TkComa               : 
+TkConjuncion         : 44
+TkDesIgual           : 43
+TkDisyuncion         : 45
+TkDiv                : 36
+TkDone               : 5 6 7 8 9
+TkElse               : 5
+TkEnd                : 
+TkFalse              : 26
+TkFrom               : 8 9
+TkHorConcat          : 46
+TkIdent              : 4 8 11 16 27
+TkIf                 : 5 6
+TkIgual              : 42
+TkInteger            : 
+TkLienzo             : 10 32
+TkMayor              : 40
+TkMayorIgual         : 41
+TkMenor              : 38
+TkMenorIgual         : 39
+TkMod                : 37
+TkMult               : 35
+TkNegacion           : 24
+TkNum                : 8 8 9 9 15
+TkOfType             : 
+TkParAbre            : 14 23 29
+TkParCierra          : 14 23 29
+TkPrint              : 10
+TkPuntoYComa         : 1
+TkRead               : 11
+TkRepeat             : 7 8 9
+TkResta              : 13 34
+TkRot                : 30
+TkSuma               : 33
+TkThen               : 5 6
+TkTo                 : 8 9
+TkTras               : 31
+TkTrue               : 25
+TkUsing              : 
+TkVerConcat          : 47
+TkWhile              : 7
+TkWith               : 8
+error                : 
+
+Nonterminals, with rules where they appear
+
+arit                 : 12 12 13 14 17 21
+booleana             : 5 6 7 18 20 20 21 22 23 24
+empty                : 
+expbin               : 4
+expr                 : 1 0
+instr                : 1 2 5 5 6 7 8 9
+lienzo               : 19 22 28 28 29 30 31
+operatorA            : 12
+operatorB            : 20 21 22
+operatorL            : 28
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expr
+    (1) expr -> . expr TkPuntoYComa instr
+    (2) expr -> . instr
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    expr                           shift and go to state 3
+    instr                          shift and go to state 2
+
+state 1
+
+    (5) instr -> TkIf . booleana TkThen instr TkElse instr TkDone
+    (6) instr -> TkIf . booleana TkThen instr TkDone
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+
+    TkParAbre       shift and go to state 13
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkIdent         shift and go to state 11
+
+    booleana                       shift and go to state 12
+
+state 2
+
+    (2) expr -> instr .
+
+    TkPuntoYComa    reduce using rule 2 (expr -> instr .)
+    $end            reduce using rule 2 (expr -> instr .)
+
+
+state 3
+
+    (0) S' -> expr .
+    (1) expr -> expr . TkPuntoYComa instr
+
+    TkPuntoYComa    shift and go to state 15
+
+
+state 4
+
+    (7) instr -> TkWhile . booleana TkRepeat instr TkDone
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+
+    TkParAbre       shift and go to state 13
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkIdent         shift and go to state 11
+
+    booleana                       shift and go to state 16
+
+state 5
+
+    (4) instr -> TkIdent . TkAsignacion expbin
+
+    TkAsignacion    shift and go to state 17
+
+
+state 6
+
+    (9) instr -> TkFrom . TkNum TkTo TkNum TkRepeat instr TkDone
+
+    TkNum           shift and go to state 18
+
+
+state 7
+
+    (10) instr -> TkPrint . TkLienzo
+
+    TkLienzo        shift and go to state 19
+
+
+state 8
+
+    (11) instr -> TkRead . TkIdent
+
+    TkIdent         shift and go to state 20
+
+
+state 9
+
+    (8) instr -> TkWith . TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+
+    TkIdent         shift and go to state 21
+
+
+state 10
+
+    (25) booleana -> TkTrue .
+
+    TkParCierra     reduce using rule 25 (booleana -> TkTrue .)
+    TkNegacion      reduce using rule 25 (booleana -> TkTrue .)
+    TkMenor         reduce using rule 25 (booleana -> TkTrue .)
+    TkMenorIgual    reduce using rule 25 (booleana -> TkTrue .)
+    TkMayor         reduce using rule 25 (booleana -> TkTrue .)
+    TkMayorIgual    reduce using rule 25 (booleana -> TkTrue .)
+    TkIgual         reduce using rule 25 (booleana -> TkTrue .)
+    TkDesIgual      reduce using rule 25 (booleana -> TkTrue .)
+    TkConjuncion    reduce using rule 25 (booleana -> TkTrue .)
+    TkDisyuncion    reduce using rule 25 (booleana -> TkTrue .)
+    TkThen          reduce using rule 25 (booleana -> TkTrue .)
+    TkRepeat        reduce using rule 25 (booleana -> TkTrue .)
+    TkPuntoYComa    reduce using rule 25 (booleana -> TkTrue .)
+    $end            reduce using rule 25 (booleana -> TkTrue .)
+    TkElse          reduce using rule 25 (booleana -> TkTrue .)
+    TkDone          reduce using rule 25 (booleana -> TkTrue .)
+
+
+state 11
+
+    (27) booleana -> TkIdent .
+
+    TkRepeat        reduce using rule 27 (booleana -> TkIdent .)
+    TkNegacion      reduce using rule 27 (booleana -> TkIdent .)
+    TkMenor         reduce using rule 27 (booleana -> TkIdent .)
+    TkMenorIgual    reduce using rule 27 (booleana -> TkIdent .)
+    TkMayor         reduce using rule 27 (booleana -> TkIdent .)
+    TkMayorIgual    reduce using rule 27 (booleana -> TkIdent .)
+    TkIgual         reduce using rule 27 (booleana -> TkIdent .)
+    TkDesIgual      reduce using rule 27 (booleana -> TkIdent .)
+    TkConjuncion    reduce using rule 27 (booleana -> TkIdent .)
+    TkDisyuncion    reduce using rule 27 (booleana -> TkIdent .)
+    TkThen          reduce using rule 27 (booleana -> TkIdent .)
+    TkParCierra     reduce using rule 27 (booleana -> TkIdent .)
+
+
+state 12
+
+    (5) instr -> TkIf booleana . TkThen instr TkElse instr TkDone
+    (6) instr -> TkIf booleana . TkThen instr TkDone
+    (20) booleana -> booleana . operatorB booleana
+    (21) booleana -> booleana . operatorB arit
+    (22) booleana -> booleana . operatorB lienzo
+    (24) booleana -> booleana . TkNegacion
+    (38) operatorB -> . TkMenor
+    (39) operatorB -> . TkMenorIgual
+    (40) operatorB -> . TkMayor
+    (41) operatorB -> . TkMayorIgual
+    (42) operatorB -> . TkIgual
+    (43) operatorB -> . TkDesIgual
+    (44) operatorB -> . TkConjuncion
+    (45) operatorB -> . TkDisyuncion
+
+    TkThen          shift and go to state 28
+    TkNegacion      shift and go to state 23
+    TkMenor         shift and go to state 30
+    TkMenorIgual    shift and go to state 22
+    TkMayor         shift and go to state 27
+    TkMayorIgual    shift and go to state 29
+    TkIgual         shift and go to state 26
+    TkDesIgual      shift and go to state 24
+    TkConjuncion    shift and go to state 25
+    TkDisyuncion    shift and go to state 32
+
+    operatorB                      shift and go to state 31
+
+state 13
+
+    (23) booleana -> TkParAbre . booleana TkParCierra
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+
+    TkParAbre       shift and go to state 13
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkIdent         shift and go to state 11
+
+    booleana                       shift and go to state 33
+
+state 14
+
+    (26) booleana -> TkFalse .
+
+    TkParCierra     reduce using rule 26 (booleana -> TkFalse .)
+    TkNegacion      reduce using rule 26 (booleana -> TkFalse .)
+    TkMenor         reduce using rule 26 (booleana -> TkFalse .)
+    TkMenorIgual    reduce using rule 26 (booleana -> TkFalse .)
+    TkMayor         reduce using rule 26 (booleana -> TkFalse .)
+    TkMayorIgual    reduce using rule 26 (booleana -> TkFalse .)
+    TkIgual         reduce using rule 26 (booleana -> TkFalse .)
+    TkDesIgual      reduce using rule 26 (booleana -> TkFalse .)
+    TkConjuncion    reduce using rule 26 (booleana -> TkFalse .)
+    TkDisyuncion    reduce using rule 26 (booleana -> TkFalse .)
+    TkThen          reduce using rule 26 (booleana -> TkFalse .)
+    TkRepeat        reduce using rule 26 (booleana -> TkFalse .)
+    TkPuntoYComa    reduce using rule 26 (booleana -> TkFalse .)
+    $end            reduce using rule 26 (booleana -> TkFalse .)
+    TkElse          reduce using rule 26 (booleana -> TkFalse .)
+    TkDone          reduce using rule 26 (booleana -> TkFalse .)
+
+
+state 15
+
+    (1) expr -> expr TkPuntoYComa . instr
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    instr                          shift and go to state 34
+
+state 16
+
+    (7) instr -> TkWhile booleana . TkRepeat instr TkDone
+    (20) booleana -> booleana . operatorB booleana
+    (21) booleana -> booleana . operatorB arit
+    (22) booleana -> booleana . operatorB lienzo
+    (24) booleana -> booleana . TkNegacion
+    (38) operatorB -> . TkMenor
+    (39) operatorB -> . TkMenorIgual
+    (40) operatorB -> . TkMayor
+    (41) operatorB -> . TkMayorIgual
+    (42) operatorB -> . TkIgual
+    (43) operatorB -> . TkDesIgual
+    (44) operatorB -> . TkConjuncion
+    (45) operatorB -> . TkDisyuncion
+
+    TkRepeat        shift and go to state 35
+    TkNegacion      shift and go to state 23
+    TkMenor         shift and go to state 30
+    TkMenorIgual    shift and go to state 22
+    TkMayor         shift and go to state 27
+    TkMayorIgual    shift and go to state 29
+    TkIgual         shift and go to state 26
+    TkDesIgual      shift and go to state 24
+    TkConjuncion    shift and go to state 25
+    TkDisyuncion    shift and go to state 32
+
+    operatorB                      shift and go to state 31
+
+state 17
+
+    (4) instr -> TkIdent TkAsignacion . expbin
+    (17) expbin -> . arit
+    (18) expbin -> . booleana
+    (19) expbin -> . lienzo
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkResta         shift and go to state 36
+    TkParAbre       shift and go to state 42
+    TkNum           shift and go to state 40
+    TkIdent         shift and go to state 38
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 37
+    expbin                         shift and go to state 39
+    booleana                       shift and go to state 41
+    arit                           shift and go to state 45
+
+state 18
+
+    (9) instr -> TkFrom TkNum . TkTo TkNum TkRepeat instr TkDone
+
+    TkTo            shift and go to state 46
+
+
+state 19
+
+    (10) instr -> TkPrint TkLienzo .
+
+    TkPuntoYComa    reduce using rule 10 (instr -> TkPrint TkLienzo .)
+    $end            reduce using rule 10 (instr -> TkPrint TkLienzo .)
+    TkDone          reduce using rule 10 (instr -> TkPrint TkLienzo .)
+    TkElse          reduce using rule 10 (instr -> TkPrint TkLienzo .)
+
+
+state 20
+
+    (11) instr -> TkRead TkIdent .
+
+    TkPuntoYComa    reduce using rule 11 (instr -> TkRead TkIdent .)
+    $end            reduce using rule 11 (instr -> TkRead TkIdent .)
+    TkDone          reduce using rule 11 (instr -> TkRead TkIdent .)
+    TkElse          reduce using rule 11 (instr -> TkRead TkIdent .)
+
+
+state 21
+
+    (8) instr -> TkWith TkIdent . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+
+    TkFrom          shift and go to state 47
+
+
+state 22
+
+    (39) operatorB -> TkMenorIgual .
+
+    TkParAbre       reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkTrue          reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkFalse         reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkIdent         reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkResta         reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkNum           reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkRot           reduce using rule 39 (operatorB -> TkMenorIgual .)
+    TkLienzo        reduce using rule 39 (operatorB -> TkMenorIgual .)
+
+
+state 23
+
+    (24) booleana -> booleana TkNegacion .
+
+    TkParCierra     reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkNegacion      reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkMenor         reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkMenorIgual    reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkMayor         reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkMayorIgual    reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkIgual         reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkDesIgual      reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkConjuncion    reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkDisyuncion    reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkThen          reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkRepeat        reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkPuntoYComa    reduce using rule 24 (booleana -> booleana TkNegacion .)
+    $end            reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkElse          reduce using rule 24 (booleana -> booleana TkNegacion .)
+    TkDone          reduce using rule 24 (booleana -> booleana TkNegacion .)
+
+
+state 24
+
+    (43) operatorB -> TkDesIgual .
+
+    TkParAbre       reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkTrue          reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkFalse         reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkIdent         reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkResta         reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkNum           reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkRot           reduce using rule 43 (operatorB -> TkDesIgual .)
+    TkLienzo        reduce using rule 43 (operatorB -> TkDesIgual .)
+
+
+state 25
+
+    (44) operatorB -> TkConjuncion .
+
+    TkParAbre       reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkTrue          reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkFalse         reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkIdent         reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkResta         reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkNum           reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkRot           reduce using rule 44 (operatorB -> TkConjuncion .)
+    TkLienzo        reduce using rule 44 (operatorB -> TkConjuncion .)
+
+
+state 26
+
+    (42) operatorB -> TkIgual .
+
+    TkParAbre       reduce using rule 42 (operatorB -> TkIgual .)
+    TkTrue          reduce using rule 42 (operatorB -> TkIgual .)
+    TkFalse         reduce using rule 42 (operatorB -> TkIgual .)
+    TkIdent         reduce using rule 42 (operatorB -> TkIgual .)
+    TkResta         reduce using rule 42 (operatorB -> TkIgual .)
+    TkNum           reduce using rule 42 (operatorB -> TkIgual .)
+    TkRot           reduce using rule 42 (operatorB -> TkIgual .)
+    TkLienzo        reduce using rule 42 (operatorB -> TkIgual .)
+
+
+state 27
+
+    (40) operatorB -> TkMayor .
+
+    TkParAbre       reduce using rule 40 (operatorB -> TkMayor .)
+    TkTrue          reduce using rule 40 (operatorB -> TkMayor .)
+    TkFalse         reduce using rule 40 (operatorB -> TkMayor .)
+    TkIdent         reduce using rule 40 (operatorB -> TkMayor .)
+    TkResta         reduce using rule 40 (operatorB -> TkMayor .)
+    TkNum           reduce using rule 40 (operatorB -> TkMayor .)
+    TkRot           reduce using rule 40 (operatorB -> TkMayor .)
+    TkLienzo        reduce using rule 40 (operatorB -> TkMayor .)
+
+
+state 28
+
+    (5) instr -> TkIf booleana TkThen . instr TkElse instr TkDone
+    (6) instr -> TkIf booleana TkThen . instr TkDone
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    instr                          shift and go to state 48
+
+state 29
+
+    (41) operatorB -> TkMayorIgual .
+
+    TkParAbre       reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkTrue          reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkFalse         reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkIdent         reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkResta         reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkNum           reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkRot           reduce using rule 41 (operatorB -> TkMayorIgual .)
+    TkLienzo        reduce using rule 41 (operatorB -> TkMayorIgual .)
+
+
+state 30
+
+    (38) operatorB -> TkMenor .
+
+    TkParAbre       reduce using rule 38 (operatorB -> TkMenor .)
+    TkTrue          reduce using rule 38 (operatorB -> TkMenor .)
+    TkFalse         reduce using rule 38 (operatorB -> TkMenor .)
+    TkIdent         reduce using rule 38 (operatorB -> TkMenor .)
+    TkResta         reduce using rule 38 (operatorB -> TkMenor .)
+    TkNum           reduce using rule 38 (operatorB -> TkMenor .)
+    TkRot           reduce using rule 38 (operatorB -> TkMenor .)
+    TkLienzo        reduce using rule 38 (operatorB -> TkMenor .)
+
+
+state 31
+
+    (20) booleana -> booleana operatorB . booleana
+    (21) booleana -> booleana operatorB . arit
+    (22) booleana -> booleana operatorB . lienzo
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkParAbre       shift and go to state 52
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkIdent         shift and go to state 50
+    TkResta         shift and go to state 36
+    TkNum           shift and go to state 40
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 49
+    arit                           shift and go to state 53
+    booleana                       shift and go to state 51
+
+state 32
+
+    (45) operatorB -> TkDisyuncion .
+
+    TkParAbre       reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkTrue          reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkFalse         reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkIdent         reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkResta         reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkNum           reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkRot           reduce using rule 45 (operatorB -> TkDisyuncion .)
+    TkLienzo        reduce using rule 45 (operatorB -> TkDisyuncion .)
+
+
+state 33
+
+    (23) booleana -> TkParAbre booleana . TkParCierra
+    (20) booleana -> booleana . operatorB booleana
+    (21) booleana -> booleana . operatorB arit
+    (22) booleana -> booleana . operatorB lienzo
+    (24) booleana -> booleana . TkNegacion
+    (38) operatorB -> . TkMenor
+    (39) operatorB -> . TkMenorIgual
+    (40) operatorB -> . TkMayor
+    (41) operatorB -> . TkMayorIgual
+    (42) operatorB -> . TkIgual
+    (43) operatorB -> . TkDesIgual
+    (44) operatorB -> . TkConjuncion
+    (45) operatorB -> . TkDisyuncion
+
+    TkParCierra     shift and go to state 54
+    TkNegacion      shift and go to state 23
+    TkMenor         shift and go to state 30
+    TkMenorIgual    shift and go to state 22
+    TkMayor         shift and go to state 27
+    TkMayorIgual    shift and go to state 29
+    TkIgual         shift and go to state 26
+    TkDesIgual      shift and go to state 24
+    TkConjuncion    shift and go to state 25
+    TkDisyuncion    shift and go to state 32
+
+    operatorB                      shift and go to state 31
+
+state 34
+
+    (1) expr -> expr TkPuntoYComa instr .
+
+    TkPuntoYComa    reduce using rule 1 (expr -> expr TkPuntoYComa instr .)
+    $end            reduce using rule 1 (expr -> expr TkPuntoYComa instr .)
+
+
+state 35
+
+    (7) instr -> TkWhile booleana TkRepeat . instr TkDone
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    instr                          shift and go to state 55
+
+state 36
+
+    (13) arit -> TkResta . arit
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+
+    TkResta         shift and go to state 36
+    TkParAbre       shift and go to state 57
+    TkNum           shift and go to state 40
+    TkIdent         shift and go to state 56
+
+    arit                           shift and go to state 58
+
+state 37
+
+    (19) expbin -> lienzo .
+    (28) lienzo -> lienzo . operatorL lienzo
+    (31) lienzo -> lienzo . TkTras
+    (46) operatorL -> . TkHorConcat
+    (47) operatorL -> . TkVerConcat
+
+    TkPuntoYComa    reduce using rule 19 (expbin -> lienzo .)
+    $end            reduce using rule 19 (expbin -> lienzo .)
+    TkElse          reduce using rule 19 (expbin -> lienzo .)
+    TkDone          reduce using rule 19 (expbin -> lienzo .)
+    TkTras          shift and go to state 61
+    TkHorConcat     shift and go to state 60
+    TkVerConcat     shift and go to state 59
+
+    operatorL                      shift and go to state 62
+
+state 38
+
+    (16) arit -> TkIdent .
+    (27) booleana -> TkIdent .
+
+  ! reduce/reduce conflict for TkPuntoYComa resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for $end resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkElse resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkDone resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkParCierra resolved using rule 16 (arit -> TkIdent .)
+    TkSuma          reduce using rule 16 (arit -> TkIdent .)
+    TkResta         reduce using rule 16 (arit -> TkIdent .)
+    TkMult          reduce using rule 16 (arit -> TkIdent .)
+    TkDiv           reduce using rule 16 (arit -> TkIdent .)
+    TkMod           reduce using rule 16 (arit -> TkIdent .)
+    TkPuntoYComa    reduce using rule 16 (arit -> TkIdent .)
+    $end            reduce using rule 16 (arit -> TkIdent .)
+    TkElse          reduce using rule 16 (arit -> TkIdent .)
+    TkDone          reduce using rule 16 (arit -> TkIdent .)
+    TkParCierra     reduce using rule 16 (arit -> TkIdent .)
+    TkNegacion      reduce using rule 27 (booleana -> TkIdent .)
+    TkMenor         reduce using rule 27 (booleana -> TkIdent .)
+    TkMenorIgual    reduce using rule 27 (booleana -> TkIdent .)
+    TkMayor         reduce using rule 27 (booleana -> TkIdent .)
+    TkMayorIgual    reduce using rule 27 (booleana -> TkIdent .)
+    TkIgual         reduce using rule 27 (booleana -> TkIdent .)
+    TkDesIgual      reduce using rule 27 (booleana -> TkIdent .)
+    TkConjuncion    reduce using rule 27 (booleana -> TkIdent .)
+    TkDisyuncion    reduce using rule 27 (booleana -> TkIdent .)
+
+  ! TkPuntoYComa    [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! $end            [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkElse          [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkDone          [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkParCierra     [ reduce using rule 27 (booleana -> TkIdent .) ]
+
+
+state 39
+
+    (4) instr -> TkIdent TkAsignacion expbin .
+
+    TkPuntoYComa    reduce using rule 4 (instr -> TkIdent TkAsignacion expbin .)
+    $end            reduce using rule 4 (instr -> TkIdent TkAsignacion expbin .)
+    TkDone          reduce using rule 4 (instr -> TkIdent TkAsignacion expbin .)
+    TkElse          reduce using rule 4 (instr -> TkIdent TkAsignacion expbin .)
+
+
+state 40
+
+    (15) arit -> TkNum .
+
+    TkParCierra     reduce using rule 15 (arit -> TkNum .)
+    TkSuma          reduce using rule 15 (arit -> TkNum .)
+    TkResta         reduce using rule 15 (arit -> TkNum .)
+    TkMult          reduce using rule 15 (arit -> TkNum .)
+    TkDiv           reduce using rule 15 (arit -> TkNum .)
+    TkMod           reduce using rule 15 (arit -> TkNum .)
+    TkPuntoYComa    reduce using rule 15 (arit -> TkNum .)
+    $end            reduce using rule 15 (arit -> TkNum .)
+    TkElse          reduce using rule 15 (arit -> TkNum .)
+    TkDone          reduce using rule 15 (arit -> TkNum .)
+    TkThen          reduce using rule 15 (arit -> TkNum .)
+    TkNegacion      reduce using rule 15 (arit -> TkNum .)
+    TkMenor         reduce using rule 15 (arit -> TkNum .)
+    TkMenorIgual    reduce using rule 15 (arit -> TkNum .)
+    TkMayor         reduce using rule 15 (arit -> TkNum .)
+    TkMayorIgual    reduce using rule 15 (arit -> TkNum .)
+    TkIgual         reduce using rule 15 (arit -> TkNum .)
+    TkDesIgual      reduce using rule 15 (arit -> TkNum .)
+    TkConjuncion    reduce using rule 15 (arit -> TkNum .)
+    TkDisyuncion    reduce using rule 15 (arit -> TkNum .)
+    TkRepeat        reduce using rule 15 (arit -> TkNum .)
+
+
+state 41
+
+    (18) expbin -> booleana .
+    (20) booleana -> booleana . operatorB booleana
+    (21) booleana -> booleana . operatorB arit
+    (22) booleana -> booleana . operatorB lienzo
+    (24) booleana -> booleana . TkNegacion
+    (38) operatorB -> . TkMenor
+    (39) operatorB -> . TkMenorIgual
+    (40) operatorB -> . TkMayor
+    (41) operatorB -> . TkMayorIgual
+    (42) operatorB -> . TkIgual
+    (43) operatorB -> . TkDesIgual
+    (44) operatorB -> . TkConjuncion
+    (45) operatorB -> . TkDisyuncion
+
+    TkPuntoYComa    reduce using rule 18 (expbin -> booleana .)
+    $end            reduce using rule 18 (expbin -> booleana .)
+    TkElse          reduce using rule 18 (expbin -> booleana .)
+    TkDone          reduce using rule 18 (expbin -> booleana .)
+    TkNegacion      shift and go to state 23
+    TkMenor         shift and go to state 30
+    TkMenorIgual    shift and go to state 22
+    TkMayor         shift and go to state 27
+    TkMayorIgual    shift and go to state 29
+    TkIgual         shift and go to state 26
+    TkDesIgual      shift and go to state 24
+    TkConjuncion    shift and go to state 25
+    TkDisyuncion    shift and go to state 32
+
+    operatorB                      shift and go to state 31
+
+state 42
+
+    (14) arit -> TkParAbre . arit TkParCierra
+    (23) booleana -> TkParAbre . booleana TkParCierra
+    (29) lienzo -> TkParAbre . lienzo TkParCierra
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkResta         shift and go to state 36
+    TkParAbre       shift and go to state 42
+    TkNum           shift and go to state 40
+    TkIdent         shift and go to state 38
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 63
+    arit                           shift and go to state 64
+    booleana                       shift and go to state 33
+
+state 43
+
+    (32) lienzo -> TkLienzo .
+
+    TkTras          reduce using rule 32 (lienzo -> TkLienzo .)
+    TkHorConcat     reduce using rule 32 (lienzo -> TkLienzo .)
+    TkVerConcat     reduce using rule 32 (lienzo -> TkLienzo .)
+    TkThen          reduce using rule 32 (lienzo -> TkLienzo .)
+    TkNegacion      reduce using rule 32 (lienzo -> TkLienzo .)
+    TkMenor         reduce using rule 32 (lienzo -> TkLienzo .)
+    TkMenorIgual    reduce using rule 32 (lienzo -> TkLienzo .)
+    TkMayor         reduce using rule 32 (lienzo -> TkLienzo .)
+    TkMayorIgual    reduce using rule 32 (lienzo -> TkLienzo .)
+    TkIgual         reduce using rule 32 (lienzo -> TkLienzo .)
+    TkDesIgual      reduce using rule 32 (lienzo -> TkLienzo .)
+    TkConjuncion    reduce using rule 32 (lienzo -> TkLienzo .)
+    TkDisyuncion    reduce using rule 32 (lienzo -> TkLienzo .)
+    TkRepeat        reduce using rule 32 (lienzo -> TkLienzo .)
+    TkParCierra     reduce using rule 32 (lienzo -> TkLienzo .)
+    TkPuntoYComa    reduce using rule 32 (lienzo -> TkLienzo .)
+    $end            reduce using rule 32 (lienzo -> TkLienzo .)
+    TkElse          reduce using rule 32 (lienzo -> TkLienzo .)
+    TkDone          reduce using rule 32 (lienzo -> TkLienzo .)
+
+
+state 44
+
+    (30) lienzo -> TkRot . lienzo
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkParAbre       shift and go to state 66
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 65
+
+state 45
+
+    (17) expbin -> arit .
+    (12) arit -> arit . operatorA arit
+    (33) operatorA -> . TkSuma
+    (34) operatorA -> . TkResta
+    (35) operatorA -> . TkMult
+    (36) operatorA -> . TkDiv
+    (37) operatorA -> . TkMod
+
+    TkPuntoYComa    reduce using rule 17 (expbin -> arit .)
+    $end            reduce using rule 17 (expbin -> arit .)
+    TkElse          reduce using rule 17 (expbin -> arit .)
+    TkDone          reduce using rule 17 (expbin -> arit .)
+    TkSuma          shift and go to state 72
+    TkResta         shift and go to state 67
+    TkMult          shift and go to state 70
+    TkDiv           shift and go to state 69
+    TkMod           shift and go to state 68
+
+    operatorA                      shift and go to state 71
+
+state 46
+
+    (9) instr -> TkFrom TkNum TkTo . TkNum TkRepeat instr TkDone
+
+    TkNum           shift and go to state 73
+
+
+state 47
+
+    (8) instr -> TkWith TkIdent TkFrom . TkNum TkTo TkNum TkRepeat instr TkDone
+
+    TkNum           shift and go to state 74
+
+
+state 48
+
+    (5) instr -> TkIf booleana TkThen instr . TkElse instr TkDone
+    (6) instr -> TkIf booleana TkThen instr . TkDone
+
+    TkElse          shift and go to state 75
+    TkDone          shift and go to state 76
+
+
+state 49
+
+    (22) booleana -> booleana operatorB lienzo .
+    (28) lienzo -> lienzo . operatorL lienzo
+    (31) lienzo -> lienzo . TkTras
+    (46) operatorL -> . TkHorConcat
+    (47) operatorL -> . TkVerConcat
+
+    TkParCierra     reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkNegacion      reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkMenor         reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkMenorIgual    reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkMayor         reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkMayorIgual    reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkIgual         reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkDesIgual      reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkConjuncion    reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkDisyuncion    reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkThen          reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkRepeat        reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkPuntoYComa    reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    $end            reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkElse          reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkDone          reduce using rule 22 (booleana -> booleana operatorB lienzo .)
+    TkTras          shift and go to state 61
+    TkHorConcat     shift and go to state 60
+    TkVerConcat     shift and go to state 59
+
+    operatorL                      shift and go to state 62
+
+state 50
+
+    (27) booleana -> TkIdent .
+    (16) arit -> TkIdent .
+
+  ! reduce/reduce conflict for TkParCierra resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkThen resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkNegacion resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkMenor resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkMenorIgual resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkMayor resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkMayorIgual resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkIgual resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkDesIgual resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkConjuncion resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkDisyuncion resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkRepeat resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkPuntoYComa resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for $end resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkElse resolved using rule 16 (arit -> TkIdent .)
+  ! reduce/reduce conflict for TkDone resolved using rule 16 (arit -> TkIdent .)
+    TkParCierra     reduce using rule 16 (arit -> TkIdent .)
+    TkSuma          reduce using rule 16 (arit -> TkIdent .)
+    TkResta         reduce using rule 16 (arit -> TkIdent .)
+    TkMult          reduce using rule 16 (arit -> TkIdent .)
+    TkDiv           reduce using rule 16 (arit -> TkIdent .)
+    TkMod           reduce using rule 16 (arit -> TkIdent .)
+    TkThen          reduce using rule 16 (arit -> TkIdent .)
+    TkNegacion      reduce using rule 16 (arit -> TkIdent .)
+    TkMenor         reduce using rule 16 (arit -> TkIdent .)
+    TkMenorIgual    reduce using rule 16 (arit -> TkIdent .)
+    TkMayor         reduce using rule 16 (arit -> TkIdent .)
+    TkMayorIgual    reduce using rule 16 (arit -> TkIdent .)
+    TkIgual         reduce using rule 16 (arit -> TkIdent .)
+    TkDesIgual      reduce using rule 16 (arit -> TkIdent .)
+    TkConjuncion    reduce using rule 16 (arit -> TkIdent .)
+    TkDisyuncion    reduce using rule 16 (arit -> TkIdent .)
+    TkRepeat        reduce using rule 16 (arit -> TkIdent .)
+    TkPuntoYComa    reduce using rule 16 (arit -> TkIdent .)
+    $end            reduce using rule 16 (arit -> TkIdent .)
+    TkElse          reduce using rule 16 (arit -> TkIdent .)
+    TkDone          reduce using rule 16 (arit -> TkIdent .)
+
+  ! TkParCierra     [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkNegacion      [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkMenor         [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkMenorIgual    [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkMayor         [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkMayorIgual    [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkIgual         [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkDesIgual      [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkConjuncion    [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkDisyuncion    [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkThen          [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkRepeat        [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkPuntoYComa    [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! $end            [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkElse          [ reduce using rule 27 (booleana -> TkIdent .) ]
+  ! TkDone          [ reduce using rule 27 (booleana -> TkIdent .) ]
+
+
+state 51
+
+    (20) booleana -> booleana operatorB booleana .
+    (20) booleana -> booleana . operatorB booleana
+    (21) booleana -> booleana . operatorB arit
+    (22) booleana -> booleana . operatorB lienzo
+    (24) booleana -> booleana . TkNegacion
+    (38) operatorB -> . TkMenor
+    (39) operatorB -> . TkMenorIgual
+    (40) operatorB -> . TkMayor
+    (41) operatorB -> . TkMayorIgual
+    (42) operatorB -> . TkIgual
+    (43) operatorB -> . TkDesIgual
+    (44) operatorB -> . TkConjuncion
+    (45) operatorB -> . TkDisyuncion
+
+  ! shift/reduce conflict for TkNegacion resolved as shift
+  ! shift/reduce conflict for TkMenor resolved as shift
+  ! shift/reduce conflict for TkMenorIgual resolved as shift
+  ! shift/reduce conflict for TkMayor resolved as shift
+  ! shift/reduce conflict for TkMayorIgual resolved as shift
+  ! shift/reduce conflict for TkIgual resolved as shift
+  ! shift/reduce conflict for TkDesIgual resolved as shift
+  ! shift/reduce conflict for TkConjuncion resolved as shift
+  ! shift/reduce conflict for TkDisyuncion resolved as shift
+    TkParCierra     reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    TkThen          reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    TkRepeat        reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    TkPuntoYComa    reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    $end            reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    TkElse          reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    TkDone          reduce using rule 20 (booleana -> booleana operatorB booleana .)
+    TkNegacion      shift and go to state 23
+    TkMenor         shift and go to state 30
+    TkMenorIgual    shift and go to state 22
+    TkMayor         shift and go to state 27
+    TkMayorIgual    shift and go to state 29
+    TkIgual         shift and go to state 26
+    TkDesIgual      shift and go to state 24
+    TkConjuncion    shift and go to state 25
+    TkDisyuncion    shift and go to state 32
+
+  ! TkNegacion      [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkMenor         [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkMenorIgual    [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkMayor         [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkMayorIgual    [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkIgual         [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkDesIgual      [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkConjuncion    [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+  ! TkDisyuncion    [ reduce using rule 20 (booleana -> booleana operatorB booleana .) ]
+
+    operatorB                      shift and go to state 31
+
+state 52
+
+    (23) booleana -> TkParAbre . booleana TkParCierra
+    (14) arit -> TkParAbre . arit TkParCierra
+    (29) lienzo -> TkParAbre . lienzo TkParCierra
+    (20) booleana -> . booleana operatorB booleana
+    (21) booleana -> . booleana operatorB arit
+    (22) booleana -> . booleana operatorB lienzo
+    (23) booleana -> . TkParAbre booleana TkParCierra
+    (24) booleana -> . booleana TkNegacion
+    (25) booleana -> . TkTrue
+    (26) booleana -> . TkFalse
+    (27) booleana -> . TkIdent
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkParAbre       shift and go to state 52
+    TkTrue          shift and go to state 10
+    TkFalse         shift and go to state 14
+    TkIdent         shift and go to state 50
+    TkResta         shift and go to state 36
+    TkNum           shift and go to state 40
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 63
+    arit                           shift and go to state 64
+    booleana                       shift and go to state 33
+
+state 53
+
+    (21) booleana -> booleana operatorB arit .
+    (12) arit -> arit . operatorA arit
+    (33) operatorA -> . TkSuma
+    (34) operatorA -> . TkResta
+    (35) operatorA -> . TkMult
+    (36) operatorA -> . TkDiv
+    (37) operatorA -> . TkMod
+
+    TkParCierra     reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkNegacion      reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkMenor         reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkMenorIgual    reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkMayor         reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkMayorIgual    reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkIgual         reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkDesIgual      reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkConjuncion    reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkDisyuncion    reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkThen          reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkRepeat        reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkPuntoYComa    reduce using rule 21 (booleana -> booleana operatorB arit .)
+    $end            reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkElse          reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkDone          reduce using rule 21 (booleana -> booleana operatorB arit .)
+    TkSuma          shift and go to state 72
+    TkResta         shift and go to state 67
+    TkMult          shift and go to state 70
+    TkDiv           shift and go to state 69
+    TkMod           shift and go to state 68
+
+    operatorA                      shift and go to state 71
+
+state 54
+
+    (23) booleana -> TkParAbre booleana TkParCierra .
+
+    TkParCierra     reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkNegacion      reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkMenor         reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkMenorIgual    reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkMayor         reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkMayorIgual    reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkIgual         reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkDesIgual      reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkConjuncion    reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkDisyuncion    reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkThen          reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkRepeat        reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkPuntoYComa    reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    $end            reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkElse          reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+    TkDone          reduce using rule 23 (booleana -> TkParAbre booleana TkParCierra .)
+
+
+state 55
+
+    (7) instr -> TkWhile booleana TkRepeat instr . TkDone
+
+    TkDone          shift and go to state 77
+
+
+state 56
+
+    (16) arit -> TkIdent .
+
+    TkSuma          reduce using rule 16 (arit -> TkIdent .)
+    TkResta         reduce using rule 16 (arit -> TkIdent .)
+    TkMult          reduce using rule 16 (arit -> TkIdent .)
+    TkDiv           reduce using rule 16 (arit -> TkIdent .)
+    TkMod           reduce using rule 16 (arit -> TkIdent .)
+    TkPuntoYComa    reduce using rule 16 (arit -> TkIdent .)
+    $end            reduce using rule 16 (arit -> TkIdent .)
+    TkElse          reduce using rule 16 (arit -> TkIdent .)
+    TkDone          reduce using rule 16 (arit -> TkIdent .)
+    TkThen          reduce using rule 16 (arit -> TkIdent .)
+    TkNegacion      reduce using rule 16 (arit -> TkIdent .)
+    TkMenor         reduce using rule 16 (arit -> TkIdent .)
+    TkMenorIgual    reduce using rule 16 (arit -> TkIdent .)
+    TkMayor         reduce using rule 16 (arit -> TkIdent .)
+    TkMayorIgual    reduce using rule 16 (arit -> TkIdent .)
+    TkIgual         reduce using rule 16 (arit -> TkIdent .)
+    TkDesIgual      reduce using rule 16 (arit -> TkIdent .)
+    TkConjuncion    reduce using rule 16 (arit -> TkIdent .)
+    TkDisyuncion    reduce using rule 16 (arit -> TkIdent .)
+    TkRepeat        reduce using rule 16 (arit -> TkIdent .)
+    TkParCierra     reduce using rule 16 (arit -> TkIdent .)
+
+
+state 57
+
+    (14) arit -> TkParAbre . arit TkParCierra
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+
+    TkResta         shift and go to state 36
+    TkParAbre       shift and go to state 57
+    TkNum           shift and go to state 40
+    TkIdent         shift and go to state 56
+
+    arit                           shift and go to state 64
+
+state 58
+
+    (13) arit -> TkResta arit .
+    (12) arit -> arit . operatorA arit
+    (33) operatorA -> . TkSuma
+    (34) operatorA -> . TkResta
+    (35) operatorA -> . TkMult
+    (36) operatorA -> . TkDiv
+    (37) operatorA -> . TkMod
+
+    TkParCierra     reduce using rule 13 (arit -> TkResta arit .)
+    TkSuma          reduce using rule 13 (arit -> TkResta arit .)
+    TkResta         reduce using rule 13 (arit -> TkResta arit .)
+    TkPuntoYComa    reduce using rule 13 (arit -> TkResta arit .)
+    $end            reduce using rule 13 (arit -> TkResta arit .)
+    TkElse          reduce using rule 13 (arit -> TkResta arit .)
+    TkDone          reduce using rule 13 (arit -> TkResta arit .)
+    TkThen          reduce using rule 13 (arit -> TkResta arit .)
+    TkNegacion      reduce using rule 13 (arit -> TkResta arit .)
+    TkMenor         reduce using rule 13 (arit -> TkResta arit .)
+    TkMenorIgual    reduce using rule 13 (arit -> TkResta arit .)
+    TkMayor         reduce using rule 13 (arit -> TkResta arit .)
+    TkMayorIgual    reduce using rule 13 (arit -> TkResta arit .)
+    TkIgual         reduce using rule 13 (arit -> TkResta arit .)
+    TkDesIgual      reduce using rule 13 (arit -> TkResta arit .)
+    TkConjuncion    reduce using rule 13 (arit -> TkResta arit .)
+    TkDisyuncion    reduce using rule 13 (arit -> TkResta arit .)
+    TkRepeat        reduce using rule 13 (arit -> TkResta arit .)
+    TkMult          shift and go to state 70
+    TkDiv           shift and go to state 69
+    TkMod           shift and go to state 68
+
+  ! TkMult          [ reduce using rule 13 (arit -> TkResta arit .) ]
+  ! TkDiv           [ reduce using rule 13 (arit -> TkResta arit .) ]
+  ! TkMod           [ reduce using rule 13 (arit -> TkResta arit .) ]
+  ! TkSuma          [ shift and go to state 72 ]
+  ! TkResta         [ shift and go to state 67 ]
+
+    operatorA                      shift and go to state 71
+
+state 59
+
+    (47) operatorL -> TkVerConcat .
+
+    TkParAbre       reduce using rule 47 (operatorL -> TkVerConcat .)
+    TkRot           reduce using rule 47 (operatorL -> TkVerConcat .)
+    TkLienzo        reduce using rule 47 (operatorL -> TkVerConcat .)
+
+
+state 60
+
+    (46) operatorL -> TkHorConcat .
+
+    TkParAbre       reduce using rule 46 (operatorL -> TkHorConcat .)
+    TkRot           reduce using rule 46 (operatorL -> TkHorConcat .)
+    TkLienzo        reduce using rule 46 (operatorL -> TkHorConcat .)
+
+
+state 61
+
+    (31) lienzo -> lienzo TkTras .
+
+    TkTras          reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkHorConcat     reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkVerConcat     reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkThen          reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkNegacion      reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkMenor         reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkMenorIgual    reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkMayor         reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkMayorIgual    reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkIgual         reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkDesIgual      reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkConjuncion    reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkDisyuncion    reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkRepeat        reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkParCierra     reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkPuntoYComa    reduce using rule 31 (lienzo -> lienzo TkTras .)
+    $end            reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkElse          reduce using rule 31 (lienzo -> lienzo TkTras .)
+    TkDone          reduce using rule 31 (lienzo -> lienzo TkTras .)
+
+
+state 62
+
+    (28) lienzo -> lienzo operatorL . lienzo
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkParAbre       shift and go to state 66
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 78
+
+state 63
+
+    (29) lienzo -> TkParAbre lienzo . TkParCierra
+    (28) lienzo -> lienzo . operatorL lienzo
+    (31) lienzo -> lienzo . TkTras
+    (46) operatorL -> . TkHorConcat
+    (47) operatorL -> . TkVerConcat
+
+    TkParCierra     shift and go to state 79
+    TkTras          shift and go to state 61
+    TkHorConcat     shift and go to state 60
+    TkVerConcat     shift and go to state 59
+
+    operatorL                      shift and go to state 62
+
+state 64
+
+    (14) arit -> TkParAbre arit . TkParCierra
+    (12) arit -> arit . operatorA arit
+    (33) operatorA -> . TkSuma
+    (34) operatorA -> . TkResta
+    (35) operatorA -> . TkMult
+    (36) operatorA -> . TkDiv
+    (37) operatorA -> . TkMod
+
+    TkParCierra     shift and go to state 80
+    TkSuma          shift and go to state 72
+    TkResta         shift and go to state 67
+    TkMult          shift and go to state 70
+    TkDiv           shift and go to state 69
+    TkMod           shift and go to state 68
+
+    operatorA                      shift and go to state 71
+
+state 65
+
+    (30) lienzo -> TkRot lienzo .
+    (28) lienzo -> lienzo . operatorL lienzo
+    (31) lienzo -> lienzo . TkTras
+    (46) operatorL -> . TkHorConcat
+    (47) operatorL -> . TkVerConcat
+
+    TkHorConcat     reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkVerConcat     reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkThen          reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkNegacion      reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkMenor         reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkMenorIgual    reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkMayor         reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkMayorIgual    reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkIgual         reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkDesIgual      reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkConjuncion    reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkDisyuncion    reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkRepeat        reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkParCierra     reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkPuntoYComa    reduce using rule 30 (lienzo -> TkRot lienzo .)
+    $end            reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkElse          reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkDone          reduce using rule 30 (lienzo -> TkRot lienzo .)
+    TkTras          shift and go to state 61
+
+  ! TkTras          [ reduce using rule 30 (lienzo -> TkRot lienzo .) ]
+  ! TkHorConcat     [ shift and go to state 60 ]
+  ! TkVerConcat     [ shift and go to state 59 ]
+
+    operatorL                      shift and go to state 62
+
+state 66
+
+    (29) lienzo -> TkParAbre . lienzo TkParCierra
+    (28) lienzo -> . lienzo operatorL lienzo
+    (29) lienzo -> . TkParAbre lienzo TkParCierra
+    (30) lienzo -> . TkRot lienzo
+    (31) lienzo -> . lienzo TkTras
+    (32) lienzo -> . TkLienzo
+
+    TkParAbre       shift and go to state 66
+    TkRot           shift and go to state 44
+    TkLienzo        shift and go to state 43
+
+    lienzo                         shift and go to state 63
+
+state 67
+
+    (34) operatorA -> TkResta .
+
+    TkResta         reduce using rule 34 (operatorA -> TkResta .)
+    TkParAbre       reduce using rule 34 (operatorA -> TkResta .)
+    TkNum           reduce using rule 34 (operatorA -> TkResta .)
+    TkIdent         reduce using rule 34 (operatorA -> TkResta .)
+
+
+state 68
+
+    (37) operatorA -> TkMod .
+
+    TkResta         reduce using rule 37 (operatorA -> TkMod .)
+    TkParAbre       reduce using rule 37 (operatorA -> TkMod .)
+    TkNum           reduce using rule 37 (operatorA -> TkMod .)
+    TkIdent         reduce using rule 37 (operatorA -> TkMod .)
+
+
+state 69
+
+    (36) operatorA -> TkDiv .
+
+    TkResta         reduce using rule 36 (operatorA -> TkDiv .)
+    TkParAbre       reduce using rule 36 (operatorA -> TkDiv .)
+    TkNum           reduce using rule 36 (operatorA -> TkDiv .)
+    TkIdent         reduce using rule 36 (operatorA -> TkDiv .)
+
+
+state 70
+
+    (35) operatorA -> TkMult .
+
+    TkResta         reduce using rule 35 (operatorA -> TkMult .)
+    TkParAbre       reduce using rule 35 (operatorA -> TkMult .)
+    TkNum           reduce using rule 35 (operatorA -> TkMult .)
+    TkIdent         reduce using rule 35 (operatorA -> TkMult .)
+
+
+state 71
+
+    (12) arit -> arit operatorA . arit
+    (12) arit -> . arit operatorA arit
+    (13) arit -> . TkResta arit
+    (14) arit -> . TkParAbre arit TkParCierra
+    (15) arit -> . TkNum
+    (16) arit -> . TkIdent
+
+    TkResta         shift and go to state 36
+    TkParAbre       shift and go to state 57
+    TkNum           shift and go to state 40
+    TkIdent         shift and go to state 56
+
+    arit                           shift and go to state 81
+
+state 72
+
+    (33) operatorA -> TkSuma .
+
+    TkResta         reduce using rule 33 (operatorA -> TkSuma .)
+    TkParAbre       reduce using rule 33 (operatorA -> TkSuma .)
+    TkNum           reduce using rule 33 (operatorA -> TkSuma .)
+    TkIdent         reduce using rule 33 (operatorA -> TkSuma .)
+
+
+state 73
+
+    (9) instr -> TkFrom TkNum TkTo TkNum . TkRepeat instr TkDone
+
+    TkRepeat        shift and go to state 82
+
+
+state 74
+
+    (8) instr -> TkWith TkIdent TkFrom TkNum . TkTo TkNum TkRepeat instr TkDone
+
+    TkTo            shift and go to state 83
+
+
+state 75
+
+    (5) instr -> TkIf booleana TkThen instr TkElse . instr TkDone
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    instr                          shift and go to state 84
+
+state 76
+
+    (6) instr -> TkIf booleana TkThen instr TkDone .
+
+    TkPuntoYComa    reduce using rule 6 (instr -> TkIf booleana TkThen instr TkDone .)
+    $end            reduce using rule 6 (instr -> TkIf booleana TkThen instr TkDone .)
+    TkDone          reduce using rule 6 (instr -> TkIf booleana TkThen instr TkDone .)
+    TkElse          reduce using rule 6 (instr -> TkIf booleana TkThen instr TkDone .)
+
+
+state 77
+
+    (7) instr -> TkWhile booleana TkRepeat instr TkDone .
+
+    TkPuntoYComa    reduce using rule 7 (instr -> TkWhile booleana TkRepeat instr TkDone .)
+    $end            reduce using rule 7 (instr -> TkWhile booleana TkRepeat instr TkDone .)
+    TkDone          reduce using rule 7 (instr -> TkWhile booleana TkRepeat instr TkDone .)
+    TkElse          reduce using rule 7 (instr -> TkWhile booleana TkRepeat instr TkDone .)
+
+
+state 78
+
+    (28) lienzo -> lienzo operatorL lienzo .
+    (28) lienzo -> lienzo . operatorL lienzo
+    (31) lienzo -> lienzo . TkTras
+    (46) operatorL -> . TkHorConcat
+    (47) operatorL -> . TkVerConcat
+
+  ! shift/reduce conflict for TkTras resolved as shift
+  ! shift/reduce conflict for TkHorConcat resolved as shift
+  ! shift/reduce conflict for TkVerConcat resolved as shift
+    TkThen          reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkNegacion      reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkMenor         reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkMenorIgual    reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkMayor         reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkMayorIgual    reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkIgual         reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkDesIgual      reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkConjuncion    reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkDisyuncion    reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkRepeat        reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkParCierra     reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkPuntoYComa    reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    $end            reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkElse          reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkDone          reduce using rule 28 (lienzo -> lienzo operatorL lienzo .)
+    TkTras          shift and go to state 61
+    TkHorConcat     shift and go to state 60
+    TkVerConcat     shift and go to state 59
+
+  ! TkTras          [ reduce using rule 28 (lienzo -> lienzo operatorL lienzo .) ]
+  ! TkHorConcat     [ reduce using rule 28 (lienzo -> lienzo operatorL lienzo .) ]
+  ! TkVerConcat     [ reduce using rule 28 (lienzo -> lienzo operatorL lienzo .) ]
+
+    operatorL                      shift and go to state 62
+
+state 79
+
+    (29) lienzo -> TkParAbre lienzo TkParCierra .
+
+    TkTras          reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkHorConcat     reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkVerConcat     reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkThen          reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkNegacion      reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkMenor         reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkMenorIgual    reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkMayor         reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkMayorIgual    reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkIgual         reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkDesIgual      reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkConjuncion    reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkDisyuncion    reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkRepeat        reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkParCierra     reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkPuntoYComa    reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    $end            reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkElse          reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+    TkDone          reduce using rule 29 (lienzo -> TkParAbre lienzo TkParCierra .)
+
+
+state 80
+
+    (14) arit -> TkParAbre arit TkParCierra .
+
+    TkParCierra     reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkSuma          reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkResta         reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkMult          reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkDiv           reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkMod           reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkPuntoYComa    reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    $end            reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkElse          reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkDone          reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkThen          reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkNegacion      reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkMenor         reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkMenorIgual    reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkMayor         reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkMayorIgual    reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkIgual         reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkDesIgual      reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkConjuncion    reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkDisyuncion    reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+    TkRepeat        reduce using rule 14 (arit -> TkParAbre arit TkParCierra .)
+
+
+state 81
+
+    (12) arit -> arit operatorA arit .
+    (12) arit -> arit . operatorA arit
+    (33) operatorA -> . TkSuma
+    (34) operatorA -> . TkResta
+    (35) operatorA -> . TkMult
+    (36) operatorA -> . TkDiv
+    (37) operatorA -> . TkMod
+
+  ! shift/reduce conflict for TkSuma resolved as shift
+  ! shift/reduce conflict for TkResta resolved as shift
+  ! shift/reduce conflict for TkMult resolved as shift
+  ! shift/reduce conflict for TkDiv resolved as shift
+  ! shift/reduce conflict for TkMod resolved as shift
+    TkParCierra     reduce using rule 12 (arit -> arit operatorA arit .)
+    TkPuntoYComa    reduce using rule 12 (arit -> arit operatorA arit .)
+    $end            reduce using rule 12 (arit -> arit operatorA arit .)
+    TkElse          reduce using rule 12 (arit -> arit operatorA arit .)
+    TkDone          reduce using rule 12 (arit -> arit operatorA arit .)
+    TkThen          reduce using rule 12 (arit -> arit operatorA arit .)
+    TkNegacion      reduce using rule 12 (arit -> arit operatorA arit .)
+    TkMenor         reduce using rule 12 (arit -> arit operatorA arit .)
+    TkMenorIgual    reduce using rule 12 (arit -> arit operatorA arit .)
+    TkMayor         reduce using rule 12 (arit -> arit operatorA arit .)
+    TkMayorIgual    reduce using rule 12 (arit -> arit operatorA arit .)
+    TkIgual         reduce using rule 12 (arit -> arit operatorA arit .)
+    TkDesIgual      reduce using rule 12 (arit -> arit operatorA arit .)
+    TkConjuncion    reduce using rule 12 (arit -> arit operatorA arit .)
+    TkDisyuncion    reduce using rule 12 (arit -> arit operatorA arit .)
+    TkRepeat        reduce using rule 12 (arit -> arit operatorA arit .)
+    TkSuma          shift and go to state 72
+    TkResta         shift and go to state 67
+    TkMult          shift and go to state 70
+    TkDiv           shift and go to state 69
+    TkMod           shift and go to state 68
+
+  ! TkSuma          [ reduce using rule 12 (arit -> arit operatorA arit .) ]
+  ! TkResta         [ reduce using rule 12 (arit -> arit operatorA arit .) ]
+  ! TkMult          [ reduce using rule 12 (arit -> arit operatorA arit .) ]
+  ! TkDiv           [ reduce using rule 12 (arit -> arit operatorA arit .) ]
+  ! TkMod           [ reduce using rule 12 (arit -> arit operatorA arit .) ]
+
+    operatorA                      shift and go to state 71
+
+state 82
+
+    (9) instr -> TkFrom TkNum TkTo TkNum TkRepeat . instr TkDone
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    instr                          shift and go to state 85
+
+state 83
+
+    (8) instr -> TkWith TkIdent TkFrom TkNum TkTo . TkNum TkRepeat instr TkDone
+
+    TkNum           shift and go to state 86
+
+
+state 84
+
+    (5) instr -> TkIf booleana TkThen instr TkElse instr . TkDone
+
+    TkDone          shift and go to state 87
+
+
+state 85
+
+    (9) instr -> TkFrom TkNum TkTo TkNum TkRepeat instr . TkDone
+
+    TkDone          shift and go to state 88
+
+
+state 86
+
+    (8) instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum . TkRepeat instr TkDone
+
+    TkRepeat        shift and go to state 89
+
+
+state 87
+
+    (5) instr -> TkIf booleana TkThen instr TkElse instr TkDone .
+
+    TkPuntoYComa    reduce using rule 5 (instr -> TkIf booleana TkThen instr TkElse instr TkDone .)
+    $end            reduce using rule 5 (instr -> TkIf booleana TkThen instr TkElse instr TkDone .)
+    TkDone          reduce using rule 5 (instr -> TkIf booleana TkThen instr TkElse instr TkDone .)
+    TkElse          reduce using rule 5 (instr -> TkIf booleana TkThen instr TkElse instr TkDone .)
+
+
+state 88
+
+    (9) instr -> TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .
+
+    TkPuntoYComa    reduce using rule 9 (instr -> TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+    $end            reduce using rule 9 (instr -> TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+    TkDone          reduce using rule 9 (instr -> TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+    TkElse          reduce using rule 9 (instr -> TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+
+
+state 89
+
+    (8) instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat . instr TkDone
+    (4) instr -> . TkIdent TkAsignacion expbin
+    (5) instr -> . TkIf booleana TkThen instr TkElse instr TkDone
+    (6) instr -> . TkIf booleana TkThen instr TkDone
+    (7) instr -> . TkWhile booleana TkRepeat instr TkDone
+    (8) instr -> . TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (9) instr -> . TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
+    (10) instr -> . TkPrint TkLienzo
+    (11) instr -> . TkRead TkIdent
+
+    TkIdent         shift and go to state 5
+    TkIf            shift and go to state 1
+    TkWhile         shift and go to state 4
+    TkWith          shift and go to state 9
+    TkFrom          shift and go to state 6
+    TkPrint         shift and go to state 7
+    TkRead          shift and go to state 8
+
+    instr                          shift and go to state 90
+
+state 90
+
+    (8) instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr . TkDone
+
+    TkDone          shift and go to state 91
+
+
+state 91
+
+    (8) instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .
+
+    TkPuntoYComa    reduce using rule 8 (instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+    $end            reduce using rule 8 (instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+    TkDone          reduce using rule 8 (instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+    TkElse          reduce using rule 8 (instr -> TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for TkNegacion in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkMenor in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkMenorIgual in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkMayor in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkMayorIgual in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkIgual in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkDesIgual in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkConjuncion in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkDisyuncion in state 51 resolved as shift
+WARNING: shift/reduce conflict for TkTras in state 78 resolved as shift
+WARNING: shift/reduce conflict for TkHorConcat in state 78 resolved as shift
+WARNING: shift/reduce conflict for TkVerConcat in state 78 resolved as shift
+WARNING: shift/reduce conflict for TkSuma in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkResta in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkMult in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkDiv in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkMod in state 81 resolved as shift
+WARNING: reduce/reduce conflict in state 38 resolved using rule (arit -> TkIdent)
+WARNING: rejected rule (booleana -> TkIdent) in state 38
+WARNING: reduce/reduce conflict in state 50 resolved using rule (arit -> TkIdent)
+WARNING: rejected rule (booleana -> TkIdent) in state 50
