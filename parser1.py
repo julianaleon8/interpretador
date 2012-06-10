@@ -1,4 +1,4 @@
-#!/usr/bin/python
+
 # interpretador lexico 
 # Gustavo Ortega 09-10590
 # Juliana Leon 08-10608
@@ -136,39 +136,11 @@ t_TkVerConcat = r'\|'
 t_TkRot = r'\$'
 t_TkTras = r'\\'
 t_TkAsignacion = r':='
-
-#contruir el analizador lexico
-lexer=lex.lex(debug=0)
-
-#abrir archivo
-#f = open(sys.argv[1],"r")
-
-# leer archivogi
-archi = sys.stdin.read()
-lexer.input(archi)
-
-#f.close()
-#lista que contiene un solo valor, el cual es el identificador 
-#para saber si se encontro un caracter invalido o no
-count = [0]
-#lista que contiene todos los tokens validos 
-lista = ['']
-while True:
-    tok = lexer.token()
-    if not tok: 
-	break      
-    else: 
-	lista.append(tok.type+" ")
-if (count[0] == 0): 
-#ciclo para imprimir los tokens
-	for i in range (0,len(lista)):
-		sys.stdout.write(lista[i])
-parser = yacc.yacc
 #----------------#
 # Precedencia	 #
 #----------------#
 
-
+lista = ['']
 precedence = (
 	 ('left','TkIf','TkThen','TkElse'),
   	 ('right','TkNegacion'),    	
@@ -382,17 +354,10 @@ def p_empty(p):
 	'empty :'
 	p[0] = ''
 	pass
-def p_aux(p):
-    '''aux : TkIdent
-	   	  | TkNum'''
-    p[0]= Var(p[1])
-    
-def p_expbin(p):
-	''' expbin : arit
-	  			  | booleana
-			  	  | lienzo '''
-	p[0] = p[1]    
-    
+#def p_aux(p):
+ #   '''aux : TkIdent
+#	   | TkNum'''
+ #   p[0]= Var(p[1])
 
 def p_instr(p):
 	'''instr : TkIdent TkAsignacion expbin
@@ -406,6 +371,7 @@ def p_instr(p):
 			   | expbin'''
 	
 	if (len(p)== 4):
+
 	    if (p[2] == ':='):
 		p[0] = Asig (p[1] , p[3])
 	elif(len(p) == 8):
@@ -454,6 +420,9 @@ def p_arit(p):
 			p[0] = Menos(p[2])
 	else:
 		p[0] = p[1]
+
+
+
 def p_booleana(p):
 	''' booleana : booleana operatorB expbin
 		    		 | TkParAbre booleana TkParCierra
@@ -526,6 +495,7 @@ def p_operatorB(p):
 					  | TkMenorIgual
 					  | TkMayor
 					  | TkMayorIgual
+
 					  | TkIgual
 					  | TkDesIgual 
 					  | TkConjuncion
@@ -539,11 +509,6 @@ def p_operatorL(p):
 
 def p_error(p):
 	print "Error de sintaxis " #+ p.type +" " + "%d" % p.value
-
-
-
-
-#print parser.parse(archi)
 
 
 #s = ''

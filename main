@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-import parser
+import parser1
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
 #import networkx as nx
-lexer = lex.lex(module=parser)
-parser = yacc.yacc(module=parser,start='expr',errorlog=yacc.NullLogger())
+lexer = lex.lex(module=parser1)
+parser = yacc.yacc(module=parser1,start='expr',errorlog=yacc.NullLogger())
 
 # contruir el analizador lexico
 #lexer=lex.lex(debug=0)
@@ -21,19 +21,19 @@ lexer.input(archi)
 #f.close()
 #lista que contiene un solo valor, el cual es el identificador 
 #para saber si se encontro un caracter invalido o no
-#count = [0]
+count = [0]
 #lista que contiene todos los tokens validos 
-#lista = ['']
-#while True:
- #   tok = lexer.token()
-  #  if not tok: 
-#	break      
- #   else: 
-#	lista.append(tok.type+" ")
-#if (count[0] == 0): 
+lista = ['']
+while True:
+    tok = lexer.token()
+    if not tok: 
+	break      
+    else: 
+	lista.append(tok.type+" ")
+if (count[0] == 0): 
 #ciclo para imprimir los tokens
-#	for i in range (0,len(lista)):
-#		sys.stdout.write(lista[i])
+	for i in range (0,len(lista)):
+		sys.stdout.write(lista[i])
 print parser.parse(archi)
 
 # ciclo para imprimir los tokens
