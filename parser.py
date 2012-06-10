@@ -135,7 +135,7 @@ t_TkVerConcat = r'\|'
 t_TkRot = r'\$'
 t_TkTras = r'\\'
 t_TkAsignacion = r':='
-
+lista = ['']
 #----------------#
 # Precedencia	 #
 #----------------#
@@ -365,7 +365,7 @@ def p_instr(p):
 		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
 		 	   | TkPrint TkLienzo
 		 	   | TkRead TkIdent 
-			   | arit'''
+			   | expbin'''
 	if (len(p)== 4):
 
 	    if (p[2] == ':='):
@@ -378,7 +378,7 @@ def p_instr(p):
 	elif(len(p) == 6):
 	    if(p[2] == 'while'):
 	    	p[0] = While( p[2] , p[4])
-	    if(p[2] == 'if'):
+	    if(p[1] == 'if'):
 	    	p[0] = IfS( p[2],p[4])
 	elif(len(p) == 10 ):
 		p[0] = With(p[2],p[4],p[6],p[8])
@@ -411,27 +411,28 @@ def p_arit(p):
 			if p[3] == ')':
 				p[0] = p[2] 
 	elif(len(p) == 3):
-		p[0] = - p[2]
+		if (p[1]=='-'):		
+			p[0] = Menos(p[2])
 	else:
 		p[0] = p[1]
 
 def p_expbin(p):
 	''' expbin : arit
-	  		  	  | booleana
+	  			  | booleana
 			  	  | lienzo '''
 	p[0] = p[1]
 
 
 def p_booleana(p):
 	''' booleana : booleana operatorB booleana
-					 | booleana operatorB arit
-					 | booleana operatorB lienzo
+				 | booleana operatorB arit
+				 | booleana operatorB lienzo
 		    		 | TkParAbre booleana TkParCierra
 		    		 | booleana TkNegacion
-					 | TkTrue
+				 | TkTrue
 		    		 | TkFalse '''
 	if(len(p) == 4):
-		if(p[2] == '/\\'):
+		if(p[2] == 'TkConjuncion'):
 			p[0] = And(p[1],p[3])
 		if(p[2] == '\\/'):
 			p[0] = Or(p[1],p[3])
@@ -447,7 +448,8 @@ def p_booleana(p):
 			if p[3] == ')':
 				p[0] = p[2]
 	elif(len(p) == 3):
-		p[0] = p[1]
+		if (p[1]=='\^'):
+			p[0] = Nega(p[1])
 	else:
 		p[0] = p[1]
 

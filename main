@@ -4,7 +4,7 @@ import parser
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
-
+#import networkx as nx
 lexer = lex.lex(module=parser)
 parser = yacc.yacc(module=parser,start='expr',errorlog=yacc.NullLogger())
 
@@ -34,7 +34,9 @@ if (count[0] == 0):
 # ciclo para imprimir los tokens
 	for i in range (0,len(lista)):
 		sys.stdout.write(lista[i])
-print parser.parse("a+b")
+print parser.parse("^r")
+# parser.parse("a+b")
+
 # ciclo para imprimir los tokens
 #for i in range (0,len(lista)):
 #	print parser.parse(sys.stdout.write(lista[i])
