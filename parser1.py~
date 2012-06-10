@@ -1,4 +1,4 @@
-#!/usr/bin/python
+
 # interpretador lexico 
 # Gustavo Ortega 09-10590
 # Juliana Leon 08-10608
@@ -140,7 +140,7 @@ t_TkAsignacion = r':='
 # Precedencia	 #
 #----------------#
 
-
+lista = ['']
 precedence = (
 	 ('left','TkIf','TkThen','TkElse'),
   	 ('right','TkNegacion'),    	
@@ -424,13 +424,13 @@ def p_arit(p):
 
 
 def p_booleana(p):
-	''' booleana : booleana operatorB booleana
-				 | booleana operatorB arit
-				 | booleana operatorB lienzo
+	''' booleana : booleana operatorB expbin
 		    		 | TkParAbre booleana TkParCierra
 		    		 | booleana TkNegacion
 				 | TkTrue
-		    		 | TkFalse '''
+		    		 | TkFalse
+		    		 | TkIdent '''
+		    		 
 	if(len(p) == 4):
 		if(p[2] == '/\\'):
 			p[0] = And(p[1],p[3])
@@ -443,7 +443,11 @@ def p_booleana(p):
 		if(p[2] == '>'):
 			p[0] = Mayor(p[1],p[3])
 		if(p[2] == '>='):
-			p[0] = MayorIg(p[1],p[1])
+			p[0] = MayorIg(p[1],p[3])
+		if(p[2] == '='):
+			p[0] = Igual(p[1],p[3])
+		if(p[2] == '/='):
+			p[0] = Desigual(p[1],p[3])
 		if p[1] == '(':
 			if p[3] == ')':
 				p[0] = p[2]
@@ -505,39 +509,6 @@ def p_operatorL(p):
 
 def p_error(p):
 	print "Error de sintaxis " #+ p.type +" " + "%d" % p.value
-
-
-
-
-#contruir el analizador lexico
-lexer=lex.lex(debug=0)
-
-#abrir archivo
-#f = open(sys.argv[1],"r")
-
-# leer archivogi
-archi = sys.stdin.read()
-lexer.input(archi)
-
-#f.close()
-#lista que contiene un solo valor, el cual es el identificador 
-#para saber si se encontro un caracter invalido o no
-count = [0]
-#lista que contiene todos los tokens validos 
-lista = ['']
-while True:
-    tok = lexer.token()
-    if not tok: 
-	break      
-    else: 
-	lista.append(tok.type+" ")
-if (count[0] == 0): 
-#ciclo para imprimir los tokens
-	for i in range (0,len(lista)):
-		sys.stdout.write(lista[i])
-parser = yacc.yacc
-
-print parser.parse(archi)
 
 
 #s = ''
