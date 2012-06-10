@@ -1,4 +1,4 @@
-
+#!/usr/bin/python
 # interpretador lexico 
 # Gustavo Ortega 09-10590
 # Juliana Leon 08-10608
@@ -356,8 +356,15 @@ def p_empty(p):
 	pass
 def p_aux(p):
     '''aux : TkIdent
-	   | TkNum'''
+	   	  | TkNum'''
     p[0]= Var(p[1])
+    
+def p_expbin(p):
+	''' expbin : arit
+	  			  | booleana
+			  	  | lienzo '''
+	p[0] = p[1]    
+    
 
 def p_instr(p):
 	'''instr : TkIdent TkAsignacion expbin
@@ -371,7 +378,6 @@ def p_instr(p):
 			   | expbin'''
 	
 	if (len(p)== 4):
-
 	    if (p[2] == ':='):
 		p[0] = Asig (p[1] , p[3])
 	elif(len(p) == 8):
@@ -421,21 +427,14 @@ def p_arit(p):
 	else:
 		p[0] = p[1]
 
-def p_expbin(p):
-	''' expbin : arit
-	  			  | booleana
-			  	  | lienzo '''
-	p[0] = p[1]
-
-
 def p_booleana(p):
-	''' booleana : booleana operatorB booleana
-				 | booleana operatorB arit
-				 | booleana operatorB lienzo
+	''' booleana : booleana operatorB expbin
 		    		 | TkParAbre booleana TkParCierra
 		    		 | booleana TkNegacion
-				 | TkTrue
-		    		 | TkFalse '''
+				 	 | TkTrue
+		    		 | TkFalse
+		    		 | TkIdent '''
+		    		 
 	if(len(p) == 4):
 		if(p[2] == '/\\'):
 			p[0] = And(p[1],p[3])
@@ -448,7 +447,11 @@ def p_booleana(p):
 		if(p[2] == '>'):
 			p[0] = Mayor(p[1],p[3])
 		if(p[2] == '>='):
-			p[0] = MayorIg(p[1],p[1])
+			p[0] = MayorIg(p[1],p[3])
+		if(p[2] == '='):
+			p[0] = Igual(p[1],p[3])
+		if(p[2] == '/='):
+			p[0] = Desigual(p[1],p[3])
 		if p[1] == '(':
 			if p[3] == ')':
 				p[0] = p[2]
@@ -489,7 +492,6 @@ def p_operatorB(p):
 					  | TkMenorIgual
 					  | TkMayor
 					  | TkMayorIgual
-
 					  | TkIgual
 					  | TkDesIgual 
 					  | TkConjuncion
