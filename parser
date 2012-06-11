@@ -129,7 +129,7 @@ t_TkDesIgual = r'/='
 t_TkHorConcat = r':'
 t_TkVerConcat = r'\|'
 t_TkRot = r'\$'
-t_TkTras = r'\\'
+t_TkTras = r' '
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
@@ -298,8 +298,8 @@ class Fro(expresion):
 		self.num1 = num1
 		self.num2 = num2
 		self.ex1 = ex1
-		def __str__(self):
-			return "From(" + "Limite Inferior= " + str(self.num1) + " ,Limite Superior = " + str(self.num2) + " ,Instruccion" + str(self.ex1) + ")"
+	def __str__(self):
+		return "From(" + "Limite Inferior= " + str(self.num1) + " ,Limite Superior = " + str(self.num2) + " ,Instruccion" + str(self.ex1) + ")"
 			
 class With(expresion):
 	def __init__(self,iden,num1,num2,ex1):
@@ -337,10 +337,13 @@ class Print(expresion):
 star = 'expr'
 
 def p_expr(p):
-	''' expr : expr TkPuntoYComa instr 
+	''' expr : TkUsing Declar TkBegin expr TkEnd
+				| expr TkPuntoYComa instr 
 				| instr '''
 	if len(p) == 4:
 		p[0] = Impre(p[1],p[3])
+	elif(len(p) == 6):
+		p[0] = p[4]
 	else:
 		p[0] = p[1]
 				
@@ -368,24 +371,26 @@ def p_Tipo(p):
 				| TkBoolean
 				| TkCanvas '''
 	p[0] = p[1]
+	
+def p_InNum(p):
+	''' InNum : TkNum
+				 | TkIdent '''
+	p[0] = p[1]
 
 def p_instr(p):
-	'''instr : TkUsing Declar TkBegin
-				| TkIdent TkAsignacion expbin
+	'''instr : TkIdent TkAsignacion expbin
 		 	   | TkIf booleana TkThen instr TkElse instr TkDone
 		 	   | TkIf booleana TkThen instr TkDone
 		 	   | TkWhile booleana TkRepeat instr TkDone
-		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
-		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
+		 	   | TkWith TkIdent TkFrom InNum TkTo InNum TkRepeat instr TkDone
+		 	   | TkFrom InNum TkTo InNum TkRepeat instr TkDone 
 		 	   | TkPrint TkIdent
 		 	   | TkPrint TkLienzo
 		 	   | TkRead TkIdent '''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
-	    	p[0] = Asig(p[1] , p[3])
-	    if(p[1] == 'using'):
-	    	p[0] = ''	
+	    	p[0] = Asig(p[1] , p[3])	
 	elif(len(p) == 8):
 	    if(p[1] == 'if'):
 	    	p[0] = IfElse(p[2],p[4],p[6])
@@ -394,7 +399,7 @@ def p_instr(p):
 	elif(len(p) == 6):
 	    if(p[1] == 'while'):
 	    	p[0] = While( p[2] , p[4])
-	    if(p[1] == 'if'):
+	    elif(p[1] == 'if'):
 	    	p[0] = IfS(p[2],p[4])
 	elif(len(p) == 10 ):
 		p[0] = With(p[2],p[4],p[6],p[8])
