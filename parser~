@@ -372,9 +372,9 @@ def p_instr(p):
 	    if(p[1] =='from'):
 	    	p[0] = FromWith(p[2],p[4],p[6])	
 	elif(len(p) == 6):
-	    if(p[2] == 'while'):
+	    if(p[1] == 'while'):
 	    	p[0] = While( p[2] , p[4])
-	    if(p[2] == 'if'):
+	    if(p[1] == 'if'):
 	    	p[0] = IfS(p[2],p[4])
 	elif(len(p) == 10 ):
 		p[0] = With(p[2],p[4],p[6],p[8])
@@ -383,6 +383,7 @@ def p_instr(p):
 			p[0] = Read(p[2])
 		else:
 			p[0] = Print(p[2])
+	p[0] = p[1]
 	
 
 def p_arit(p):

@@ -360,8 +360,7 @@ def p_instr(p):
 		 	   | TkWith TkIdent TkFrom TkNum TkTo TkNum TkRepeat instr TkDone
 		 	   | TkFrom TkNum TkTo TkNum TkRepeat instr TkDone 
 		 	   | TkPrint TkLienzo
-		 	   | TkRead TkIdent
-		 	   | expbin '''
+		 	   | TkRead TkIdent '''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
@@ -372,9 +371,9 @@ def p_instr(p):
 	    if(p[1] =='from'):
 	    	p[0] = FromWith(p[2],p[4],p[6])	
 	elif(len(p) == 6):
-	    if(p[2] == 'while'):
+	    if(p[1] == 'while'):
 	    	p[0] = While( p[2] , p[4])
-	    if(p[2] == 'if'):
+	    if(p[1] == 'if'):
 	    	p[0] = IfS(p[2],p[4])
 	elif(len(p) == 10 ):
 		p[0] = With(p[2],p[4],p[6],p[8])
