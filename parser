@@ -129,7 +129,7 @@ t_TkDesIgual = r'/='
 t_TkHorConcat = r':'
 t_TkVerConcat = r'\|'
 t_TkRot = r'\$'
-t_TkTras = r'\\'
+t_TkTras = r'\''
 t_TkAsignacion = r':='
 
 # contruir el analizador lexico
@@ -371,7 +371,7 @@ def p_Tipo(p):
 
 def p_instr(p):
 	'''instr : TkUsing Declar TkBegin
-				| TkIdent TkAsignacion expbin
+			   | TkIdent TkAsignacion expbin
 		 	   | TkIf booleana TkThen instr TkElse instr TkDone
 		 	   | TkIf booleana TkThen instr TkDone
 		 	   | TkWhile booleana TkRepeat instr TkDone
@@ -442,13 +442,15 @@ def p_expbin(p):
 
 def p_booleana(p):
 	''' booleana : booleana operatorB booleana
-					 | booleana operatorB arit
-					 | booleana operatorB lienzo
+				 | booleana operatorB arit
+				 | booleana operatorB lienzo
 		    		 | TkParAbre booleana TkParCierra
-		    		 | booleana TkNegacion
-					 | TkTrue
+		    		 | TkTrue
 		    		 | TkFalse
-		    		 | TkIdent '''
+		    		 | TkIdent
+				 | booleana TkNegacion '''
+#| TkNegacion booleana
+				 
 	if(len(p) == 4):
 		if(p[2] == '/\\'):
 			p[0] = And(p[1],p[3])
@@ -470,7 +472,7 @@ def p_booleana(p):
 			if p[3] == ')':
 				p[0] = p[2]
 	elif(len(p) == 3):
-		p[0] = p[1]
+		p[0] = Nega(p[1])
 	else:
 		p[0] = p[1]
 
@@ -490,6 +492,12 @@ def p_lienzo(p):
 		if p[1] == '(':
 			if p[3] == ')':
 				p[0] =  p[2]
+	elif (len(p)==3):
+		if(p[2]=='\''):
+			p[0]=Trans(p[1])
+		else:		
+			p[0]=Rota(p[2])
+		
 	else:
 		p[0] = p[1]
 
@@ -518,7 +526,9 @@ def p_operatorL(p):
 	p[0] = p[1] 			
 		
 def p_error(p):
-	print "Error de sintaxis " #+ p.type +" " + "%d" % p.value
-			
+	print "Error de sintaxis " + p.type +" " +  p.value
+	exit(1)
+		
 parser = yacc.yacc()
 print parser.parse(archi)
+ 
