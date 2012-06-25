@@ -6,7 +6,7 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 #import networkx as nx
-lexer = lex.lex(module=parser1)
+lexer = lex.lex(module=parser)
 
 # contruir el analizador lexico
 #lexer=lex.lex(debug=0)
@@ -34,7 +34,7 @@ if (count[0] == 0):
 #ciclo para imprimir los tokens
 	for i in range (0,len(lista)):
 		sys.stdout.write(lista[i])
-parser = yacc.yacc(module=parser1,start='expr',errorlog=yacc.NullLogger())
+parser = yacc.yacc(module=parser,start='expr',errorlog=yacc.NullLogger())
 
 print parser.parse(archi)
 

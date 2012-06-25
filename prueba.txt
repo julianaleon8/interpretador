@@ -1,1 +1,6 @@
-a:=a+b
+a:=true^
+;
+a:=$< >
+; if a>r then if e=r then f:=4 done else t:=3 done;
+from 3 to 4 repeat a:=e done;
+e:=-5
