@@ -8,7 +8,7 @@ from ply.lex import TOKEN
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
-from Asgard import *
+#from Asgard import *
 
 # lista de tokens reservados
 reserved = {
@@ -355,7 +355,6 @@ def calcularExprBin(expr,expr1):
 ####################	
 # ARBOL SINTACTICO #
 ####################
-arbol = ' '
 
 tabla = {}
 contador = 0
@@ -366,8 +365,8 @@ def p_expr(p):
 				| expr TkPuntoYComa expr 
 				| instr 
 				| empty '''
-	global arbol
 	global contador
+	global temp
 	if len(p) == 4:
 		p[0] = Impre(p[1],p[3])
 	elif(len(p) == 6):
@@ -375,7 +374,7 @@ def p_expr(p):
 		temp = []
 		p[0] = p[4]
 	else:
-		p[0] = p[1]
+		p[0] = Impre_uni(p[1])
 				
 def p_empty(p):
 	'empty :'
@@ -389,7 +388,7 @@ def p_Declar(p):
 				  | TkIdent TkOfType Tipo
 				  | Declar TkPuntoYComa Declar 
 				  | TkIdent '''
-	temp = []
+	global temp
 	global contador
 	cont = 0
 	if(len(p) == 4):
@@ -525,7 +524,6 @@ def p_arit(p):
 	if(len(p) == 4):
 		if(p[2] == '+'):
 			p[0] = Suma(p[1],p[3])
-			
 		if(p[2] == '-'):
 			p[0] = Resta(p[1],p[3])
 		if(p[2] == '*'):
@@ -656,16 +654,39 @@ def p_operatorL(p):
 def p_error(p):
 	print "Error de sintaxis " + p.type +" " +  p.value
 	exit(1)
-
-
-#tok = arbol.split(';')
-
 		
 parser = yacc.yacc()
 arbol = parser.parse(archi)
 #evaluar(arbol)
 print arbol
 
+def esSuma(exp):
+	if(isinstance(exp,Suma)):
+		aux = exp.op1
+		aux2 = exp.op2
+		if(isinstance(aux,Suma)):
+			temp = esSuma(aux)
+		else:
+			if(type(aux) == int):
+				temp = 'integer'
+			elif(tabla.has_key(aux)):
+				temp = tabla[aux]
+				temp = temp[0]
+		
+		if(isinstance(aux2,Suma)):
+			temp2 = esSuma(aux2)
+		else:
+			if(type(aux2) == int):
+				temp2 = 'integer'
+			elif(tabla.has_key(aux2)):
+				temp2 = tabla[aux2]
+				temp2 = temp2[0]
+		
+		if(temp2 == temp):
+			return 'integer'
+		else:
+			return '1'
+				
 
 
 if (isinstance(arbol, Impre)):
@@ -673,4 +694,24 @@ if (isinstance(arbol, Impre)):
 	if (isinstance(arbol, Asig)):
 		print 'hola'
 		calcularExprBin()	
+elif(isinstance(arbol,Impre_uni)):
+	aux = arbol.expr
+	if(isinstance(aux,Asig)):
+		aux2 = aux.ex1
+		aux = aux.iden
+		if(tabla.has_key(aux)):
+			temp = tabla[aux]
+			temp2 = temp[0]
+			temp3 = esSuma(aux2)
+			if(temp2 == temp3):
+				print 'yey'
+			else:
+				print 'error de tipo'
+		#if(type(aux) == TkIdent):
+		#	if(isinstance(aux2,Suma)):
+		#		aux = aux2.op1
+		#		aux2 = aux2.op2
+		#		if(type(aux) == TkNum):
+		#			if(type(aux2) == TkNum):
+		#				print 'yey'
 

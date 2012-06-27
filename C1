@@ -1,0 +1,5 @@
+using contador,z,y of type integer; w of type canvas ; e of type boolean begin
+{- Asignar al contador 
+el valor 35. -}
+contador := contador + ((z+e+25)+y)+(z+(25+69)+z)+(25+47)+y
+end
