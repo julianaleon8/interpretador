@@ -8,7 +8,6 @@ from ply.lex import TOKEN
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
-#from Asgard import *
 
 # lista de tokens reservados
 reserved = {
@@ -150,7 +149,6 @@ precedence = (
     ('left', 'TkSuma', 'TkResta'),
   	 ('left','TkMult','TkDiv','TkMod'),
   	 ('right','TkNegacion'),
-  	 ('left','TkIgual','TkDesIgual')
 )
 
 
@@ -163,7 +161,6 @@ class Impre:
 		self.expr1 = expr1
 		self.expr2 = expr2
 	def __str__(self):
-		#print isinstance(self.expr1,Asig)
 		return str(self.expr1) + " ; " + str(self.expr2)
 
 class Impre_uni:
@@ -182,12 +179,6 @@ class Impre_err:
 		temp = temp[:-1]
 		return "Error: " + aux
 		
-class Impre2:
-	def __init__(self,expr1,expr2):
-		self.expr1 = expr1
-		self.expr2 = expr2
-	def __str__(self):
-		return str(self.expr1) + " ; " + str(self.expr2)
 
 
 class expresion : pass
@@ -337,56 +328,24 @@ class Print(expresion):
 		self.iden = iden
 	def __str__(self):
 		return "Print(" + "Lienzo= " + str(self.iden) + ")"
-
-def calcularExprBin(expr,expr1):
-    global error
-    if isinstance(expr,Suma):
-	if (expr1.tipo=="int") & (expr.tipo=="int"):
-		print "todo cool"
-	else:
-		if (expr.tipo!="tipo_error") & (expr1!="tipo_error"):
-			print "error de tipo en la variable"
-			error=True
-		expr.tipo="tipo_error"
-    else:
-	print 'fail'
 		
 
 ####################	
 # ARBOL SINTACTICO #
 ####################
 
-tabla = {}
-contador = 0
-temp = []
+star = 'expr'
 
 def p_expr(p):
 	''' expr : TkUsing Declar TkBegin expr TkEnd
-				| expr TkPuntoYComa expr 
-				| instr 
-				| empty '''
-	global contador
-	global temp
+				| expr TkPuntoYComa instr 
+				| instr '''
 	if len(p) == 4:
 		p[0] = Impre(p[1],p[3])
 	elif(len(p) == 6):
-		temp = []
 		p[0] = p[4]
-		contador += 1
-		for i in tabla:
-			count = contador
-			aux = tabla[i]
-			aux2 = aux[-1]
-			while(type(aux2) == list):
-				if(type(aux[1]) == int):
-					aux = aux2
-					aux2 = aux[-1]
-				else:
-					aux[1] = count					
-					aux = aux2
-					aux2 = aux[-1]
 	else:
-		p[0] = Impre_uni(p[1])
+		p[0] = p[1]
 				
 def p_empty(p):
 	'empty :'
@@ -395,72 +354,18 @@ def p_empty(p):
 	
 	
 def p_Declar(p):
-	''' Declar : Declar TkComa TkIdent TkOfType Tipo
-				  | Declar TkComa TkIdent
-				  | TkIdent TkOfType Tipo
+	''' Declar : Declar TkComa TkIdent
+				  | Declar TkOfType Tipo
 				  | Declar TkPuntoYComa Declar 
 				  | TkIdent '''
-	global temp
-	cont = 0
-	if(len(p) == 4):
-		
+				  
+	if(len(p) == 3):
 		if(p[2] == ','):
-			temp.append(p[3])
-			p[0] = p[1]
-		elif(p[2] == ';'):
-			pass
+			p[0] = p[3]
 		else:
-			if(tabla.has_key(p[1])):
-					aux = tabla[p[1]]
-					aux2 = aux[-1]
-					while(type(aux2) == list):
-						aux = aux2
-						aux2 = aux[-1]
-					if(aux[1] == contador):
-						print 'variable repetida {0}'.format(p[1])
-						exit(-1)
-					else:
-						aux3 = [p[3],contador,'']
-						aux.append(aux3)
-			else:
-				lista = [p[3],contador,'']
-				tabla[p[1]] = lista
-			p[0] = tabla
-	elif(len(p) == 6):
-		temp.append(p[3])
-		temp.append(p[1])
-		for i in temp:
-			if(tabla.has_key(i)):
-				aux = tabla[i]
-				aux2 = aux[-1]
-				while(type(aux2) == list):
-					aux = aux2
-					aux2 = aux[-1]
-				if(aux[1] == contador):
-					print 'variable repetida {0}'.format(i)
-					exit(1)
-				else:
-					aux3 = [p[5],contador,'']
-					aux.append(aux3)
-			else:
-				lista = [p[5],contador,'']
-				tabla[i] = lista
+			p[0] = p[2] 
+	p[0] = p[1] 
 	
-	else:
-		if(tabla.has_key(p[1])):
-				aux = tabla[p[1]]
-				aux2 = aux[-1]
-				while(type(aux2) == list):
-					aux = aux2
-					aux2 = aux[-1]
-				if(aux[1] == contador):
-					print 'variable repetida {0}'.format(p[1])
-					exit(1)
-				else:
-					aux3 = [p[5],contador,'']
-					aux.append(aux3)
-		else:
-					p[0]=p[1]
 def p_Tipo(p):
 	''' Tipo : TkInteger
 				| TkBoolean
@@ -470,32 +375,22 @@ def p_Tipo(p):
 def p_InNum(p):
 	''' InNum : TkNum
 				 | TkIdent '''
-	if(type(p[1]) != int):
-		if(tabla.has_key(p[1])):
-			p[0] = p[1]
-		else:
-			print 'errorde sintaxis {0} no fue declarada'.format(p[1])
-			exit(1)	
 	p[0] = p[1]
 
 def p_instr(p):
 	'''instr : TkIdent TkAsignacion expbin
-		 	   | TkIf booleana TkThen expr TkElse expr TkDone
-		 	   | TkIf booleana TkThen expr TkDone
-		 	   | TkWhile booleana TkRepeat expr TkDone
-		 	   | TkWith TkIdent TkFrom InNum TkTo InNum TkRepeat expr TkDone
-		 	   | TkFrom InNum TkTo InNum TkRepeat expr TkDone 
+		 	   | TkIf booleana TkThen instr TkElse instr TkDone
+		 	   | TkIf booleana TkThen instr TkDone
+		 	   | TkWhile booleana TkRepeat instr TkDone
+		 	   | TkWith TkIdent TkFrom InNum TkTo InNum TkRepeat instr TkDone
+		 	   | TkFrom InNum TkTo InNum TkRepeat instr TkDone 
 		 	   | TkPrint TkIdent
 		 	   | TkPrint TkLienzo
 		 	   | TkRead TkIdent '''
 
 	if (len(p)== 4):
 	    if (p[2] == ':='):
-	    	if(tabla.has_key(p[1])):
-	    		p[0] = Asig(p[1] , p[3])
-	    	else:
-	    		print 'errorde sintaxis {0} no fue declarada'.format(p[1])
-	    		exit(1)	
+	    	p[0] = Asig(p[1] , p[3])	
 	elif(len(p) == 8):
 	    if(p[1] == 'if'):
 	    	p[0] = IfElse(p[2],p[4],p[6])
@@ -510,19 +405,11 @@ def p_instr(p):
 		p[0] = With(p[2],p[4],p[6],p[8])
 	elif(len(p) == 3):
 		if(p[1] == 'read'):
-			if(tabla.has_key(p[2])):
-				p[0] = Read(p[2])
-			else:
-				print 'errorde sintaxis {0} no fue declarada'.format(p[2])
-				exit(1)	
+			p[0] = Read(p[2])
 		else:
-			if(p[2][0] != '<'):
-				if(tabla.has_key(p[2])):
-					p[0] = Read(p[2])
-				else:
-					print 'errorde sintaxis {0} no fue declarada'.format(p[2])
-					exit(1)	
 			p[0] = Print(p[2])
+	else:
+		p[0] = p[1]
 	
 
 def p_arit(p):
@@ -549,12 +436,6 @@ def p_arit(p):
 	elif(len(p) == 3):
 		p[0] = - p[2]
 	else:
-		if(type(p[1]) != int):
-			if(tabla.has_key(p[1])):
-				p[0] = p[1]
-			else:
-				print 'error de sintaxis {0} no fue declarada'.format(p[1])
-				exit(1)
 		p[0] = p[1]
 
 def p_expbin(p):
@@ -566,13 +447,13 @@ def p_expbin(p):
 
 def p_booleana(p):
 	''' booleana : booleana operatorB booleana
+				 | booleana operatorB arit
+				 | booleana operatorB lienzo
 		    		 | TkParAbre booleana TkParCierra
 		    		 | TkTrue
 		    		 | TkFalse
 		    		 | TkIdent
-				 	 | booleana TkNegacion
-				 	 | arit
-				 	 | lienzo '''
+				 | booleana TkNegacion '''
 #| TkNegacion booleana
 				 
 	if(len(p) == 4):
@@ -598,13 +479,6 @@ def p_booleana(p):
 	elif(len(p) == 3):
 		p[0] = Nega(p[1])
 	else:
-		if(p[1] != 'true'):
-			if(p[1] != 'false'):
-				if(tabla.has_key(p[1])):
-						p[0] = p[1]
-				else:
-					print 'errorde sintaxis {0} no fue declarada'.format(p[1])
-					exit(1)
 		p[0] = p[1]
 
 def p_lienzo(p):
@@ -630,12 +504,6 @@ def p_lienzo(p):
 			p[0]=Rota(p[2])
 		
 	else:
-		if(p[1][0] != '<'):
-				if(tabla.has_key(p[1])):
-					p[0] = p[1]
-				else:
-					print 'errorde sintaxis {0} no fue declarada'.format(p[1])
-					exit(1)
 		p[0] = p[1]
 
 def p_operatorA(p):
@@ -663,67 +531,9 @@ def p_operatorL(p):
 	p[0] = p[1] 			
 		
 def p_error(p):
-	print "Error de sintaxis " + p.type +" " +  p.value
+	print "Error de sintaxis " + p.type  +  p.value
 	exit(1)
 		
 parser = yacc.yacc()
-arbol = parser.parse(archi)
-#evaluar(arbol)
-print tabla
-print arbol
-
-def esSuma(exp):
-	if(isinstance(exp,Suma)):
-		aux = exp.op1
-		aux2 = exp.op2
-		if(isinstance(aux,Suma)):
-			temp = esSuma(aux)
-		else:
-			if(type(aux) == int):
-				temp = 'integer'
-			elif(tabla.has_key(aux)):
-				temp = tabla[aux]
-				temp = temp[0]
-		
-		if(isinstance(aux2,Suma)):
-			temp2 = esSuma(aux2)
-		else:
-			if(type(aux2) == int):
-				temp2 = 'integer'
-			elif(tabla.has_key(aux2)):
-				temp2 = tabla[aux2]
-				temp2 = temp2[0]
-		
-		if(temp2 == temp):
-			return 'integer'
-		else:
-			return '1'
-				
-
-
-if (isinstance(arbol, Impre)):
-	print 'chap'
-	if (isinstance(arbol, Asig)):
-		print 'hola'
-		calcularExprBin()	
-elif(isinstance(arbol,Impre_uni)):
-	aux = arbol.expr
-	if(isinstance(aux,Asig)):
-		aux2 = aux.ex1
-		aux = aux.iden
-		if(tabla.has_key(aux)):
-			temp = tabla[aux]
-			temp2 = temp[0]
-			temp3 = esSuma(aux2)
-			if(temp2 == temp3):
-				print 'yey'
-			else:
-				print 'error de tipo'
-		#if(type(aux) == TkIdent):
-		#	if(isinstance(aux2,Suma)):
-		#		aux = aux2.op1
-		#		aux2 = aux2.op2
-		#		if(type(aux) == TkNum):
-		#			if(type(aux2) == TkNum):
-		#				print 'yey'
-
+print parser.parse(archi)
+ 
