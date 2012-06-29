@@ -162,8 +162,7 @@ class Impre:
 		self.expr1 = expr1
 		self.expr2 = expr2
 	def __str__(self):
-		#print isinstance(self.expr1,Asig)
-		return str(self.expr1) + " ; " + str(self.expr2)
+		return str(self.expr1) + ';' + str(self.expr2)
 
 class Impre_uni:
 	def __init__(self,expr):
@@ -346,24 +345,14 @@ def evaluar(arbol):
 	if (isinstance(arbol, Impre)):
 		aux1 = arbol.expr1
 		aux2 = arbol.expr2
-		if(isinstance(aux1, Impre)):
+		if(isinstance(aux1, Impre_uni)):
 			evaluar(aux1)
-		elif (isinstance(aux1, Asig)):
-			temp2 = Tipo(aux)
-			temp3 = calcularExprBin(aux2)
-			if(temp2 == temp3):
-				print 'yey'
-			else:
-				print 'error de tipo'
-		elif(isinstance(aux2,Impre)):
+		elif(isinstance(aux1, Impre)):
+			evaluar(aux1)
+		if(isinstance(aux2,Impre)):
 			evaluar(aux2)
-		elif(isinstance(aux2,Asig)):
-			temp2 = Tipo(aux)
-			temp3 = calcularExprBin(aux2)
-			if(temp2 == temp3):
-				print 'yey'
-			else:
-				print 'error de tipo'
+		elif(isinstance(aux2,Impre_uni)):
+			evaluar(aux2)
 		else:
 			print 'jojo'
 			
@@ -375,9 +364,40 @@ def evaluar(arbol):
 			temp2 = Tipo(aux)
 			temp3 = calcularExprBin(aux2)
 			if(temp2 == temp3):
-				print 'yey'
+				pass
 			else:
-				print 'error de tipo'
+				print 'error de tipo {0}'.format(temp2)
+		elif(isinstance(aux,IfElse)):
+			aux = aux.boolean
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+			if(temp == 'boolean'):
+				pass
+			else:
+				print 'error de tipo {0}'.format(temp)
+		elif(isinstance(aux,IfS)):
+			aux = aux.boolean
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+			if(temp == 'boolean'):
+				pass
+			else:
+				print 'error de tipo {0}'.format(temp)
+		elif(isinstance(aux,While)):
+			aux = aux.boolean
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+			if(temp == 'boolean'):
+				pass
+			else:
+				print 'error de tipo {0}'.format(temp)
+	
 
 
 
@@ -385,6 +405,10 @@ def Tipo(aux):
 	if(type(aux) == int):
 			temp = 'integer'
 			return temp
+	elif(aux == 'true' or aux == 'false'):
+			return 'boolean'
+	elif(aux[0] == '<'):
+			return 'canvas'
 	elif(tabla.has_key(aux)):
 			temp = tabla[aux]
 			temp = temp[0]
@@ -395,7 +419,101 @@ def calcularExprBin(exp):
 	if(isinstance(exp,OpBin)):
 		aux = exp.op1
 		aux2 = exp.op2
-		if(isinstance(aux,OpBin)):
+		if(isinstance(exp,Menor)):
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+
+			if(isinstance(aux2,OpBin)):
+				temp2 = calcularExprBin(aux2)
+			else:
+				temp2 = Tipo(aux2)
+			
+			if(temp == 'integer' and temp2 == 'integer'):
+				return 'boolean'
+			else:
+				return '1'
+		elif(isinstance(exp,MenorIg)):
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+
+			if(isinstance(aux2,OpBin)):
+				temp2 = calcularExprBin(aux2)
+			else:
+				temp2 = Tipo(aux2)
+		
+			if(temp == 'integer' and temp2 == 'integer'):
+				return 'boolean'
+			else:
+				return '1'
+		elif(isinstance(exp,Mayor)):
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+
+			if(isinstance(aux2,OpBin)):
+				temp2 = calcularExprBin(aux2)
+			else:
+				temp2 = Tipo(aux2)
+		
+			if(temp == 'integer' and temp2 == 'integer'):
+				return 'boolean'
+			else:
+				return '1'
+		elif(isinstance(exp,MayorIg)):
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+
+			if(isinstance(aux2,OpBin)):
+				temp2 = calcularExprBin(aux2)
+			else:
+				temp2 = Tipo(aux2)
+		
+			if(temp == 'integer' and temp2 == 'integer'):
+				return 'boolean'
+			else:
+				return '1'
+		elif(isinstance(exp,Igual)):
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+
+			if(isinstance(aux2,OpBin)):
+				temp2 = calcularExprBin(aux2)
+			else:
+				temp2 = Tipo(aux2)
+		
+			if(temp == 'boolean' or temp2 == 'boolean'):
+				return '1'
+			elif(temp2 == temp):
+				return 'boolean'
+			else:
+				return '1'
+		elif(isinstance(exp,Desigual)):
+			if(isinstance(aux,OpBin)):
+				temp = calcularExprBin(aux)
+			else:
+				temp = Tipo(aux)
+
+			if(isinstance(aux2,OpBin)):
+				temp2 = calcularExprBin(aux2)
+			else:
+				temp2 = Tipo(aux2)
+		
+			if(temp == 'boolean' or temp2 == 'boolean'):
+				return '1'
+			elif(temp2 == temp):
+				return 'boolean'
+			else:
+				return '1'
+		elif(isinstance(aux,OpBin)):
 			temp = calcularExprBin(aux)
 		else:
 			temp = Tipo(aux)
@@ -411,6 +529,12 @@ def calcularExprBin(exp):
 			return '1'
 	elif(type(exp) == int):
 		return 'integer'
+	elif(exp == 'true' or exp == 'false'):
+		return 'boolean'
+	elif(exp[0] == '<'):
+		return 'canvas'
+	else:
+		return Tipo(exp)
 
 
 
@@ -539,7 +663,12 @@ def p_InNum(p):
 				 | TkIdent '''
 	if(type(p[1]) != int):
 		if(tabla.has_key(p[1])):
-			p[0] = p[1]
+			aux = tabla[p[1]]
+			if(aux[0] == 'integer'):
+				p[0] = p[1]
+			else:
+				print 'La variable [{0}] debe ser de tipo entera'.format(p[1])
+				exit(1)
 		else:
 			print 'errorde sintaxis {0} no fue declarada'.format(p[1])
 			exit(1)	
@@ -575,21 +704,36 @@ def p_instr(p):
 	    	p[0] = IfS(p[2],p[4])
 	elif(len(p) == 10 ):
 		if(tabla.has_key(p[2])):
-			p[0] = With(p[2],p[4],p[6],p[8])
+			aux = tabla[p[2]]
+			if(aux[0] == 'integer'):
+				p[0] = With(p[2],p[4],p[6],p[8])
+			else:
+				print 'La variable [{0}] debe ser de tipo entera'.format(p[2])
+				exit(1)
 		else:
 			print 'errorde sintaxis {0} no fue declarada'.format(p[2])
 			exit(1)
 	elif(len(p) == 3):
 		if(p[1] == 'read'):
 			if(tabla.has_key(p[2])):
-				p[0] = Read(p[2])
+				aux = Tipo(p[2])
+				if(aux == 'integer'):
+					p[0] = Read(p[2])
+				else:
+					print 'La variable1 [{0}] debe ser de tipo entera'.format(p[2])
+					exit(1)
 			else:
 				print 'errorde sintaxis {0} no fue declarada'.format(p[2])
 				exit(1)	
-		else:
+		else:	
 			if(p[2][0] != '<'):
 				if(tabla.has_key(p[2])):
-					p[0] = Read(p[2])
+					temp = Tipo(p[2])
+					if(temp == 'canvas'):
+						p[0] = Print(p[2])
+					else:
+						print 'La variable [{0}] debe ser de tipo canvas'.format(p[2])
+						exit(1)
 				else:
 					print 'errorde sintaxis {0} no fue declarada'.format(p[2])
 					exit(1)	
@@ -669,14 +813,19 @@ def p_booleana(p):
 	elif(len(p) == 3):
 		p[0] = Nega(p[1])
 	else:
-		if(p[1] != 'true'):
+		if(isinstance(p[1],OpBin)):
+			p[0] = p[1]
+		elif(type(p[1]) == int):
+			p[0] = p[1]
+		elif(p[1] != 'true'):
 			if(p[1] != 'false'):
 				if(tabla.has_key(p[1])):
 						p[0] = p[1]
 				else:
-					print 'errorde sintaxis {0} no fue declarada'.format(p[1])
+					print 'errorde sintaxis {0} no1 fue declarada'.format(p[1])
 					exit(1)
-		p[0] = p[1]
+		else:
+			p[0] = p[1]
 
 def p_lienzo(p):
 	''' lienzo : lienzo operatorL lienzo 
@@ -740,7 +889,7 @@ def p_error(p):
 parser = yacc.yacc()
 arbol = parser.parse(archi)
 evaluar(arbol)
-print tabla
+#print tabla
 #print arbol
 
 
