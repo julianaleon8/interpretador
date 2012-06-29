@@ -8,6 +8,7 @@ from ply.lex import TOKEN
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
+from tipos import *
 
 # lista de tokens reservados
 reserved = {
@@ -342,44 +343,6 @@ class Print(expresion):
 # FUNCIONES DE TIPO #
 #####################
 
-def evaluar(arbol):
-	if (isinstance(arbol, Impre)):
-		aux1 = arbol.expr1
-		aux2 = arbol.expr2
-		if(isinstance(aux1, Impre)):
-			evaluar(aux1)
-		elif (isinstance(aux1, Asig)):
-			temp2 = Tipo(aux)
-			temp3 = calcularExprBin(aux2)
-			if(temp2 == temp3):
-				print 'yey'
-			else:
-				print 'error de tipo'
-		elif(isinstance(aux2,Impre)):
-			evaluar(aux2)
-		elif(isinstance(aux2,Asig)):
-			temp2 = Tipo(aux)
-			temp3 = calcularExprBin(aux2)
-			if(temp2 == temp3):
-				print 'yey'
-			else:
-				print 'error de tipo'
-		else:
-			print 'jojo'
-			
-	elif(isinstance(arbol,Impre_uni)):
-		aux = arbol.expr
-		if(isinstance(aux,Asig)):
-			aux2 = aux.ex1
-			aux = aux.iden
-			temp2 = Tipo(aux)
-			temp3 = calcularExprBin(aux2)
-			if(temp2 == temp3):
-				print 'yey'
-			else:
-				print 'error de tipo'
-
-
 
 def Tipo(aux):
 	if(type(aux) == int):
@@ -404,13 +367,11 @@ def calcularExprBin(exp):
 			temp2 = calcularExprBin(aux2)
 		else:
 			temp2 = Tipo(aux2)
-		
+
 		if(temp2 == temp):
-			return temp
+			return 'integer'
 		else:
 			return '1'
-	elif(type(exp) == int):
-		return 'integer'
 
 
 
@@ -428,15 +389,16 @@ temp = []
 def p_expr(p):
 	''' expr : TkUsing Declar TkBegin expr TkEnd
 				| expr TkPuntoYComa expr 
-				| instr  '''
+				| instr 
+				| empty '''
 	global contador
 	global temp
 	if len(p) == 4:
 		p[0] = Impre(p[1],p[3])
 	elif(len(p) == 6):
 		temp = []
-		contador += 1
 		p[0] = p[4]
+		contador += 1
 		for i in tabla:
 			count = contador
 			aux = tabla[i]
@@ -465,7 +427,6 @@ def p_Declar(p):
 				  | Declar TkPuntoYComa Declar 
 				  | TkIdent '''
 	global temp
-	global contador
 	cont = 0
 	if(len(p) == 4):
 
@@ -473,8 +434,7 @@ def p_Declar(p):
 			temp.append(p[3])
 			p[0] = p[1]
 		elif(p[2] == ';'):
-			temp.append(p[1])
-			temp.append(p[3])
+			pass
 		else:
 			if(tabla.has_key(p[1])):
 					aux = tabla[p[1]]
@@ -511,7 +471,6 @@ def p_Declar(p):
 			else:
 				lista = [p[5],contador,'']
 				tabla[i] = lista
-			temp = []
 
 	else:
 		if(tabla.has_key(p[1])):
@@ -521,7 +480,7 @@ def p_Declar(p):
 					aux = aux2
 					aux2 = aux[-1]
 				if(aux[1] == contador):
-					print 'variable2 repetida {0}'.format(p[1])
+					print 'variable repetida {0}'.format(p[1])
 					exit(1)
 				else:
 					aux3 = [p[5],contador,'']
@@ -574,11 +533,7 @@ def p_instr(p):
 	    elif(p[1] == 'if'):
 	    	p[0] = IfS(p[2],p[4])
 	elif(len(p) == 10 ):
-		if(tabla.has_key(p[2])):
-			p[0] = With(p[2],p[4],p[6],p[8])
-		else:
-			print 'errorde sintaxis {0} no fue declarada'.format(p[2])
-			exit(1)
+		p[0] = With(p[2],p[4],p[6],p[8])
 	elif(len(p) == 3):
 		if(p[1] == 'read'):
 			if(tabla.has_key(p[2])):
@@ -739,9 +694,29 @@ def p_error(p):
 
 parser = yacc.yacc()
 arbol = parser.parse(archi)
-evaluar(arbol)
-print tabla
+#evaluar(arbol)
+#print tabla
 #print arbol
 
+
+if (isinstance(arbol, Impre)):
+	aux1 = arbol.expr1
+	aux2 = arbol.expr2
+	print 'jojo'
+	if (isinstance(aux1, Asig)):
+		print 'holaaaa'	
+elif(isinstance(arbol,Impre_uni)):
+	aux = arbol.expr
+	if(isinstance(aux,Asig)):
+		aux2 = aux.ex1
+		aux = aux.iden
+		if(tabla.has_key(aux)):
+			temp = tabla[aux]
+			temp2 = temp[0]
+			temp3 = calcularExprBin(aux2)
+			if(temp2 == temp3):
+				print 'yey'
+			else:
+				print 'error de tipo'
 
 

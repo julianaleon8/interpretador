@@ -1,8 +1,5 @@
 using contador,z,y of type integer ; x of type canvas begin
 {- Asignar al contador 
 el valor 35. -}
-contador := z+ y*25-4769*(854/(z+6))%z+((2+4)+6-z);
-using z of type canvas begin
-z := x;
-end
+w := z+ y*25-4769*(854/(z+6))%z+((2+4)+6-z)
 end
