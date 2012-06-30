@@ -366,7 +366,7 @@ def evaluar(arbol):
 			if(temp2 == temp3):
 				pass
 			else:
-				print 'error de tipo {0}'.format(temp2)
+				print 'error de tipo1 {0}'.format(temp2)
 		elif(isinstance(aux,IfElse)):
 			aux = aux.boolean
 			if(isinstance(aux,OpBin)):
@@ -397,22 +397,23 @@ def evaluar(arbol):
 				pass
 			else:
 				print 'error de tipo {0}'.format(temp)
+		
 	
 
 
 
 def Tipo(aux):
-	if(type(aux) == int):
+	if(tabla.has_key(aux)):
+			temp = tabla[aux]
+			temp = temp[0]
+			return temp
+	elif(type(aux) == int):
 			temp = 'integer'
 			return temp
 	elif(aux == 'true' or aux == 'false'):
 			return 'boolean'
 	elif(aux[0] == '<'):
 			return 'canvas'
-	elif(tabla.has_key(aux)):
-			temp = tabla[aux]
-			temp = temp[0]
-			return temp
 
 
 def calcularExprBin(exp):
@@ -527,6 +528,49 @@ def calcularExprBin(exp):
 			return temp
 		else:
 			return '1'
+	
+	elif(isinstance(exp,OpUn)):
+		aux = exp
+		if(isinstance(aux,Nega)):
+				aux = aux.op1
+				if(isinstance(aux,OpBin)):
+					temp = calcularExprBin(aux)
+				else:
+					temp = Tipo(aux)
+				if(temp == 'boolean'):
+					return temp
+				else:
+					return '1'
+		elif(isinstance(aux,Rota)):
+				aux = aux.op1
+				if(isinstance(aux,OpBin)):
+					temp = calcularExprBin(aux)
+				else:
+					temp = Tipo(aux)
+				if(temp == 'canvas'):
+					return temp
+				else:
+					return '1'
+		elif(isinstance(aux,Trans)):
+				aux = aux.op1
+				if(isinstance(aux,OpBin)):
+					temp = calcularExprBin(aux)
+				else:
+					temp = Tipo(aux)
+				if(temp == 'canvas'):
+					return temp
+				else:
+					return '1'
+		elif(isinstance(aux,Menos)):
+				aux = aux.op1
+				if(isinstance(aux,OpBin)):
+					temp = calcularExprBin(aux)
+				else:
+					temp = Tipo(aux)
+				if(temp == 'integer'):
+					return temp
+				else:
+					return '1'
 	elif(type(exp) == int):
 		return 'integer'
 	elif(exp == 'true' or exp == 'false'):
@@ -762,7 +806,7 @@ def p_arit(p):
 			if p[3] == ')':
 				p[0] = p[2] 
 	elif(len(p) == 3):
-		p[0] = - p[2]
+		p[0] = Menos(p[2])
 	else:
 		if(type(p[1]) != int):
 			if(tabla.has_key(p[1])):
