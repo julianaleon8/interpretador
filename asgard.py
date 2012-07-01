@@ -430,9 +430,8 @@ def evaluar(arbol):
 			temp = aux.iden
 			temp2 = aux.num1
 			if(tabla.has_key(temp)):
-				aux1 = run(temp)
+				aux1 = Tipo(temp)
 				if(aux1 == 'integer'):
-					
 					run(aux)
 				else:
 					print 'La variable [{0}] debe ser de tipo entera'.format(temp)
@@ -441,7 +440,12 @@ def evaluar(arbol):
 				print 'errorde sintaxis {0} no fue declarada'.format(p[2])
 				exit(1)
 		elif(isinstance(aux,Fro)):
-			pass
+			temp = aux.num1
+			temp2 = aux.num2
+			if(Tipo(temp) == Tipo(temp2) == 'integer'):
+				run(aux)
+			else:
+				print 'Los limites deben ser de tipo integer'
 		
 	
 
@@ -690,9 +694,9 @@ def run(exp):
 		if(isinstance(exp,MayorIg)):
 			return eval('f1>=f2')
 		if(isinstance(exp,Igual)):
-			return eval('f1==f2')
+			return eval('f1 == f2')
 		if(isinstance(exp,Desigual)):
-			return eval('f1!=f2')
+			return eval('f1 != f2')
 		if(isinstance(exp,ConcatHor)):
 			pass
 		if(isinstance(exp,ConcatVer)):
@@ -746,9 +750,13 @@ def run(exp):
 		temp = exp.boolean
 		temp1 = exp.ex1
 		temp2 = exp.ex2
-		if(Tipo(temp) == 'boolean'):
-			temp = run(temp)
-			if(temp == 'true'):
+		if(isinstance(temp,OpBin) or isinstance(temp,OpUn)):
+			temp3 = calcularExprBin(temp)
+		else:
+			temp3 = Tipo(temp)
+		if(temp3 == 'boolean'):
+			temp3 = run(temp)
+			if(temp3 == 'true' or temp3 == True):
 				run(temp1)
 			else:
 				run(temp2)
@@ -756,62 +764,131 @@ def run(exp):
 			print 'La variable {0} debe ser de tipo booleano'.format(temp)
 			exit(1)
 	elif(isinstance(exp,IfS)):
-		temp = exp.boolean
+		temp1 = exp.boolean
 		temp2 = exp.ex1
-		if(Tipo(temp) == 'boolean'):
-			temp = run(temp)
-			if(temp == 'true'):
+		if(isinstance(temp1,OpBin) or isinstance(temp1,OpUn)):
+			temp = calcularExprBin(temp1)
+		else:
+			temp = Tipo(temp1)
+		if(temp == 'boolean'):
+			temp = run(temp1)
+			if(temp == 'true' or temp == True):
 				run(temp2)
 		else:
 			print 'La variable {0} debe ser de tipo booleano'.format(temp)
 			exit(1)
 	elif(isinstance(exp,With)):
 		temp = exp.iden
-		temp2 = exp.num1
-		temp3 = exp.num2
+		temp5 = exp.num1
+		temp6 = exp.num2
 		temp4 = exp.ex1
-		if(Tipo(temp) == Tipo(temp2) == Tipo(temp3) == 'integer'):
-			if(tabla.has_key(temp2)):
-				aux = temp2[2]
+		if(Tipo(temp) == Tipo(temp6) == Tipo(temp5) == 'integer'):
+			if(tabla.has_key(temp5)):
+				temp1 = tabla[temp5]
+				aux = temp1[2]
 			else:
-				aux = temp2
-			if(tabla.has_key(temp3)):
-				aux2 = temp3[2]
+				aux = temp5
+			if(tabla.has_key(temp6)):
+				temp2 = tabla[temp6]
+				aux2 = temp2[2]
 			else:
-				aux2 = temp3
-			if(aux < aux2):
+				aux2 = temp6
+			temp = tabla[temp]
+			if(type(temp5) != int and type(temp6) != int):
+				if(aux < aux2):
+					temp[2] = aux
+					while(aux != aux2):
+						run(temp4)
+						temp[2] = temp[2] + 1
+						aux = temp[2]
+						aux2 = temp2[2]
+				else:
+					print 'Los limites no concuerdan'
+			elif(type(temp6) != int):
+				temp = tabla[temp6]		
+				if(aux < aux2):
+					temp[2] = aux
+					while(aux != aux2):
+						run(temp4)
+						temp[2] = temp[2] + 1
+						aux = temp[2]
+						aux2 = temp2[2]
+				else:
+					print 'Los limites no concuerdan'
+			elif(type(temp5) != int):
+				temp = tabla[temp5]		
+				if(aux < aux2):
+					temp[2] = aux
+					while(aux != aux2):
+						run(temp4)
+						temp[2] = temp[2] + 1
+						aux = temp[2]
+				else:
+					print 'Los limites no concuerdan'
+			elif(aux < aux2):
+				temp[2] = aux
 				while(aux != aux2):
 					run(temp4)
-		
-			
+					temp[2] = temp[2] + 1
+					aux = temp[2]
+			else:
+					print 'Los limites no concuerdan'
 	elif(isinstance(exp,Fro)):
 		temp2 = exp.num1
 		temp3 = exp.num2
 		temp4 = exp.ex1
 		if(Tipo(temp2) == Tipo(temp3) == 'integer'):
 			if(tabla.has_key(temp2)):
-				aux = temp2[2]
+				temp = tabla[temp2]
+				aux = temp[2]
 			else:
 				aux = temp2
 			if(tabla.has_key(temp3)):
-				aux2 = temp3[2]
+				temp = tabla[temp3]
+				aux2 = temp[2]
 			else:
 				aux2 = temp3
-			if(type(temp3) != int or type(temp2) != int):
+			if(type(temp3) != int and type(temp2) != int):
 				if(aux < aux2):
 					while(aux != aux2):
 						run(temp4)
 						aux = temp2[2] + 1
 						aux2 = temp3[2]
-			if(aux < aux2):
+				else:
+					print 'Los limites no concuerdan'
+			elif(type(temp3) != int):
+				temp = tabla[temp3]		
+				if(aux < aux2):
+					while(aux != aux2):
+						run(temp4)
+						aux = aux + 1
+						aux2 = temp[2]
+				else:
+					print 'Los limites no concuerdan'
+			elif(type(temp2) != int):
+				temp = tabla[temp2]		
+				if(aux < aux2):
+					while(aux != aux2):
+						run(temp4)
+						temp[2] = temp[2] + 1
+						aux = temp[2]
+				else:
+					print 'Los limites no concuerdan'
+			elif(aux < aux2):
 				while(aux != aux2):
 					run(temp4)
 					aux = aux +1
+			else:
+					print 'Los limites no concuerdan'
 	elif(isinstance(exp,While)):
-		aux = exp.boolean
+		aux1 = exp.boolean
 		aux2 = exp.ex1
-		if(Tipo(aux) == 'boolean'):
-			while(run(aux) == 'true' or run(aux) == True):
+		if(isinstance(aux1,OpBin) or isinstance(aux1,OpUn)):
+			aux = calcularExprBin(aux1)
+		else:
+			aux = Tipo(aux1)
+		if(aux == 'boolean'):
+			while(run(aux1) == 'true' or run(aux1) == True):
 				run(aux2)
 		else:
 			print 'La variable {0} debe ser de tipo booleano'.format(aux)
