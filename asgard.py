@@ -72,7 +72,7 @@ def t_TkIdent(t):
 	  return t
 
 def t_TkLienzo(t):
-	r'<([/]|[\\]|[\-]|[_]|[ ]|empty)>' 
+	r'<([/]|[\\]|[\-]|[_]|[ ]|[|]|empty)>' 
 	return t
 
 # definicion para saber en que columna se encuentra un caracter
@@ -364,7 +364,7 @@ def evaluar(arbol):
 			if(temp2 == temp3):
 				run(aux)
 			else:
-				print 'error de tipo1 {0}'.format(temp2)
+				print 'error de tipo {0}'.format(temp2)
 		elif(isinstance(aux,IfElse)):
 			aux1 = aux.boolean
 			aux2 = aux.ex1
@@ -422,7 +422,7 @@ def evaluar(arbol):
 						print 'La variable [{0}] debe ser de tipo canvas'.format(temp)
 						exit(1)
 				else:
-					print 'error de sintaxis {0} no fue declarada'.format(temp)
+					print 'error de sintaxis2 {0} no fue declarada'.format(temp)
 					exit(1)	
 			else:
 				run(aux)
@@ -437,7 +437,7 @@ def evaluar(arbol):
 					print 'La variable [{0}] debe ser de tipo entera'.format(temp)
 					exit(1)
 			else:
-				print 'errorde sintaxis {0} no fue declarada'.format(p[2])
+				print 'error de sintaxis3 {0} no fue declarada'.format(p[2])
 				exit(1)
 		elif(isinstance(aux,Fro)):
 			temp = aux.num1
@@ -640,9 +640,7 @@ def run(exp):
 	if(isinstance(exp,OpBin)):
 		a = exp.op1
 		b = exp.op2
-		if(isinstance(a,OpBin)):
-			f1 = run(a)
-		elif(isinstance(a,OpUn)):
+		if(isinstance(a,OpBin) or isinstance(a,OpUn)):
 			f1 = run(a)
 		else:
 			if(tabla.has_key(a)):
@@ -654,9 +652,7 @@ def run(exp):
 					f1 = temp[2]
 			else:
 				f1 = a
-		if(isinstance(b,OpBin)):
-			f2 = run(b)
-		elif(isinstance(b,OpUn)):
+		if(isinstance(b,OpBin) or isinstance(b,OpUn)):
 			f2 = run(b)
 		else:
 			if(tabla.has_key(b)):
@@ -698,15 +694,117 @@ def run(exp):
 		if(isinstance(exp,Desigual)):
 			return eval('f1 != f2')
 		if(isinstance(exp,ConcatHor)):
-			pass
+			if(f1[0] == f2[0] == '<'):
+				ret = []
+				if(f1 != '<empty>'):
+					ret.append(f1[1:len(f1)-1])
+				else:
+					pass
+				if(f2 != '<empty>'):
+					ret.append(f2[1:len(f2)-1])
+				else:
+					pass
+				return ret
+			elif(f1[0] == '<'):
+				count = 0
+				for i in f2:
+					if(i == '\n'):
+						count += 1
+				if(count == 0):
+					ret = []
+					if(f1 != '<empty>'):
+						ret.append(f1[1:len(f1)-1])
+					else:
+						pass
+					for i in f2:
+						ret.append(i)
+					return ret
+				else:
+					print 'Dimension2 de lienzos diferentes'
+					exit(1)
+			elif(f2[0] == '<'):
+				count = 0
+				for i in f1:
+					if(i == '\n'):
+						count += 1
+				if(count == 0):
+					ret = []
+					for i in f1:
+						ret.append(i)
+					if(f2 != '<empty>'):
+						ret.append(f2[1:len(f2)-1])
+					else:
+						pass
+					return ret
+				else:
+					print 'Dimension1 de lienzos diferentes'
+					exit(1)
+			else:
+##########################################################3
+				count1 = 0
+				count2 = 0
+				for i in f1:
+					if(i == '\n'):
+						count1 += 1
+				for i in f2:
+					if(i == '\n'):
+						count2 += 1
+				if(count1 == count2):
+					ret = []
+					while(f1 != []):
+						aux = f1.pop
+						if(aux == '\n'):
+							aux = f2.pop
+							
+				else:
+					print 'Dimension3 de lienzos diferentes'
+					exit(1)
+##############################################################
 		if(isinstance(exp,ConcatVer)):
-			pass
+			if(f1[0] == f2[0] == '<'):
+				ret = []
+				if(f1 != '<empty>'):
+					ret.append(f1[1:len(f1)-1])
+					ret.append('\n')
+				else:
+					pass
+				if(f2 != '<empty>'):
+					ret.append(f2[1:len(f2)-1])
+				else:
+					pass
+				return ret
+			elif(f1[0] == '<'):
+				ret = []
+				if(f1 != '<empty>'):
+					ret.append(f1[1:len(f1)-1])
+					ret.append('\n')
+				else:
+					pass
+				for i in f2:
+					ret.append(i)
+				return ret
+			elif(f2[0] == '<'):
+				ret = []
+				for i in f1:
+					ret.append(i)
+				ret.append('\n')
+				if(f2 != '<empty>'):
+					ret.append(f2[1:len(f2)-1])
+				else:
+					pass
+				return ret
+			else:
+				ret = []
+				for i in f1:
+					ret.append(i)
+				ret.append('\n')
+				for i in f2:
+					ret.append(i)
+				return ret
 	elif(isinstance(exp,OpUn)):
 		if(isinstance(exp,Menos)):
 			a = exp.op1
-			if(isinstance(a,OpBin)):
-				f1 = run(a)
-			elif(isinstance(a,OpUn)):
+			if(isinstance(a,OpBin) or isinstance(a,OpUn)):
 				f1 = run(a)
 			else:
 				if(tabla.has_key(a)):
@@ -721,10 +819,12 @@ def run(exp):
 			return eval('(-1) * f1')
 		if(isinstance(exp,Nega)):
 			a = exp.op1
-			if(isinstance(a,OpBin)):
+			if(isinstance(a,OpBin) or isinstance(a,OpUn)):
 				f1 = run(a)
-			elif(isinstance(a,OpUn)):
-				f1 = run(a)
+				if(f1 == 'false'):
+					f1 = False
+				else:
+					f1 = True
 			else:
 				if(tabla.has_key(a)):
 					temp = tabla[a]
@@ -734,10 +834,48 @@ def run(exp):
 					else:
 						f1 = temp[2]
 				else:
-					f1 = a
+					if(a == 'false'):
+						f1 = False
+					else:
+						f1 = True
 			return eval('not f1')
 		if(isinstance(exp,Trans)):
-			pass
+			aux = exp.op1
+			if(isinstance(aux,OpBin) or isinstance(aux,OpUn)):
+				f1 = run(aux)
+			else:
+				if(tabla.has_key(aux)):
+					temp = tabla[aux]
+					f1 = temp[2]
+				else:
+					f1 = aux
+					return f1
+			res = []
+			fin = []
+			prb = []
+			for i in f1:
+				if(i == '\n'):
+					res.append(prb)
+					prb = []
+				else:
+					prb.append(i)
+			res.append(prb)
+			prb = []
+			for i in range(len(res[0])):
+				prb.append([])
+			for i in range(len(prb)):
+				for j in range(len(res)):
+					prb[i].append(',')
+			for i in range(len(res)):
+				for j in range(len(res[0])):
+					prb[j][i] = res[i][j]
+			for i in range(len(prb)):
+				for j in range(len(prb[i])):
+					fin.append(prb[i][j])
+				fin.append('\n')
+			return fin
+			
+				
 		if(isinstance(exp,Rota)):
 			pass
 	elif(isinstance(exp,Asig)):
@@ -778,11 +916,18 @@ def run(exp):
 			print 'La variable {0} debe ser de tipo booleano'.format(temp)
 			exit(1)
 	elif(isinstance(exp,With)):
-		temp = exp.iden
+		iden = exp.iden
 		temp5 = exp.num1
 		temp6 = exp.num2
 		temp4 = exp.ex1
-		if(Tipo(temp) == Tipo(temp6) == Tipo(temp5) == 'integer'):
+		flag = 0
+		if(tabla.has_key(iden)):
+			guardar = tabla[iden]
+			guardar2 = guardar[0]
+			guardar = guardar[2]
+			flag = 1
+		tabla[iden] = ['integer',0,'']
+		if(Tipo(iden) == Tipo(temp6) == Tipo(temp5) == 'integer'):
 			if(tabla.has_key(temp5)):
 				temp1 = tabla[temp5]
 				aux = temp1[2]
@@ -793,33 +938,29 @@ def run(exp):
 				aux2 = temp2[2]
 			else:
 				aux2 = temp6
-			temp = tabla[temp]
+			temp = tabla[iden]
 			if(type(temp5) != int and type(temp6) != int):
 				if(aux < aux2):
 					temp[2] = aux
-					while(aux != aux2):
+					while(aux != (aux2+1)):
 						run(temp4)
 						temp[2] = temp[2] + 1
 						aux = temp[2]
-						aux2 = temp2[2]
 				else:
 					print 'Los limites no concuerdan'
-			elif(type(temp6) != int):
-				temp = tabla[temp6]		
+			elif(type(temp6) != int):		
 				if(aux < aux2):
 					temp[2] = aux
-					while(aux != aux2):
+					while(aux != (aux2+1)):
 						run(temp4)
 						temp[2] = temp[2] + 1
 						aux = temp[2]
-						aux2 = temp2[2]
 				else:
 					print 'Los limites no concuerdan'
-			elif(type(temp5) != int):
-				temp = tabla[temp5]		
+			elif(type(temp5) != int):		
 				if(aux < aux2):
 					temp[2] = aux
-					while(aux != aux2):
+					while(aux != (aux2+1)):
 						run(temp4)
 						temp[2] = temp[2] + 1
 						aux = temp[2]
@@ -827,12 +968,21 @@ def run(exp):
 					print 'Los limites no concuerdan'
 			elif(aux < aux2):
 				temp[2] = aux
-				while(aux != aux2):
+				while(aux != (aux2+1)):
 					run(temp4)
 					temp[2] = temp[2] + 1
 					aux = temp[2]
 			else:
 					print 'Los limites no concuerdan'
+					exit(1)
+			if(flag == 1):
+				guardar3 = tabla[iden]
+				guardar3[2] = guardar
+				guardar3[0] = guardar2
+				tabla[iden] = guardar3
+			else:
+				del tabla[iden]
+			
 	elif(isinstance(exp,Fro)):
 		temp2 = exp.num1
 		temp3 = exp.num2
@@ -850,34 +1000,31 @@ def run(exp):
 				aux2 = temp3
 			if(type(temp3) != int and type(temp2) != int):
 				if(aux < aux2):
-					while(aux != aux2):
+					while(aux != (aux2 + 1)):
 						run(temp4)
-						aux = temp2[2] + 1
-						aux2 = temp3[2]
+						aux = aux + 1
 				else:
 					print 'Los limites no concuerdan'
 			elif(type(temp3) != int):
 				temp = tabla[temp3]		
 				if(aux < aux2):
-					while(aux != aux2):
+					while(aux != (aux2 + 1)):
 						run(temp4)
 						aux = aux + 1
-						aux2 = temp[2]
 				else:
 					print 'Los limites no concuerdan'
 			elif(type(temp2) != int):
 				temp = tabla[temp2]		
 				if(aux < aux2):
-					while(aux != aux2):
+					while(aux != (aux2 + 1)):
 						run(temp4)
-						temp[2] = temp[2] + 1
-						aux = temp[2]
+						aux = aux + 1
 				else:
 					print 'Los limites no concuerdan'
 			elif(aux < aux2):
-				while(aux != aux2):
+				while(aux != (aux2+1)):
 					run(temp4)
-					aux = aux +1
+					aux = aux + 1
 			else:
 					print 'Los limites no concuerdan'
 	elif(isinstance(exp,While)):
@@ -893,6 +1040,8 @@ def run(exp):
 		else:
 			print 'La variable {0} debe ser de tipo booleano'.format(aux)
 			exit(1)
+			
+########################################################
 	elif(isinstance(exp,Read)):
 		aux = exp.iden
 		temp = tabla[aux]
@@ -905,7 +1054,17 @@ def run(exp):
 	elif(isinstance(exp,Print)):
 		aux = exp.iden
 		temp = run(aux)
-		print temp[1:len(temp)-1]
+		if(temp[0] == '<'):
+			if(temp != '<empty>'):
+				print temp[1:len(temp)-1]
+			else:
+				print 
+		else:
+			for i in temp:
+				sys.stdout.write(i)
+			print 
+		
+#########################################################
 			
 	elif(isinstance(exp,Impre)):
 		a = exp.expr1
@@ -922,7 +1081,10 @@ def run(exp):
 				print 'Variable {0} no inicializada'.format(exp)
 				exit(1)
 			else:
-				return temp[2]
+				if(temp[0] != 'canvas'):
+					return temp[2]
+				else:
+					return temp[2]
 		else:
 			return exp
 			
@@ -1120,12 +1282,6 @@ def p_arit(p):
 	elif(len(p) == 3):
 		p[0] = Menos(p[2])
 	else:
-		if(type(p[1]) != int):
-			if(tabla.has_key(p[1])):
-				p[0] = p[1]
-			else:
-				print 'error de sintaxis {0} no fue declarada'.format(p[1])
-				exit(1)
 		p[0] = p[1]
 
 
